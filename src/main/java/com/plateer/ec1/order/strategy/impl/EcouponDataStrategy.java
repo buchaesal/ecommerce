@@ -6,10 +6,12 @@ import com.plateer.ec1.order.vo.OrderProductView;
 import com.plateer.ec1.order.vo.OrderRequest;
 import com.plateer.ec1.order.strategy.DataStrategy;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Slf4j
+@Component
 public class EcouponDataStrategy implements DataStrategy {
 
     @Override

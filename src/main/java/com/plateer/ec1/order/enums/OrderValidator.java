@@ -1,37 +1,33 @@
 package com.plateer.ec1.order.enums;
 
-import com.plateer.ec1.order.vo.OrderRequest;
-import com.plateer.ec1.order.vo.OrderValidationVO;
 import com.plateer.ec1.order.validator.OrderCommonValidator;
 import com.plateer.ec1.order.validator.OrderSystemValidator;
 import com.plateer.ec1.order.validator.OrderTypeValidator;
+import com.plateer.ec1.order.vo.OrderRequest;
+import com.plateer.ec1.order.vo.OrderValidationVO;
+import lombok.RequiredArgsConstructor;
 
 import java.util.Arrays;
 import java.util.function.Predicate;
 
+@RequiredArgsConstructor
 public enum OrderValidator implements Predicate<OrderValidationVO> {
 
-    FO_GENERAL("FO", "general",
+    FO_GENERAL(OrderSystemType.FO, OrderType.GENERAL,
             OrderCommonValidator.commonValidator),
-    BO_GENERAL("BO", "general",
+    BO_GENERAL(OrderSystemType.BO, OrderType.GENERAL,
             OrderCommonValidator.commonValidator
                     .and(OrderSystemValidator.isAbleBoOrder)),
-    FO_ECOUPON("FO", "ecoupon",
+    FO_ECOUPON(OrderSystemType.FO, OrderType.ECOUPON,
             OrderCommonValidator.commonValidator
                     .and(OrderTypeValidator.isAbleEcouponOrder)),
-    BO_ECOUPON("BO", "ecoupon",
+    BO_ECOUPON(OrderSystemType.BO, OrderType.ECOUPON,
             OrderCommonValidator.commonValidator
                     .and(OrderTypeValidator.isAbleEcouponOrder));
 
-    private String systemCode;
-    private String orderType;
-    private Predicate predicate;
-
-    OrderValidator(String systemCode, String orderType, Predicate predicate) {
-        this.systemCode = systemCode;
-        this.orderType = orderType;
-        this.predicate = predicate;
-    }
+    private final OrderSystemType systemType;
+    private final OrderType orderType;
+    private final Predicate predicate;
 
     @Override
     public boolean test(OrderValidationVO orderValidationVO){
@@ -40,7 +36,7 @@ public enum OrderValidator implements Predicate<OrderValidationVO> {
 
     public static OrderValidator get(OrderRequest orderRequest){
         return Arrays.stream(OrderValidator.values())
-                .filter(ele -> ele.orderType.equals(orderRequest.getOrderType()) && ele.systemCode.equals(orderRequest.getSystemType()))
+                .filter(ele -> ele.orderType == orderRequest.getOrderType() && ele.systemType == orderRequest.getSystemType())
                 .findAny()
                 .orElseThrow(() -> new IllegalArgumentException("해당하는 주문유형이 없습니다!"));
     }
