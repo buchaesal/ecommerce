@@ -13,11 +13,9 @@ import java.util.Map;
 public class ProcessorFactory {
 
     Map<ProcessorType, ClaimProcessor> processorMap = new LinkedHashMap<>();
-    List<ClaimProcessor> processors;
 
     public ProcessorFactory(List<ClaimProcessor> processors) {
         processors.forEach(p -> processorMap.put(p.getType(), p));
-        this.processors = processors;
     }
 
     // 상품유형, 클레임유형에따라 달라짐.

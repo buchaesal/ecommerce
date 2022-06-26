@@ -1,6 +1,8 @@
 package com.plateer.ec1.claim.processor;
 
+import com.plateer.ec1.claim.enums.ClaimType;
 import com.plateer.ec1.claim.enums.ProcessorType;
+import com.plateer.ec1.claim.factory.CreatorFactory;
 import com.plateer.ec1.claim.factory.ValidatorFactory;
 import com.plateer.ec1.claim.service.ClaimDataManipulateService;
 import com.plateer.ec1.claim.service.MonitoringLogService;
@@ -11,17 +13,16 @@ import lombok.RequiredArgsConstructor;
 public abstract class ClaimProcessor {
 
     private final ValidatorFactory validatorFactory;
+    private final CreatorFactory creatorFactory;
     protected final MonitoringLogService monitoringLogService;
     protected final ClaimDataManipulateService manipulateService;
 
     protected void doValidationProcess(ClaimVO claimVO){
-//        claimValidator.validate(claimVO);
+        validatorFactory.findValidator(ClaimType.findClaimType(claimVO.getClaimCode(), claimVO.getProductTypeCode()).getValidatorType()).validate(claimVO);
     }
 
     protected void doClaimDataProcess(ClaimVO claimVO){
-//        ClaimDataCreator claimDataCreator = ClaimType.findCreator(claimDto.getClaimType());
-//        manipulator.insertClaimData(claimDataCreator.getInsertClaimData(claimDto));
-//        manipulator.updateClaimData(claimDataCreator.getUpdateClaimData(claimDto));
+        creatorFactory.findCreator(claimVO).doCreate(claimVO);
     }
 
     abstract public void doProcess(ClaimVO vo);

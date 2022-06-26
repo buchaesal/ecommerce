@@ -1,6 +1,7 @@
 package com.plateer.ec1.claim.processor;
 
 import com.plateer.ec1.claim.enums.ProcessorType;
+import com.plateer.ec1.claim.factory.CreatorFactory;
 import com.plateer.ec1.claim.factory.ValidatorFactory;
 import com.plateer.ec1.claim.service.ClaimDataManipulateService;
 import com.plateer.ec1.claim.service.IFCallService;
@@ -16,10 +17,11 @@ public class CompleteProcessor extends ClaimProcessor {
     private final IFCallService ifCallService;
 
     public CompleteProcessor(ValidatorFactory validatorFactory,
+                             CreatorFactory creatorFactory,
                              MonitoringLogService monitoringLogService,
                              ClaimDataManipulateService manipulateService,
                              IFCallService ifCallService) {
-        super(validatorFactory, monitoringLogService, manipulateService);
+        super(validatorFactory, creatorFactory, monitoringLogService, manipulateService);
         this.ifCallService = ifCallService;
     }
 

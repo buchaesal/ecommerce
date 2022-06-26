@@ -16,7 +16,7 @@ public class ValidatorFactory {
         validators.forEach(v -> validatorMap.put(v.getType(), v));
     }
 
-    public ClaimValidator getValidator(ValidatorType type) {
+    public ClaimValidator findValidator(ValidatorType type) {
         if(!validatorMap.containsKey(type)) throw new IllegalArgumentException("클레임 validator를 찾을 수 없습니다.");
         return validatorMap.get(type);
     }

@@ -10,11 +10,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public enum ClaimType {
 
-    GCC("일반주문취소", ProcessorType.COMPLETE, Arrays.asList("10","20"), Arrays.asList("10"), Boolean.TRUE, "C", ValidatorType.CANCEL),
-    MCA("모바일쿠폰주문취소", ProcessorType.ACCEPT_WITHDRAWAL, Arrays.asList("20"), Arrays.asList("20"), Boolean.TRUE, "C", ValidatorType.CANCEL),
-    RA("반품접수", ProcessorType.ACCEPT_WITHDRAWAL, Arrays.asList("50"), Arrays.asList("10","20"), Boolean.TRUE, "R", ValidatorType.RETURN_EXCHANGE),
-    RW("반품철회", ProcessorType.COMPLETE, Arrays.asList("60"), Arrays.asList("10","20"), Boolean.FALSE, "RC",ValidatorType.RETURN_EXCHANGE),
-    XA("교환접수", ProcessorType.ACCEPT_WITHDRAWAL, Arrays.asList("50"), Arrays.asList("10","20"), Boolean.TRUE, "X",ValidatorType.WITHDRAWAL);
+    // 일반주문취소
+    GCC(ProcessorType.COMPLETE, Arrays.asList("10","20"), Arrays.asList("10"), Boolean.TRUE, "C", ValidatorType.CANCEL),
+    // 모바일쿠폰주문취소
+    MCA(ProcessorType.ACCEPT_WITHDRAWAL, Arrays.asList("20"), Arrays.asList("20"), Boolean.TRUE, "C", ValidatorType.CANCEL),
+    // 반품접수
+    RA(ProcessorType.ACCEPT_WITHDRAWAL, Arrays.asList("50"), Arrays.asList("10","20"), Boolean.TRUE, "R", ValidatorType.RETURN_EXCHANGE),
+    // 반품철회
+    RW(ProcessorType.COMPLETE, Arrays.asList("60"), Arrays.asList("10","20"), Boolean.FALSE, "RC",ValidatorType.RETURN_EXCHANGE),
+    // 교환접수
+    XA(ProcessorType.ACCEPT_WITHDRAWAL, Arrays.asList("50"), Arrays.asList("10","20"), Boolean.TRUE, "X",ValidatorType.WITHDRAWAL);
 
 //    //모바일쿠폰주문취소완료
 //    MCC(ProcessorType.COMPLETE, Arrays.asList()),
@@ -23,7 +28,6 @@ public enum ClaimType {
 //    //교환철회
 //    XW(ProcessorType.ACCEPT, Arrays.asList());
 
-    private final String businessName; //업무명 - 설명을 위함
     private final ProcessorType processorType;
     private final List<String> validStatuses; // 주문진행상태코드
     private final List<String> productTypes; // 상품유형 :모바일/일반

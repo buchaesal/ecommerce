@@ -5,27 +5,23 @@ import com.plateer.ec1.order.vo.OrderProductView;
 import com.plateer.ec1.order.vo.OrderRequest;
 import com.plateer.ec1.order.vo.OrderValidationVO;
 import com.plateer.ec1.order.enums.OrderValidator;
-import com.plateer.ec1.order.repository.OrderRepository;
 import com.plateer.ec1.order.service.OrderHistoryService;
 import com.plateer.ec1.order.strategy.AfterStrategy;
 import com.plateer.ec1.order.strategy.DataStrategy;
 import com.plateer.ec1.payment.service.PayService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 
 @Slf4j
+@Component
+@RequiredArgsConstructor
 public class OrderContext {
 
-    private OrderHistoryService orderHistoryService;
-    private PayService payService;
-    private OrderRepository orderRepository;
-
-    public OrderContext(OrderHistoryService orderHistoryService, PayService payService, OrderRepository orderRepository) {
-        this.orderHistoryService = orderHistoryService;
-        this.payService = payService;
-        this.orderRepository = orderRepository;
-    }
+    private final OrderHistoryService orderHistoryService;
+    private final PayService payService;
 
     public void execute(DataStrategy dataStrategy, AfterStrategy afterStrategy, OrderRequest orderRequest){
 
