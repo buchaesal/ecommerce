@@ -1,6 +1,7 @@
 package com.plateer.ec1.claim.processor;
 
 import com.plateer.ec1.claim.enums.ProcessorType;
+import com.plateer.ec1.claim.factory.CreatorFactory;
 import com.plateer.ec1.claim.factory.ValidatorFactory;
 import com.plateer.ec1.claim.service.ClaimDataManipulateService;
 import com.plateer.ec1.claim.service.MonitoringLogService;
@@ -13,9 +14,10 @@ import org.springframework.stereotype.Component;
 public class AcceptWithdrawalProcessor extends ClaimProcessor {
 
     private AcceptWithdrawalProcessor(ValidatorFactory validatorFactory,
+                                      CreatorFactory creatorFactory,
                                       MonitoringLogService monitoringLogService,
                                       ClaimDataManipulateService manipulateService) {
-        super(validatorFactory, monitoringLogService, manipulateService);
+        super(validatorFactory, creatorFactory, monitoringLogService, manipulateService);
     }
 
     @Override
