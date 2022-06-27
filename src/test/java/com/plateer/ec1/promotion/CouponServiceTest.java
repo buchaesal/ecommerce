@@ -1,7 +1,7 @@
 package com.plateer.ec1.promotion;
 
 import com.plateer.ec1.promotion.service.CouponService;
-import com.plateer.ec1.promotion.vo.Promotion;
+import com.plateer.ec1.promotion.vo.req.CouponReqVO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,6 +14,6 @@ class CouponServiceTest {
 
     @Test
     void downloadCoupon(){
-        couponService.downloadCoupon("test01", Promotion.builder().promotionNo(1L).build());
+        couponService.downloadCoupon(CouponReqVO.builder().prmNo(1L).mbrNo("test01").build());
     }
 }
