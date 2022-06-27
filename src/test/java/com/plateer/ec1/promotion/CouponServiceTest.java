@@ -14,6 +14,6 @@ class CouponServiceTest {
 
     @Test
     void downloadCoupon(){
-        couponService.downloadCoupon("1", Promotion.builder().promotionNo(1L).build());
+        couponService.downloadCoupon("test01", Promotion.builder().promotionNo(1L).build());
     }
 }
