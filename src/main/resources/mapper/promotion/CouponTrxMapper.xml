@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.plateer.ec1.promotion.mapper.CouponTrxMapper">
+
+    <insert id="insertCouponIssue" parameterType="com.plateer.ec1.common.model.promotion.CcCpnIssueModel">
+    /* 쿠폰발급회원에 다운로드 쿠폰 데이터 insert */
+        insert into cc_cpn_issue
+        (prm_no,
+         mbr_no,
+         sys_reg_dtime,
+         sys_regr_id,
+         sys_mod_dtime,
+         sys_modr_id)
+        values
+        (#{prmNo},
+         #{mbrNo},
+         now(),
+         'admin',
+         now(),
+         'admin')
+    </insert>
+
+</mapper>

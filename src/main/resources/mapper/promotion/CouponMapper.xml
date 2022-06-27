@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.plateer.ec1.promotion.mapper.CouponMapper">
+
+    <select id="getAvailableCouponCountByPrmNo" parameterType="com.plateer.ec1.promotion.vo.req.AvailableCouponCountReqVO" resultType="int">
+    /* 프로모션 번호와 회원번호로 발행 가능한 쿠폰 갯수 조회 */
+
+        select count(*)
+        from (
+                 select
+                     cpn.prm_no
+                 from cc_prm_base prm
+                 inner join cc_cpn_base cpn using (prm_no)
+                 where
+                 prm.prm_end_dt >= now()
+                 and prm.use_yn = 'Y'
+                 and cpn.dwl_avl_end_dd::date >= current_date
+                 and cpn.prm_no = #{prmNo}
+                 and (
+                 select count(*)
+                 from(
+                    select
+                        cpn.prm_no
+                    from cc_cpn_base cpn
+                    inner join cc_cpn_issue iss using (prm_no)
+                    where cpn.prm_no = #{prmNo}
+                    group by cpn.prm_no, cpn.dwl_psb_cnt
+                    having cpn.dwl_psb_cnt > count(iss.prm_no)
+                    )as rs) > 0
+                and (
+                select count(*)
+                from(
+                    select
+                        cpn.prm_no
+                    from cc_cpn_base cpn
+                    inner join cc_cpn_issue iss using (prm_no)
+                    where cpn.prm_no = #{prmNo}
+                    and iss.mbr_no = #{mbrNo}
+                    group by cpn.prm_no, cpn.psn_dwl_psb_cnt
+                    having cpn.psn_dwl_psb_cnt > count(iss.prm_no)
+                    )as rs) > 0
+            )as tt
+
+    </select>
+
+</mapper>

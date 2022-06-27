@@ -9,13 +9,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class PromotionService {
+public class CalculationService {
 
     private final CalculatorFactory factory;
 
     @Transactional
     public BaseResponseVO getApplyData(PromotionRequestVO reqVO){
         return factory.getPromotionCalculationData(reqVO.getPromotionType()).getCalculationData(reqVO);
+    }
+
+    public void downloadCoupons(){
+
     }
 
 }
