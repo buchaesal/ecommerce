@@ -10,4 +10,6 @@ import lombok.Setter;
 public class CouponReqVO {
     private String mbrNo;
     private Long prmNo;
+    private String ordNo;
+    private Long cpnIssNo;
 }

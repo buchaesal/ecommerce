@@ -11,16 +11,26 @@
     select
         cpn.dwl_psb_cnt,
         cpn.psn_dwl_psb_cnt,
-        (select count(*) from cc_cpn_issue where prm_no = #{prmNo} and cpn_use_dt is null) as used_cnt,
-        (select count(*) from cc_cpn_issue where prm_no = #{prmNo} and mbr_no = #{mbrNo} and cpn_use_dt is null) as psn_used_cnt
+        (select count(*) from cc_cpn_issue where prm_no = #{prmNo} and org_cpn_iss_no is null) as used_cnt,
+        (select count(*) from cc_cpn_issue where prm_no = #{prmNo} and mbr_no = #{mbrNo} and org_cpn_iss_no is null) as psn_used_cnt
     from cc_prm_base prm
              inner join cc_cpn_base cpn using (prm_no)
-    where
-        now() between prm.prm_strt_dt and prm.prm_end_dt + interval '1' day
-      and prm.use_yn = 'Y'
+    where prm.use_yn = 'Y'
       and current_date between cpn.dwl_avl_strt_dd::date and cpn.dwl_avl_end_dd::date + interval '1' day
       and cpn.prm_no = #{prmNo}
 
+    </select>
+
+    <select id="validatePromotionPeriod"
+            parameterType="Long"
+            resultType="boolean">
+        /* 프로모션 시작/종료 기간을 현재를 기준으로 검증 */
+        select exists (
+            select prm_no
+            from cc_prm_base
+            where prm_no = #{prmNo}
+            and now() between prm_strt_dt and prm_end_dt + interval '1' day
+            )
     </select>
 
 </mapper>

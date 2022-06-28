@@ -1,6 +1,6 @@
 package com.plateer.ec1.promotion.service;
 
-import com.plateer.ec1.promotion.vo.req.PromotionRequestVO;
+import com.plateer.ec1.promotion.vo.req.PromotionReqVO;
 import com.plateer.ec1.promotion.vo.res.BaseResponseVO;
 import com.plateer.ec1.promotion.factory.CalculatorFactory;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,7 @@ public class CalculationService {
     private final CalculatorFactory factory;
 
     @Transactional
-    public BaseResponseVO getApplyData(PromotionRequestVO reqVO){
+    public BaseResponseVO getApplyData(PromotionReqVO reqVO){
         return factory.getPromotionCalculationData(reqVO.getPromotionType()).getCalculationData(reqVO);
     }
 

@@ -6,4 +6,6 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface CouponTrxMapper {
     void insertCouponIssue(CcCpnIssueModel model);
+    void updateUsingCoupon(CcCpnIssueModel model);
+    void insertRestoreCoupon(CcCpnIssueModel model);
 }

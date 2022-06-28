@@ -14,6 +14,32 @@ class CouponServiceTest {
 
     @Test
     void downloadCoupon(){
-        couponService.downloadCoupon(CouponReqVO.builder().prmNo(1L).mbrNo("test01").build());
+        couponService.downloadCoupon(
+                CouponReqVO.builder()
+                        .prmNo(2L)
+                        .mbrNo("test01")
+                        .build());
     }
+
+    @Test
+    void useCoupon(){
+        couponService.useCoupon(
+                CouponReqVO.builder()
+                        .prmNo(2L)
+                        .cpnIssNo(10L)
+                        .ordNo("O3")
+                        .build());
+    }
+
+    @Test
+    void cancelCoupon(){
+        couponService.cancelUsingCoupon(
+                CouponReqVO.builder()
+                .prmNo(2L)
+                .mbrNo("test01")
+                .cpnIssNo(8L)
+                .build()
+        );
+    }
+
 }

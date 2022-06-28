@@ -2,7 +2,7 @@ package com.plateer.ec1.promotion.calculator.impl;
 
 import com.plateer.ec1.promotion.calculator.Calculator;
 import com.plateer.ec1.promotion.vo.CouponProductVO;
-import com.plateer.ec1.promotion.vo.req.PromotionRequestVO;
+import com.plateer.ec1.promotion.vo.req.PromotionReqVO;
 import com.plateer.ec1.promotion.vo.res.CartCouponResponseVO;
 import com.plateer.ec1.promotion.enums.PromotionType;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +22,7 @@ public class CartCouponCalculator implements Calculator {
     }
 
     @Override
-    public CartCouponResponseVO getCalculationData(PromotionRequestVO reqVO) {
+    public CartCouponResponseVO getCalculationData(PromotionReqVO reqVO) {
         log.info("장바구니 쿠폰 데이터 조회");
         return null;
     }

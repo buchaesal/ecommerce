@@ -9,7 +9,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class PromotionRequestVO {
+public class PromotionReqVO {
     private String memberNo;
     private List<Product> productList;
     private List<Long> couponIssueNoList;
