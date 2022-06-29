@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.plateer.ec1.promotion.mapper.CalculationMapper">
+
+    <select id="selectProductPromotionList" parameterType="com.plateer.ec1.promotion.vo.req.CalculationReqVO" resultType="">
+        select
+            cpb.prm_priod_ccd,
+            cpb.prm_strt_dt,
+            cpb.prm_end_dt,
+            cpb.prm_std_dd,
+            cpb.dc_ccd,
+            cpb.dc_val,
+            cpat.aply_tgt_no,
+            cpat.sys_reg_dtime
+        from cc_prm_base cpb
+                 inner join cc_cpn_issue cci on cpb.prm_no = cci.prm_no
+            and cci.cpn_use_dt is null
+            and cci.cpn_iss_no in
+        <foreach item="item" collection="couponIssueNoList" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+                 inner join cc_prm_aply_tgt cpat on cpb.prm_no = cpat.prm_no
+            and cpat.use_yn = 'Y'
+            and cpat.aply_tgt_ccd = '10'
+            and cpat.aply_tgt_no = #{productNo}
+        where cpb.use_yn = 'Y'
+    </select>
+
+</mapper>
