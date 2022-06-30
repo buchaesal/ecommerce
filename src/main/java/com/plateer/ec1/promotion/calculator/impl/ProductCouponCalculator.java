@@ -34,7 +34,7 @@ public class ProductCouponCalculator implements Calculator {
     public ProductCouponResponseVO getCalculationData(PromotionReqVO reqVO) {
 
         CalculationReqVO request = new CalculationReqVO();
-        request.setCouponIssueNoList(reqVO.getCouponIssueNoList());
+        request.setMbrNo(reqVO.getMemberNo());
 
         ProductCouponResponseVO response = new ProductCouponResponseVO();
         ProductCouponVO productCouponVO = new ProductCouponVO();

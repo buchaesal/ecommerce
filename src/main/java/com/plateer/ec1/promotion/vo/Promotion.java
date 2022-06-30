@@ -3,9 +3,11 @@ package com.plateer.ec1.promotion.vo;
 import com.plateer.ec1.common.code.promotion.PRM0003;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 public class Promotion {
 
     private Long prmNo;

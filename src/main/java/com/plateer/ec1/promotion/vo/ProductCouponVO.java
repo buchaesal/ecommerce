@@ -8,6 +8,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@ToString
 public class ProductCouponVO {
     private Product product;
     private List<Promotion> promotionList;

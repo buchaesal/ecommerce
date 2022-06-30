@@ -13,10 +13,7 @@
         from cc_prm_base cpb
                  inner join cc_cpn_issue cci on cpb.prm_no = cci.prm_no
             and cci.cpn_use_dt is null
-            and cci.cpn_iss_no in
-                <foreach item="item" collection="couponIssueNoList" open="(" separator="," close=")">
-                    #{item}
-                </foreach>
+            and cci.mbr_no = #{mbrNo}
                  inner join cc_prm_aply_tgt cpat on cpb.prm_no = cpat.prm_no
             and cpat.use_yn = 'Y'
             and cpat.aply_tgt_ccd = '10'

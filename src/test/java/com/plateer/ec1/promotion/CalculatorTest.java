@@ -31,11 +31,13 @@ class CalculatorTest {
         productList.add(product);
 
         PromotionReqVO request = PromotionReqVO.builder()
+                .memberNo("test01")
                 .productList(productList)
                 .couponIssueNoList(Arrays.asList(10L, 11L))
                 .build();
 
         ProductCouponResponseVO result = productCouponCalculator.getCalculationData(request);
+        System.out.println(result.toString());
 
     }
 }
