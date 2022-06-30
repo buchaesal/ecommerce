@@ -25,7 +25,7 @@ class CalculatorTest {
 
         Product product = Product.builder()
                 .productNo("P007")
-                .productAmt(1000).build();
+                .productAmt(50000).build();
 
         List<Product> productList = new ArrayList<>();
         productList.add(product);

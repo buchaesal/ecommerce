@@ -6,6 +6,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CalculationReqVO {
+
     private String productNo;
     private String mbrNo;
+    private Long productPrice;
+
 }

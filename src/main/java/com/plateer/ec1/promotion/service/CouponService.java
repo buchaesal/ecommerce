@@ -56,7 +56,9 @@ public class CouponService {
     public void useCoupon(CouponReqVO reqVO){
 
         // 프로모션 기간검증
-        if(!validatePromotionPeriod(reqVO.getPrmNo())) throw new IllegalArgumentException("프로모션 기간이 아닙니다.");
+        if(!isValidCoupon(reqVO)){
+            throw new IllegalArgumentException("프로모션 기간이 아닙니다.");
+        }
 
         // 사용처리
         couponTrxMapper.updateUsingCoupon(
@@ -71,7 +73,7 @@ public class CouponService {
     public void cancelUsingCoupon(CouponReqVO reqVO){
 
         // 프로모션 종료일시가 현재 이후일 때만 신규쿠폰 발급
-        if(validatePromotionPeriod(reqVO.getPrmNo())){
+        if(isValidCoupon(reqVO)){
             couponTrxMapper.insertRestoreCoupon(
                     CcCpnIssueModel.builder()
                     .mbrNo(reqVO.getMbrNo())
@@ -83,8 +85,8 @@ public class CouponService {
 
     }
 
-    private boolean validatePromotionPeriod(Long prmNo){
-        return couponMapper.validatePromotionPeriod(prmNo);
+    private boolean isValidCoupon(CouponReqVO reqVO){
+        return couponMapper.getCouponInfo(reqVO.getCpnIssNo()).isValid();
     }
 
 }

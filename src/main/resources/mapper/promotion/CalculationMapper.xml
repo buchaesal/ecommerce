@@ -9,26 +9,26 @@
         select
             distinct on (cpb.prm_no) cpb.prm_no,
             cpb.dc_ccd,
-            cpb.dc_val
+            cpb.dc_val,
+            cpb.max_dc_amt
         from cc_prm_base cpb
-                 inner join cc_cpn_issue cci on cpb.prm_no = cci.prm_no
-            and cci.cpn_use_dt is null
-            and cci.mbr_no = #{mbrNo}
-                 inner join cc_prm_aply_tgt cpat on cpb.prm_no = cpat.prm_no
-            and cpat.use_yn = 'Y'
-            and cpat.aply_tgt_ccd = '10'
-            and cpat.aply_tgt_no = #{productNo}
-            and case when cpb.prm_priod_ccd = '20'
-                         then now() between cpat.sys_reg_dtime and cpat.sys_reg_dtime + interval '1 day' * cpb.prm_std_dd
-            else 1=1
-        end
+            inner join cc_cpn_issue cci on cpb.prm_no = cci.prm_no
+            inner join cc_prm_aply_tgt cpat on cpb.prm_no = cpat.prm_no
         where cpb.use_yn = 'Y'
-        and
-        CASE WHEN cpb.prm_priod_ccd = '10'
-        THEN now() between cpb.prm_strt_dt and cpb.prm_end_dt + interval '1 day'
-        else
-        1=1
-        end
+              and
+                CASE WHEN cpb.prm_priod_ccd = '10'
+                THEN now() between cpb.prm_strt_dt and cpb.prm_end_dt + interval '1 day'
+                else true end
+              and cci.cpn_use_dt is null
+              and cci.mbr_no = #{mbrNo}
+              and
+                case when cpb.prm_priod_ccd = '20'
+                then now() between cci.sys_reg_dtime and cci.sys_reg_dtime + interval '1 day' * cpb.prm_std_dd
+                else true end
+              and cpat.use_yn = 'Y'
+              and cpat.aply_tgt_ccd = '10'
+              and cpat.aply_tgt_no = #{productNo}
+              and cpb.min_pur_amt <![CDATA[ <= ]]> #{productPrice}
     </select>
 
 </mapper>

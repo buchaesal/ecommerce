@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -44,16 +45,23 @@ public class ProductCouponCalculator implements Calculator {
 
             // 상품 별 적용가능 프로모션 리스트 조회
             request.setProductNo(product.getProductNo());
+            request.setProductPrice(product.getProductAmt());
             List<Promotion> promotionList = calculationMapper.selectProductPromotionList(request);
 
-            // 혜택 적용
-            promotionList.forEach(promotion -> promotion.setBenefitPrice(product.getProductAmt()));
+            if(!promotionList.isEmpty()){
+                // 혜택 적용
+                promotionList.forEach(promotion -> promotion.setBenefitPrice(product.getProductAmt()));
 
-            // 최대혜택 프로모션에 maxBenefitYn set
-            promotionList.stream().max(Comparator.comparing(Promotion::getBenefitPrice)).get().setMaxBenefitYn("Y");
+                // 최대혜택 프로모션에 maxBenefitYn set
+                promotionList.stream()
+                        .max(Comparator.comparing(Promotion::getBenefitPrice))
+                        .get()
+                        .setMaxBenefitYn("Y");
+
+                productCouponVO.setPromotionList(promotionList);
+            }
 
             productCouponVO.setProduct(product);
-            productCouponVO.setPromotionList(promotionList);
             productCouponList.add(productCouponVO);
 
         });

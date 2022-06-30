@@ -17,15 +17,24 @@ public class Promotion {
     private long benefitPrice; // 할인금액
     private String maxBenefitYn = "N";
 
+    private long minPurAmt; // 최소구매금액
+    private long maxDcAmt; // 최대할인금액
 //    private String cpnKindCd;
 //    private Long cpnIssNo;
 
     public void setBenefitPrice(long originalPrice){
+
         if(PRM0003.PRICE.code.equals(dcCcd)){
-            this.benefitPrice = (long) dcVal;
-        }else{
-            this.benefitPrice = (long) (originalPrice * (dcVal / 100));
+            benefitPrice = (long) dcVal;
+        }else if(PRM0003.PERCENT.code.equals(dcCcd)){
+            benefitPrice = (long) (originalPrice * (dcVal / 100));
         }
+
+        // 최대할인금액 고려
+        if(benefitPrice > maxDcAmt) {
+            benefitPrice = maxDcAmt;
+        }
+
     }
 
 }
