@@ -6,6 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Coupon {
+
     private long dwlPsbCnt;
     private long psnDwlPsbCnt;
     private long usedCnt;

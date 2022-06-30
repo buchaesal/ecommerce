@@ -16,7 +16,7 @@ class CouponServiceTest {
     void downloadCoupon(){
         couponService.downloadCoupon(
                 CouponReqVO.builder()
-                        .prmNo(2L)
+                        .prmNo(7L)
                         .mbrNo("test01")
                         .build());
     }

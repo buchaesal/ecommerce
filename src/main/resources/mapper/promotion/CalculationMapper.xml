@@ -18,14 +18,13 @@
             and cpat.use_yn = 'Y'
             and cpat.aply_tgt_ccd = '10'
             and cpat.aply_tgt_no = #{productNo}
-            and case when cpb.prm_kind_cd = '20'
+            and case when cpb.prm_priod_ccd = '20'
                          then now() between cpat.sys_reg_dtime and cpat.sys_reg_dtime + interval '1 day' * cpb.prm_std_dd
             else 1=1
         end
         where cpb.use_yn = 'Y'
         and
-        CASE
-        WHEN cpb.prm_priod_ccd = '10'
+        CASE WHEN cpb.prm_priod_ccd = '10'
         THEN now() between cpb.prm_strt_dt and cpb.prm_end_dt + interval '1 day'
         else
         1=1

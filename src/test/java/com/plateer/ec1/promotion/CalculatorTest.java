@@ -24,7 +24,7 @@ class CalculatorTest {
     void getProductCouponCalculationData() {
 
         Product product = Product.builder()
-                .productNo("P001")
+                .productNo("P007")
                 .productAmt(1000).build();
 
         List<Product> productList = new ArrayList<>();
@@ -33,7 +33,6 @@ class CalculatorTest {
         PromotionReqVO request = PromotionReqVO.builder()
                 .memberNo("test01")
                 .productList(productList)
-                .couponIssueNoList(Arrays.asList(10L, 11L))
                 .build();
 
         ProductCouponResponseVO result = productCouponCalculator.getCalculationData(request);
