@@ -38,10 +38,11 @@ public class ProductCouponCalculator implements Calculator {
         request.setMbrNo(reqVO.getMemberNo());
 
         ProductCouponResponseVO response = new ProductCouponResponseVO();
-        ProductCouponVO productCouponVO = new ProductCouponVO();
         List<ProductCouponVO> productCouponList = new ArrayList<>();
 
         reqVO.getProductList().forEach(product -> {
+
+            ProductCouponVO productCouponVO = new ProductCouponVO();
 
             // 상품 별 적용가능 프로모션 리스트 조회
             request.setProductNo(product.getProductNo());
@@ -59,6 +60,7 @@ public class ProductCouponCalculator implements Calculator {
                         .setMaxBenefitYn("Y");
 
                 productCouponVO.setPromotionList(promotionList);
+
             }
 
             productCouponVO.setProduct(product);

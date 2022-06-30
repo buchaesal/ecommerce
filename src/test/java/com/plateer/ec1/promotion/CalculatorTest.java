@@ -27,8 +27,21 @@ class CalculatorTest {
                 .productNo("P007")
                 .productAmt(50000).build();
 
+        Product product1 = Product.builder()
+                .productNo("P001")
+                .productCnt(1)
+                .productAmt(29000)
+                .build();
+//
+//        Product product2 = Product.builder()
+//                .productNo("P002")
+//                .productCnt(2)
+//                .productAmt(10250)
+//                .build();
+
         List<Product> productList = new ArrayList<>();
         productList.add(product);
+        productList.add(product1);
 
         PromotionReqVO request = PromotionReqVO.builder()
                 .memberNo("test01")
