@@ -1,19 +1,29 @@
 package com.plateer.ec1.promotion.vo;
 
-import lombok.Builder;
+import com.plateer.ec1.common.code.promotion.PRM0003;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 @Getter
 @Setter
-@ToString
-@Builder
 public class Promotion {
-    private Long promotionNo;
-    private String cpnKindCd;
-    private Long couponIssueNo;
-    private String degrCcd; // 할인구분코드
-    private Long dcAmt; // 할인구분코드에 따른 value
-    private String maxBenefitYn;
+
+    private Long prmNo;
+    private String dcCcd; // 할인구분코드
+    private double dcVal; // 할인구분코드에 따른 value
+
+    private long benefitPrice; // 할인금액
+    private String maxBenefitYn = "N";
+
+//    private String cpnKindCd;
+//    private Long cpnIssNo;
+
+    public void setBenefitPrice(long originalPrice){
+        if(PRM0003.PRICE.code.equals(dcCcd)){
+            this.benefitPrice = (long) dcVal;
+        }else{
+            this.benefitPrice = (long) (originalPrice * (dcVal / 100));
+        }
+    }
+
 }

@@ -3,28 +3,36 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.plateer.ec1.promotion.mapper.CalculationMapper">
 
-    <select id="selectProductPromotionList" parameterType="com.plateer.ec1.promotion.vo.req.CalculationReqVO" resultType="">
+    <select id="selectProductPromotionList"
+            parameterType="com.plateer.ec1.promotion.vo.req.CalculationReqVO"
+            resultType="com.plateer.ec1.promotion.vo.Promotion">
         select
-            cpb.prm_priod_ccd,
-            cpb.prm_strt_dt,
-            cpb.prm_end_dt,
-            cpb.prm_std_dd,
+            distinct on (cpb.prm_no) cpb.prm_no,
             cpb.dc_ccd,
-            cpb.dc_val,
-            cpat.aply_tgt_no,
-            cpat.sys_reg_dtime
+            cpb.dc_val
         from cc_prm_base cpb
                  inner join cc_cpn_issue cci on cpb.prm_no = cci.prm_no
             and cci.cpn_use_dt is null
             and cci.cpn_iss_no in
-        <foreach item="item" collection="couponIssueNoList" open="(" separator="," close=")">
-            #{item}
-        </foreach>
+                <foreach item="item" collection="couponIssueNoList" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
                  inner join cc_prm_aply_tgt cpat on cpb.prm_no = cpat.prm_no
             and cpat.use_yn = 'Y'
             and cpat.aply_tgt_ccd = '10'
             and cpat.aply_tgt_no = #{productNo}
+            and case when cpb.prm_kind_cd = '20'
+                         then now() between cpat.sys_reg_dtime and cpat.sys_reg_dtime + interval '1 day' * cpb.prm_std_dd
+            else 1=1
+        end
         where cpb.use_yn = 'Y'
+        and
+        CASE
+        WHEN cpb.prm_priod_ccd = '10'
+        THEN now() between cpb.prm_strt_dt and cpb.prm_end_dt + interval '1 day'
+        else
+        1=1
+        end
     </select>
 
 </mapper>

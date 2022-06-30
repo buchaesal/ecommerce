@@ -1,21 +1,30 @@
 package com.plateer.ec1.promotion.calculator.impl;
 
 import com.plateer.ec1.promotion.calculator.Calculator;
+import com.plateer.ec1.promotion.enums.PromotionType;
+import com.plateer.ec1.promotion.mapper.CalculationMapper;
 import com.plateer.ec1.promotion.vo.ProductCouponVO;
+import com.plateer.ec1.promotion.vo.Promotion;
+import com.plateer.ec1.promotion.vo.req.CalculationReqVO;
 import com.plateer.ec1.promotion.vo.req.PromotionReqVO;
 import com.plateer.ec1.promotion.vo.res.ProductCouponResponseVO;
-import com.plateer.ec1.promotion.enums.PromotionType;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
- * 장바구니에서 상품별 쿠폰 적용 부분에서.
+ * 다운로드 받은 쿠폰 리스트 중, 해당 상품에 적용가능한 프로모션 리스트 혜택계산 후 반환
  */
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class ProductCouponCalculator implements Calculator {
+
+    private final CalculationMapper calculationMapper;
 
     public PromotionType getType(){
         return PromotionType.PRD_CUP;
@@ -23,23 +32,36 @@ public class ProductCouponCalculator implements Calculator {
 
     @Override
     public ProductCouponResponseVO getCalculationData(PromotionReqVO reqVO) {
-        log.info("상품 쿠폰 데이터 조회");
-        return null;
-    }
 
-    private List<ProductCouponVO> getAvailablePromotionData(PromotionReqVO reqVO){
-        log.info("적용 가능 상품 쿠폰 데이터 조회");
-        return null;
-    }
+        CalculationReqVO request = new CalculationReqVO();
+        request.setCouponIssueNoList(reqVO.getCouponIssueNoList());
 
-    private List<ProductCouponVO> calculateDcAmt(List<ProductCouponVO> list){
-        log.info("상품 쿠폰 할인 적용 금액 계산");
-        return null;
-    }
+        ProductCouponResponseVO response = new ProductCouponResponseVO();
+        ProductCouponVO productCouponVO = new ProductCouponVO();
+        List<ProductCouponVO> productCouponList = new ArrayList<>();
 
-    private List<ProductCouponVO> calculateMaxBenefit(List<ProductCouponVO> list){
-        log.info("상품 쿠폰 최대혜택 계산");
-        return null;
+        reqVO.getProductList().forEach(product -> {
+
+            // 상품 별 적용가능 프로모션 리스트 조회
+            request.setProductNo(product.getProductNo());
+            List<Promotion> promotionList = calculationMapper.selectProductPromotionList(request);
+
+            // 혜택 적용
+            promotionList.forEach(promotion -> promotion.setBenefitPrice(product.getProductAmt()));
+
+            // 최대혜택 프로모션에 maxBenefitYn set
+            promotionList.stream().max(Comparator.comparing(Promotion::getBenefitPrice)).get().setMaxBenefitYn("Y");
+
+            productCouponVO.setProduct(product);
+            productCouponVO.setPromotionList(promotionList);
+            productCouponList.add(productCouponVO);
+
+        });
+
+        response.setProductCouponList(productCouponList);
+
+        return response;
+
     }
 
 }

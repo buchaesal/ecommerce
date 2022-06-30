@@ -1,4 +1,4 @@
-package com.plateer.ec1.common.code;
+package com.plateer.ec1.common.code.promotion;
 
 import lombok.RequiredArgsConstructor;
 
