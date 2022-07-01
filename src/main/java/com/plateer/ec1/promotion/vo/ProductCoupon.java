@@ -20,6 +20,7 @@ public class ProductCoupon {
     }
 
     public void setPromotionListWithBenefit(List<Promotion> promotionList){
+
         if(!promotionList.isEmpty()){
             // 혜택 적용
             promotionList.forEach(promotion -> promotion.setBenefitPrice(product.getProductAmt()));
@@ -27,6 +28,7 @@ public class ProductCoupon {
                     .max(Comparator.comparing(Promotion::getBenefitPrice))
                     .get()
                     .setMaxBenefitYn("Y");
+            this.promotionList = promotionList;
         }
     }
 

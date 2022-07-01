@@ -39,7 +39,7 @@ public class CartCouponCalculator implements Calculator {
         CartCouponRequest request = new CartCouponRequest(promotionRequest);
         List<Promotion> promotionList = calculationMapper.selectCartPromotionList(request);
 
-        List<CouponProduct> resultList = new ArrayList<>();
+        List<CouponProduct> couponProductList = new ArrayList<>();
 
         promotionList.forEach(promotion -> {
 
@@ -51,19 +51,19 @@ public class CartCouponCalculator implements Calculator {
 
             // 장바구니쿠폰 [최소구매금액, 혜택가] 검증 및 계산
             couponProduct.validateCartCoupon(productList);
-            resultList.add(couponProduct);
+            couponProductList.add(couponProduct);
 
         });
 
         // valid true filter, 최대혜택 프로모션 YN set
-        resultList.stream()
+        couponProductList.stream()
                 .filter(CouponProduct::isValid)
                 .max(Comparator.comparing(couponProduct -> couponProduct.getPromotion().getBenefitPrice()))
                 .get()
                 .getPromotion()
                 .setMaxBenefitYn("Y");
 
-        return new CartCouponResponse(resultList);
+        return new CartCouponResponse(couponProductList);
 
     }
 

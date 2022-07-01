@@ -30,18 +30,18 @@ public class ProductCouponCalculator implements Calculator {
     }
 
     @Override
-    public ProductCouponResponseVO getCalculationData(PromotionRequest prmRequest) {
+    public ProductCouponResponseVO getCalculationData(PromotionRequest promotionRequest) {
 
-        ProductCouponRequest request = new ProductCouponRequest(prmRequest);
+        ProductCouponRequest request = new ProductCouponRequest(promotionRequest);
         List<ProductCoupon> productCouponList = new ArrayList<>();
 
-        prmRequest.getProductList().forEach(product -> {
-
-            ProductCoupon productCoupon = new ProductCoupon(product);
+        promotionRequest.getProductList().forEach(product -> {
 
             // 상품 별 적용가능 프로모션 리스트 조회
             request.setProductInfo(product);
             List<Promotion> promotionList = calculationMapper.selectProductPromotionList(request);
+
+            ProductCoupon productCoupon = new ProductCoupon(product);
             productCoupon.setPromotionListWithBenefit(promotionList);
             productCouponList.add(productCoupon);
 
