@@ -1,6 +1,5 @@
 package com.plateer.ec1.promotion.vo.req;
 
-import com.plateer.ec1.common.code.promotion.PRM0004;
 import com.plateer.ec1.promotion.vo.Product;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,7 +16,6 @@ public class CartCouponRequest {
     private Long prmNo;
 
     public CartCouponRequest(PromotionRequest request){
-        this.prmKindCcd = PRM0004.CART.code;
         this.mbrNo = request.getMbrNo();
         this.productList = request.getProductList();
     }
