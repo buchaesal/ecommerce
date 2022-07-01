@@ -41,8 +41,8 @@ public class ProductCouponCalculator implements Calculator {
             request.setProductInfo(product);
             List<Promotion> promotionList = calculationMapper.selectProductPromotionList(request);
 
-            ProductCoupon productCoupon = new ProductCoupon(product);
-            productCoupon.setPromotionListWithBenefit(promotionList);
+            ProductCoupon productCoupon = new ProductCoupon(product, promotionList);
+            productCoupon.applyBenefit();
             productCouponList.add(productCoupon);
 
         });
