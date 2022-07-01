@@ -15,7 +15,8 @@ public class CouponProduct {
     private List<Product> productList;
 
     public CouponProduct(Promotion promotion){
-        productList = promotion.getProductList();
+        this.promotion = promotion;
+        this.productList = promotion.getProductList();
     }
 
 }
