@@ -35,12 +35,14 @@ public class ProductCouponCalculator implements Calculator {
         ProductCouponRequest request = new ProductCouponRequest(promotionRequest);
         List<ProductCoupon> productCouponList = new ArrayList<>();
 
+        // 넘어온 상품 반복문 조회 시작
         promotionRequest.getProductList().forEach(product -> {
 
             // 상품 별 적용가능 프로모션 리스트 조회
             request.setProductInfo(product);
             List<Promotion> promotionList = calculationMapper.selectProductPromotionList(request);
 
+            // [상품 - 프로모션리스트] 객체 생성, 결과 리스트에 추가
             ProductCoupon productCoupon = new ProductCoupon(product, promotionList);
             productCoupon.applyBenefit();
             productCouponList.add(productCoupon);

@@ -41,15 +41,15 @@ public class CartCouponCalculator implements Calculator {
 
         List<CouponProduct> couponProductList = new ArrayList<>();
 
+        // 조회해온 프로모션 리스트 반복문 시작
         promotionList.forEach(promotion -> {
 
             // 프로모션에 해당하는 대상 상품리스트 조회
             request.setPrmNo(promotion.getPrmNo());
             List<Product> productList = getApplyProductList(request);
 
+            // [프로모션 - 상품리스트] 객체 생성, 검증, 결과 리스트에 추가
             CouponProduct couponProduct = new CouponProduct(promotion, productList);
-
-            // 장바구니쿠폰 [최소구매금액, 혜택가] 검증 및 계산
             couponProduct.validateCartCoupon();
             couponProductList.add(couponProduct);
 
