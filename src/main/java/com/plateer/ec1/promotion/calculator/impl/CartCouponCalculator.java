@@ -33,34 +33,23 @@ public class CartCouponCalculator implements Calculator {
     }
 
     @Override
-    public CartCouponResponse getCalculationData(PromotionRequest reqVO) {
+    public CartCouponResponse getCalculationData(PromotionRequest promotionRequest) {
 
         // 프로모션 리스트 조회
-        CartCouponRequest request = new CartCouponRequest(reqVO);
+        CartCouponRequest request = new CartCouponRequest(promotionRequest);
         List<Promotion> promotionList = calculationMapper.selectCartPromotionList(request);
 
         promotionList.forEach(promotion -> {
 
             // 프로모션에 해당하는 대상 상품리스트 조회
             request.setPrmNo(promotion.getPrmNo());
-            List<String> applyProductNoList = calculationMapper.selectApplyProductNoList(request);
+            List<Product> productList = getApplyProductList(request);
 
-            List<Product> productList = reqVO.getProductList().stream()
-                    .filter(product -> applyProductNoList.contains(product.getProductNo()))
-                    .collect(Collectors.toList());
-
+            // 결과값 반환시에 필요해서 set..
             promotion.setProductList(productList);
 
-            // 장바구니 상품 총합 계산 (가격*수량)
-            long cartSum = productList.stream()
-                    .map(product -> product.getProductAmt() * product.getProductCnt())
-                    .mapToLong(i -> i).sum();
-
-            // 최소구매금액 검증된 프로모션만 valid true, 혜택가 set
-            if(promotion.validateMinPurAmt(cartSum)){
-                promotion.setBenefitPrice(cartSum);
-                promotion.setValid(true);
-            }
+            // 장바구니쿠폰 [최소구매금액, 혜택가] 검증 및 계산
+            promotion.validateCartCoupon(productList);
 
         });
 
@@ -70,6 +59,25 @@ public class CartCouponCalculator implements Calculator {
         // 최대혜택 프로모션 YN set
         PromotionUtil.setMaxBenefitYn(promotionList);
 
+        // 응답객체형식에 맞게 가공
+        List<CouponProduct> resultList = makeCouponProductList(promotionList);
+
+        return new CartCouponResponse(resultList);
+
+    }
+
+    private List<Product> getApplyProductList(CartCouponRequest request){
+
+        List<String> applyProductNoList = calculationMapper.selectApplyProductNoList(request);
+
+        return request.getProductList().stream()
+                .filter(product -> applyProductNoList.contains(product.getProductNo()))
+                .collect(Collectors.toList());
+
+    }
+
+    private List<CouponProduct> makeCouponProductList(List<Promotion> promotionList){
+
         List<CouponProduct> resultList = new ArrayList<>();
 
         promotionList.forEach(promotion -> {
@@ -77,7 +85,7 @@ public class CartCouponCalculator implements Calculator {
             resultList.add(couponProduct);
         });
 
-        return new CartCouponResponse(resultList);
+        return resultList;
 
     }
 
