@@ -4,7 +4,7 @@
 <mapper namespace="com.plateer.ec1.promotion.mapper.CouponMapper">
 
     <select id="getAvailableCouponCountByPrmNo"
-            parameterType="com.plateer.ec1.promotion.vo.req.AvailableCouponCountReqVO"
+            parameterType="com.plateer.ec1.promotion.vo.req.AvailableCouponCountRequest"
             resultType="com.plateer.ec1.promotion.vo.res.CouponCountResVO">
     /* 프로모션 번호와 회원번호로 다운로드 가능한 갯수와 기다운로드 갯수 조회 */
 

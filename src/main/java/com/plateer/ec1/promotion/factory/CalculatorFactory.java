@@ -17,9 +17,9 @@ public class CalculatorFactory {
         list.forEach(e -> map.put(e.getType(), e));
     }
 
-    public Calculator getPromotionCalculationData(PromotionType type){
+    public Calculator getPromotionCalculationData(PromotionType promotionType){
         try {
-            return map.get(type);
+            return map.get(promotionType);
         }catch (NullPointerException e){
             throw new IllegalArgumentException("해당하는 프로모션 유형이 없습니다!");
         }

@@ -2,17 +2,14 @@ package com.plateer.ec1.promotion;
 
 import com.plateer.ec1.promotion.calculator.impl.ProductCouponCalculator;
 import com.plateer.ec1.promotion.vo.Product;
-import com.plateer.ec1.promotion.vo.req.PromotionReqVO;
+import com.plateer.ec1.promotion.vo.req.PromotionRequest;
 import com.plateer.ec1.promotion.vo.res.ProductCouponResponseVO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class CalculatorTest {
@@ -43,10 +40,9 @@ class CalculatorTest {
         productList.add(product);
         productList.add(product1);
 
-        PromotionReqVO request = PromotionReqVO.builder()
-                .memberNo("test01")
-                .productList(productList)
-                .build();
+        PromotionRequest request = new PromotionRequest();
+        request.setMbrNo("test01");
+        request.setProductList(productList);
 
         ProductCouponResponseVO result = productCouponCalculator.getCalculationData(request);
         System.out.println(result.toString());

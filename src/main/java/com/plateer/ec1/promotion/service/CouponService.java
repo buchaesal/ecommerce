@@ -3,8 +3,8 @@ package com.plateer.ec1.promotion.service;
 import com.plateer.ec1.common.model.promotion.CcCpnIssueModel;
 import com.plateer.ec1.promotion.mapper.CouponMapper;
 import com.plateer.ec1.promotion.mapper.CouponTrxMapper;
-import com.plateer.ec1.promotion.vo.req.AvailableCouponCountReqVO;
-import com.plateer.ec1.promotion.vo.req.CouponReqVO;
+import com.plateer.ec1.promotion.vo.req.AvailableCouponCountRequest;
+import com.plateer.ec1.promotion.vo.req.CouponRequest;
 import com.plateer.ec1.promotion.vo.res.CouponCountResVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,12 +20,12 @@ public class CouponService {
     private final CouponTrxMapper couponTrxMapper;
 
     @Transactional
-    public void downloadCoupon(CouponReqVO reqVO){
+    public void downloadCoupon(CouponRequest reqVO){
 
         // 다운로드 가능여부 체크
         // 다운로드 가능수량 조회 (조건 : 사용여부, 쿠폰 다운로드가능 시작/종료일)
         CouponCountResVO countRes = Optional.ofNullable(couponMapper.getAvailableCouponCountByPrmNo(
-                AvailableCouponCountReqVO.builder()
+                AvailableCouponCountRequest.builder()
                         .prmNo(reqVO.getPrmNo())
                         .mbrNo(reqVO.getMbrNo())
                         .build())).orElseThrow(() -> new IllegalArgumentException("프로모션 데이터를 찾을 수 없습니다."));
@@ -53,7 +53,7 @@ public class CouponService {
     }
 
     @Transactional
-    public void useCoupon(CouponReqVO reqVO){
+    public void useCoupon(CouponRequest reqVO){
 
         // 프로모션 기간검증
         if(!isValidCoupon(reqVO)){
@@ -70,7 +70,7 @@ public class CouponService {
     }
 
     @Transactional
-    public void cancelUsingCoupon(CouponReqVO reqVO){
+    public void cancelUsingCoupon(CouponRequest reqVO){
 
         // 프로모션 종료일시가 현재 이후일 때만 신규쿠폰 발급
         if(isValidCoupon(reqVO)){
@@ -85,7 +85,7 @@ public class CouponService {
 
     }
 
-    private boolean isValidCoupon(CouponReqVO reqVO){
+    private boolean isValidCoupon(CouponRequest reqVO){
         return couponMapper.getCouponInfo(reqVO.getCpnIssNo()).isValid();
     }
 

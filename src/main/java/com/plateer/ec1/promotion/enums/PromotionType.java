@@ -1,13 +1,9 @@
 package com.plateer.ec1.promotion.enums;
 
 public enum PromotionType {
-    PRC_DC("PD"), // price discount
-    PRD_CUP("PC"), // product coupon
-    CART_CUP("CC"); // cart coupon
 
-    String prmType;
+    PD, // price discount
+    PC, // product coupon
+    CC; // cart coupon
 
-    PromotionType(String prmType){
-        this.prmType = prmType;
-    }
 }

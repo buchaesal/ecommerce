@@ -3,18 +3,16 @@ package com.plateer.ec1.promotion.calculator.impl;
 import com.plateer.ec1.promotion.calculator.Calculator;
 import com.plateer.ec1.promotion.enums.PromotionType;
 import com.plateer.ec1.promotion.mapper.CalculationMapper;
-import com.plateer.ec1.promotion.vo.ProductCouponVO;
+import com.plateer.ec1.promotion.vo.ProductCoupon;
 import com.plateer.ec1.promotion.vo.Promotion;
-import com.plateer.ec1.promotion.vo.req.CalculationReqVO;
-import com.plateer.ec1.promotion.vo.req.PromotionReqVO;
+import com.plateer.ec1.promotion.vo.req.ProductCouponRequest;
+import com.plateer.ec1.promotion.vo.req.PromotionRequest;
 import com.plateer.ec1.promotion.vo.res.ProductCouponResponseVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -28,46 +26,28 @@ public class ProductCouponCalculator implements Calculator {
     private final CalculationMapper calculationMapper;
 
     public PromotionType getType(){
-        return PromotionType.PRD_CUP;
+        return PromotionType.PC;
     }
 
     @Override
-    public ProductCouponResponseVO getCalculationData(PromotionReqVO reqVO) {
+    public ProductCouponResponseVO getCalculationData(PromotionRequest prmRequest) {
 
-        CalculationReqVO request = new CalculationReqVO();
-        request.setMbrNo(reqVO.getMemberNo());
+        ProductCouponRequest request = new ProductCouponRequest(prmRequest);
+        List<ProductCoupon> productCouponList = new ArrayList<>();
 
-        ProductCouponResponseVO response = new ProductCouponResponseVO();
-        List<ProductCouponVO> productCouponList = new ArrayList<>();
+        prmRequest.getProductList().forEach(product -> {
 
-        reqVO.getProductList().forEach(product -> {
-
-            ProductCouponVO productCouponVO = new ProductCouponVO();
+            ProductCoupon productCoupon = new ProductCoupon(product);
 
             // 상품 별 적용가능 프로모션 리스트 조회
-            request.setProductNo(product.getProductNo());
-            request.setProductPrice(product.getProductAmt());
+            request.setProductInfo(product);
             List<Promotion> promotionList = calculationMapper.selectProductPromotionList(request);
-
-            if(!promotionList.isEmpty()){
-                // 혜택 적용
-                promotionList.forEach(promotion -> promotion.setBenefitPrice(product.getProductAmt()));
-
-                // 최대혜택 프로모션에 maxBenefitYn set
-                promotionList.stream()
-                        .max(Comparator.comparing(Promotion::getBenefitPrice))
-                        .get()
-                        .setMaxBenefitYn("Y");
-
-                productCouponVO.setPromotionList(promotionList);
-
-            }
-
-            productCouponVO.setProduct(product);
-            productCouponList.add(productCouponVO);
+            productCoupon.setPromotionListWithBenefit(promotionList);
+            productCouponList.add(productCoupon);
 
         });
 
+        ProductCouponResponseVO response = new ProductCouponResponseVO();
         response.setProductCouponList(productCouponList);
 
         return response;

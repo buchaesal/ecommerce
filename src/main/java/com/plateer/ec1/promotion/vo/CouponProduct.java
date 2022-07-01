@@ -9,7 +9,13 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-public class CouponProductVO {
+public class CouponProduct {
+
     private Promotion promotion;
     private List<Product> productList;
+
+    public CouponProduct(Promotion promotion){
+        productList = promotion.getProductList();
+    }
+
 }

@@ -7,7 +7,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class AvailableCouponCountReqVO {
-    private Long prmNo;
+public class CouponRequest {
     private String mbrNo;
+    private Long prmNo;
+    private String ordNo;
+    private Long cpnIssNo;
 }

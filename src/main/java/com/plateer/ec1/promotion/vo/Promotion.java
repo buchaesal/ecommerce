@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
+
 @Getter
 @Setter
 @ToString
@@ -19,8 +21,9 @@ public class Promotion {
 
     private long minPurAmt; // 최소구매금액
     private long maxDcAmt; // 최대할인금액
-//    private String cpnKindCd;
-//    private Long cpnIssNo;
+
+    private List<Product> productList;
+    private boolean isValid;
 
     public void setBenefitPrice(long originalPrice){
 
@@ -35,6 +38,10 @@ public class Promotion {
             benefitPrice = maxDcAmt;
         }
 
+    }
+
+    public boolean validateMinPurAmt(long purAmt){
+        return minPurAmt <= purAmt;
     }
 
 }

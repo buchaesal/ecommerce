@@ -1,7 +1,7 @@
 package com.plateer.ec1.promotion;
 
 import com.plateer.ec1.promotion.service.CouponService;
-import com.plateer.ec1.promotion.vo.req.CouponReqVO;
+import com.plateer.ec1.promotion.vo.req.CouponRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,7 +15,7 @@ class CouponInfoServiceTest {
     @Test
     void downloadCoupon(){
         couponService.downloadCoupon(
-                CouponReqVO.builder()
+                CouponRequest.builder()
                         .prmNo(7L)
                         .mbrNo("test01")
                         .build());
@@ -24,7 +24,7 @@ class CouponInfoServiceTest {
     @Test
     void useCoupon(){
         couponService.useCoupon(
-                CouponReqVO.builder()
+                CouponRequest.builder()
                         .prmNo(2L)
                         .cpnIssNo(10L)
                         .ordNo("O3")
@@ -34,7 +34,7 @@ class CouponInfoServiceTest {
     @Test
     void cancelCoupon(){
         couponService.cancelUsingCoupon(
-                CouponReqVO.builder()
+                CouponRequest.builder()
                 .prmNo(2L)
                 .mbrNo("test01")
                 .cpnIssNo(8L)
