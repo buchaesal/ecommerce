@@ -48,4 +48,28 @@ class CalculatorTest {
         System.out.println(result.toString());
 
     }
+
+    @Test
+    void getCartCouponData(){
+        Product product = Product.builder()
+                .productNo("P007")
+                .productAmt(50000).build();
+
+        Product product1 = Product.builder()
+                .productNo("P001")
+                .productCnt(1)
+                .productAmt(29000)
+                .build();
+
+        List<Product> productList = new ArrayList<>();
+        productList.add(product);
+        productList.add(product1);
+
+        PromotionRequest request = new PromotionRequest();
+        request.setMbrNo("test01");
+        request.setProductList(productList);
+
+        productCouponCalculator.getCalculationData(request);
+    }
+
 }
