@@ -1,10 +1,10 @@
 package com.plateer.ec1.promotion.vo;
 
-import com.plateer.ec1.promotion.utils.PromotionUtil;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Getter
@@ -23,7 +23,10 @@ public class ProductCoupon {
         if(!promotionList.isEmpty()){
             // 혜택 적용
             promotionList.forEach(promotion -> promotion.setBenefitPrice(product.getProductAmt()));
-            PromotionUtil.setMaxBenefitYn(promotionList);
+            promotionList.stream()
+                    .max(Comparator.comparing(Promotion::getBenefitPrice))
+                    .get()
+                    .setMaxBenefitYn("Y");
         }
     }
 
