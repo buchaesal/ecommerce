@@ -37,16 +37,13 @@ public class CartCouponCalculator implements Calculator {
 
         // 프로모션 리스트 조회
         CartCouponRequest request = new CartCouponRequest(promotionRequest);
-        List<Promotion> promotionList = calculationMapper.selectCartPromotionList(request);
-
         List<CouponProduct> couponProductList = new ArrayList<>();
 
         // 조회해온 프로모션 리스트 반복문 시작
-        promotionList.forEach(promotion -> {
+        calculationMapper.selectCartPromotionList(request).forEach(promotion -> {
 
             // 프로모션에 해당하는 대상 상품리스트 조회
-            request.setPrmNo(promotion.getPrmNo());
-            List<Product> productList = getApplyProductList(request);
+            List<Product> productList = getApplyProductList(request, promotion);
 
             // [프로모션 - 상품리스트] 객체 생성, 검증, 결과 리스트에 추가
             CouponProduct couponProduct = new CouponProduct(promotion, productList);
@@ -56,25 +53,30 @@ public class CartCouponCalculator implements Calculator {
         });
 
         // valid true filter, 최대혜택 프로모션 YN set
-        couponProductList.stream()
-                .filter(CouponProduct::isValid)
-                .max(Comparator.comparing(couponProduct -> couponProduct.getPromotion().getBenefitPrice()))
-                .get()
-                .getPromotion()
-                .setMaxBenefitYn("Y");
+        setMaxBenefitYn(couponProductList);
 
         return new CartCouponResponse(couponProductList);
 
     }
 
-    private List<Product> getApplyProductList(CartCouponRequest request){
+    private List<Product> getApplyProductList(CartCouponRequest request, Promotion promotion){
 
+        request.setPrmNo(promotion.getPrmNo());
         List<String> applyProductNoList = calculationMapper.selectApplyProductNoList(request);
 
         return request.getProductList().stream()
                 .filter(product -> applyProductNoList.contains(product.getProductNo()))
                 .collect(Collectors.toList());
 
+    }
+
+    private void setMaxBenefitYn(List<CouponProduct> couponProductList){
+        couponProductList.stream()
+                .filter(CouponProduct::isValid)
+                .max(Comparator.comparing(couponProduct -> couponProduct.getPromotion().getBenefitPrice()))
+                .get()
+                .getPromotion()
+                .setMaxBenefitYn("Y");
     }
 
 }

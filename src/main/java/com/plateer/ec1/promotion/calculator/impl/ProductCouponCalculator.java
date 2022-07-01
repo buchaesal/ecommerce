@@ -3,6 +3,7 @@ package com.plateer.ec1.promotion.calculator.impl;
 import com.plateer.ec1.promotion.calculator.Calculator;
 import com.plateer.ec1.promotion.enums.PromotionType;
 import com.plateer.ec1.promotion.mapper.CalculationMapper;
+import com.plateer.ec1.promotion.vo.Product;
 import com.plateer.ec1.promotion.vo.ProductCoupon;
 import com.plateer.ec1.promotion.vo.Promotion;
 import com.plateer.ec1.promotion.vo.req.ProductCouponRequest;
@@ -39,8 +40,7 @@ public class ProductCouponCalculator implements Calculator {
         promotionRequest.getProductList().forEach(product -> {
 
             // 상품 별 적용가능 프로모션 리스트 조회
-            request.setProductInfo(product);
-            List<Promotion> promotionList = calculationMapper.selectProductPromotionList(request);
+            List<Promotion> promotionList = getProductPromotionList(request, product);
 
             // [상품 - 프로모션리스트] 객체 생성, 결과 리스트에 추가
             ProductCoupon productCoupon = new ProductCoupon(product, promotionList);
@@ -54,6 +54,11 @@ public class ProductCouponCalculator implements Calculator {
 
         return response;
 
+    }
+
+    private List<Promotion> getProductPromotionList(ProductCouponRequest request, Product product){
+        request.setProductInfo(product);
+        return calculationMapper.selectProductPromotionList(request);
     }
 
 }
