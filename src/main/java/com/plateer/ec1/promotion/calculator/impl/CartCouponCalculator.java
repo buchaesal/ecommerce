@@ -35,8 +35,6 @@ public class CartCouponCalculator implements Calculator {
     @Override
     public CartCouponResponse getCalculationData(PromotionRequest reqVO) {
 
-        List<CouponProduct> resultList = new ArrayList<>();
-
         // 프로모션 리스트 조회
         CartCouponRequest request = new CartCouponRequest(reqVO);
         List<Promotion> promotionList = calculationMapper.selectCartPromotionList(request);
@@ -66,11 +64,13 @@ public class CartCouponCalculator implements Calculator {
 
         });
 
-        // valid true인 프로모션만 객체생성하여 리스트에 추가
+        // valid true filter
         promotionList = promotionList.stream().filter(promotion -> promotion.isValid()).collect(Collectors.toList());
 
         // 최대혜택 프로모션 YN set
         PromotionUtil.setMaxBenefitYn(promotionList);
+
+        List<CouponProduct> resultList = new ArrayList<>();
 
         promotionList.forEach(promotion -> {
             CouponProduct couponProduct = new CouponProduct(promotion);
