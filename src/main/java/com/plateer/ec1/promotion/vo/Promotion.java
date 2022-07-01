@@ -40,7 +40,7 @@ public class Promotion {
 
     }
 
-    private boolean validateMinPurAmt(long purAmt){
+    public boolean validateMinPurAmt(long purAmt){
         return minPurAmt <= purAmt;
     }
 

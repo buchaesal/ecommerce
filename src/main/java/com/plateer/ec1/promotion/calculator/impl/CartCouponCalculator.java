@@ -3,7 +3,6 @@ package com.plateer.ec1.promotion.calculator.impl;
 import com.plateer.ec1.promotion.calculator.Calculator;
 import com.plateer.ec1.promotion.enums.PromotionType;
 import com.plateer.ec1.promotion.mapper.CalculationMapper;
-import com.plateer.ec1.promotion.utils.PromotionUtil;
 import com.plateer.ec1.promotion.vo.CouponProduct;
 import com.plateer.ec1.promotion.vo.Product;
 import com.plateer.ec1.promotion.vo.Promotion;
@@ -15,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,28 +39,29 @@ public class CartCouponCalculator implements Calculator {
         CartCouponRequest request = new CartCouponRequest(promotionRequest);
         List<Promotion> promotionList = calculationMapper.selectCartPromotionList(request);
 
+        List<CouponProduct> resultList = new ArrayList<>();
+
         promotionList.forEach(promotion -> {
 
             // 프로모션에 해당하는 대상 상품리스트 조회
             request.setPrmNo(promotion.getPrmNo());
             List<Product> productList = getApplyProductList(request);
 
-            // 결과값 반환시에 필요해서 set..
-            promotion.setProductList(productList);
+            CouponProduct couponProduct = new CouponProduct(promotion, productList);
 
             // 장바구니쿠폰 [최소구매금액, 혜택가] 검증 및 계산
-            promotion.validateCartCoupon(productList);
+            couponProduct.validateCartCoupon(productList);
+            resultList.add(couponProduct);
 
         });
 
-        // valid true filter
-        promotionList = promotionList.stream().filter(promotion -> promotion.isValid()).collect(Collectors.toList());
-
-        // 최대혜택 프로모션 YN set
-        PromotionUtil.setMaxBenefitYn(promotionList);
-
-        // 응답객체형식에 맞게 가공
-        List<CouponProduct> resultList = makeCouponProductList(promotionList);
+        // valid true filter, 최대혜택 프로모션 YN set
+        resultList.stream()
+                .filter(CouponProduct::isValid)
+                .max(Comparator.comparing(couponProduct -> couponProduct.getPromotion().getBenefitPrice()))
+                .get()
+                .getPromotion()
+                .setMaxBenefitYn("Y");
 
         return new CartCouponResponse(resultList);
 
@@ -73,19 +74,6 @@ public class CartCouponCalculator implements Calculator {
         return request.getProductList().stream()
                 .filter(product -> applyProductNoList.contains(product.getProductNo()))
                 .collect(Collectors.toList());
-
-    }
-
-    private List<CouponProduct> makeCouponProductList(List<Promotion> promotionList){
-
-        List<CouponProduct> resultList = new ArrayList<>();
-
-        promotionList.forEach(promotion -> {
-            CouponProduct couponProduct = new CouponProduct(promotion);
-            resultList.add(couponProduct);
-        });
-
-        return resultList;
 
     }
 
