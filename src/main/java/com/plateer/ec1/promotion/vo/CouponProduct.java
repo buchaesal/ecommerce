@@ -20,10 +20,10 @@ public class CouponProduct {
         this.productList = productList;
     }
 
-    public void validateCartCoupon(List<Product> productList){
+    public void validateCartCoupon(){
 
         // 장바구니 상품 총합 계산 (가격*수량)
-        long cartSum = productList.stream()
+        long cartSum = this.productList.stream()
                 .map(product -> product.getProductAmt() * product.getProductCnt())
                 .mapToLong(i -> i).sum();
 

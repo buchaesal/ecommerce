@@ -50,7 +50,7 @@ public class CartCouponCalculator implements Calculator {
             CouponProduct couponProduct = new CouponProduct(promotion, productList);
 
             // 장바구니쿠폰 [최소구매금액, 혜택가] 검증 및 계산
-            couponProduct.validateCartCoupon(productList);
+            couponProduct.validateCartCoupon();
             couponProductList.add(couponProduct);
 
         });
