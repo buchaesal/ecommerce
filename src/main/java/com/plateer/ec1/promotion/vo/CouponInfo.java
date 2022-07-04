@@ -1,6 +1,7 @@
 package com.plateer.ec1.promotion.vo;
 
 import com.plateer.ec1.common.code.promotion.PRM0002;
+import com.plateer.ec1.promotion.vo.req.CouponRequest;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,11 +34,11 @@ public class CouponInfo {
         return mbrNo.equals(paramMbrNo);
     }
 
-    public void validateUsingCoupon(){
+    public void validateUsingCoupon(CouponRequest request){
         if(!isValidPeriod()){
             throw new IllegalArgumentException("프로모션 기간이 아닙니다.");
         }
-        if(!isValidPeriod()){
+        if(!isValidMbrNo(request.getMbrNo())){
             throw new IllegalArgumentException("쿠폰 사용 회원을 확인해주세요.");
         }
     }

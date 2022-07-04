@@ -46,7 +46,7 @@ public class CouponService {
         CouponInfo couponInfo = getCouponInfo(request);
 
         // 쿠폰사용 validate
-        couponInfo.validateUsingCoupon();
+        couponInfo.validateUsingCoupon(request);
 
         // 사용처리
         couponTrxMapper.updateUsingCoupon(request.makeUpdateUsingCouponModel());

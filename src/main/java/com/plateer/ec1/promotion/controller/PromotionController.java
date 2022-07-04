@@ -36,7 +36,7 @@ public class PromotionController {
     /**
      * 혜택계산 (PromotionType으로 선택)
      */
-    @PostMapping("/productCoupon")
+    @PostMapping("/calculate")
     public BaseResponseVO getCalculation(@RequestBody @Valid PromotionRequest request){
         return calculationService.getApplyData(request);
     }
