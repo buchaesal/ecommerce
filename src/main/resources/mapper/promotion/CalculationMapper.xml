@@ -35,6 +35,9 @@
         <include refid="selectPromotionList"/>
         and cpat.aply_tgt_no = #{productNo}
         and cpb.min_pur_amt <![CDATA[ <= ]]> #{productPrice}
+        <if test="prmNo != null">
+            and cpb.prmNo = #{prmNo}
+        </if>
     </select>
 
     

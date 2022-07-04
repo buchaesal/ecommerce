@@ -22,10 +22,12 @@ public class ProductCoupon {
         if(!this.promotionList.isEmpty()){
             // 혜택 적용
             this.promotionList.forEach(promotion -> promotion.setBenefitPrice(product.getProductAmt()));
-            this.promotionList.stream()
-                    .max(Comparator.comparing(Promotion::getBenefitPrice))
-                    .get()
-                    .setMaxBenefitYn("Y");
+            if(this.promotionList.size() > 1){
+                this.promotionList.stream()
+                        .max(Comparator.comparing(Promotion::getBenefitPrice))
+                        .get()
+                        .setMaxBenefitYn("Y");
+            }
         }
 
     }

@@ -11,15 +11,15 @@ public class ProductCouponRequest {
     private String productNo;
     private String mbrNo;
     private Long productPrice;
-    private String prmKindCcd;
+    private Long prmNo;
 
-    public ProductCouponRequest(PromotionRequest reqVO){
-        mbrNo = reqVO.getMbrNo();
+    public ProductCouponRequest(PromotionRequest request){
+        this.mbrNo = request.getMbrNo();
     }
 
     public void setProductInfo(Product product){
-        productNo = product.getProductNo();
-        productPrice = product.getProductAmt();
+        this.productNo = product.getProductNo();
+        this.productPrice = product.getProductAmt();
     }
 
 }

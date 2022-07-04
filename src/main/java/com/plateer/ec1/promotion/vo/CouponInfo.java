@@ -10,13 +10,15 @@ import java.time.LocalDateTime;
 @Setter
 public class CouponInfo {
 
+    private Long prmNo;
     private String prmPriodCcd;
     private LocalDateTime prmStrtDt;
     private LocalDateTime prmEndDt;
     private int prmStdDd;
+    private String mbrNo;
     private LocalDateTime sysRegDtime;
 
-    public boolean isValid(){
+    public boolean isValidPeriod(){
 
         LocalDateTime nowToday = LocalDateTime.now();
 
@@ -26,5 +28,20 @@ public class CouponInfo {
                 : false;
 
     }
+
+    public boolean isValidMbrNo(String paramMbrNo){
+        return mbrNo.equals(paramMbrNo);
+    }
+
+    public void validateUsingCoupon(){
+        if(!isValidPeriod()){
+            throw new IllegalArgumentException("프로모션 기간이 아닙니다.");
+        }
+        if(!isValidPeriod()){
+            throw new IllegalArgumentException("쿠폰 사용 회원을 확인해주세요.");
+        }
+    }
+
+
 
 }
