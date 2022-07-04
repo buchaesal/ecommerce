@@ -15,6 +15,7 @@ public class ProductCouponRequest {
 
     public ProductCouponRequest(PromotionRequest request){
         this.mbrNo = request.getMbrNo();
+        this.prmNo = request.getPrmNo();
     }
 
     public void setProductInfo(Product product){

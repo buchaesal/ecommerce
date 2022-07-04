@@ -5,13 +5,17 @@ import com.plateer.ec1.promotion.vo.Product;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 @Getter
 @Setter
 public class PromotionRequest {
+    @NotEmpty
     private String mbrNo;
+    private Long prmNo;
+    @NotEmpty
     private List<Product> productList;
-    private List<Long> couponIssueNoList;
+    @NotEmpty
     private PromotionType promotionType;
 }

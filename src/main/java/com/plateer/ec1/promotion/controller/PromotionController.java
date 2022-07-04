@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @Validated
 @RestController
 @RequestMapping("promotion")
@@ -35,7 +37,7 @@ public class PromotionController {
      * 혜택계산 (PromotionType으로 선택)
      */
     @PostMapping("/productCoupon")
-    public BaseResponseVO getCalculation(@RequestBody PromotionRequest request){
+    public BaseResponseVO getCalculation(@RequestBody @Valid PromotionRequest request){
         return calculationService.getApplyData(request);
     }
 
