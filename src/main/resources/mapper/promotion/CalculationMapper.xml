@@ -9,10 +9,13 @@
             cpb.dc_ccd,
             cpb.dc_val,
             cpb.max_dc_amt,
-            cpb.min_pur_amt
+            cpb.min_pur_amt,
+            ccb.cpn_kind_cd,
+            ccb.degr_ccd
         from cc_prm_base cpb
             inner join cc_cpn_issue cci on cpb.prm_no = cci.prm_no
             inner join cc_prm_aply_tgt cpat on cpb.prm_no = cpat.prm_no
+            inner join cc_cpn_base ccb on cpb.prm_no = ccb.prm_no
         where cpb.use_yn = 'Y'
           and cpb.prm_kind_cd = '20'
           and
@@ -26,6 +29,8 @@
           and cci.mbr_no = #{mbrNo}
           and cpat.use_yn = 'Y'
           and cpat.aply_tgt_ccd = '10'
+          and ccb.cpn_kind_cd = #{cpnKindCd}
+          and ccb.degr_ccd = #{degrCcd}
     </sql>
 
 
@@ -35,9 +40,6 @@
         <include refid="selectPromotionList"/>
         and cpat.aply_tgt_no = #{productNo}
         and cpb.min_pur_amt <![CDATA[ <= ]]> #{productPrice}
-        <if test="prmNo != null">
-            and cpb.prmNo = #{prmNo}
-        </if>
     </select>
 
     

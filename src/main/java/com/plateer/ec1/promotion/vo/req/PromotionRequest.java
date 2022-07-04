@@ -13,7 +13,6 @@ import java.util.List;
 public class PromotionRequest {
     @NotEmpty
     private String mbrNo;
-    private Long prmNo;
     @NotEmpty
     private List<Product> productList;
     @NotEmpty
