@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
@@ -17,11 +18,11 @@ public class CouponRequest {
 
     @NotEmpty(groups = {Download.class, Use.class, Cancel.class})
     private String mbrNo;
-    @NotEmpty(groups = Download.class)
+    @NotNull(groups = Download.class)
     private Long prmNo;
     @NotEmpty(groups = Use.class)
     private String ordNo;
-    @NotEmpty(groups = {Use.class, Cancel.class})
+    @NotNull(groups = {Use.class, Cancel.class})
     private Long cpnIssNo;
 
 

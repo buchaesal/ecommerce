@@ -20,6 +20,11 @@ public class Promotion {
     private long minPurAmt; // 최소구매금액
     private long maxDcAmt; // 최대할인금액
 
+    private String cpnKindCd; // 쿠폰종류코드
+    private Long cpnIssNo;
+    private String degrCcd; // 차수구분코드
+    private String applyYn; // 기적용쿠폰여부
+
     public void setBenefitPrice(long originalPrice){
 
         if(PRM0003.PRICE.code.equals(dcCcd)){

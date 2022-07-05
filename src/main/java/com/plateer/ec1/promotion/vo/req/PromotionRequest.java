@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Getter
@@ -13,8 +14,8 @@ import java.util.List;
 public class PromotionRequest {
     @NotEmpty
     private String mbrNo;
-    @NotEmpty
+    @NotNull
     private List<Product> productList;
-    @NotEmpty
+    @NotNull
     private PromotionType promotionType;
 }

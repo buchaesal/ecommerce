@@ -20,7 +20,7 @@
             then current_date between cpn.dwl_avl_strt_dd::date and cpn.dwl_avl_end_dd::date + interval '1 day'
             when cpn.dwl_priod_ccd = '20'
             then current_date between cpn.dwl_avl_strt_dd::date and cpn.dwl_avl_strt_dd::date + interval '1 day' * cpn.dwl_std_dd
-            else true end
+            else false end
       and cpn.prm_no = #{prmNo}
 
     </select>
@@ -47,7 +47,8 @@
             cpb.prm_end_dt,
             cpb.prm_std_dd,
             cci.mbr_no,
-            cci.sys_reg_dtime
+            cci.sys_reg_dtime,
+            cci.cpn_use_dt
             from cc_prm_base cpb inner join cc_cpn_issue cci using (prm_no)
             where cci.cpn_iss_no = #{cpnIssNo}
     </select>

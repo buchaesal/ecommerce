@@ -4,6 +4,7 @@ import com.plateer.ec1.promotion.calculator.impl.ProductCouponCalculator;
 import com.plateer.ec1.promotion.vo.Product;
 import com.plateer.ec1.promotion.vo.req.PromotionRequest;
 import com.plateer.ec1.promotion.vo.res.ProductCouponResponseVO;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,16 +19,21 @@ class CalculatorTest {
     ProductCouponCalculator productCouponCalculator;
 
     @Test
+    @DisplayName("상품쿠폰")
     void getProductCouponCalculationData() {
 
         Product product = Product.builder()
-                .productNo("P007")
-                .productAmt(50000).build();
+                .productNo("P001")
+                .productItemNo("1")
+                .productAmt(50000)
+                .prmNo(1L)
+                .cpnIssNo(1L)
+                .build();
 
         Product product1 = Product.builder()
                 .productNo("P001")
-                .productCnt(1)
-                .productAmt(29000)
+                .productItemNo("2")
+                .productAmt(50000)
                 .build();
 //
 //        Product product2 = Product.builder()

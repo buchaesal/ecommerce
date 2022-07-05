@@ -18,6 +18,7 @@ public class CouponInfo {
     private int prmStdDd;
     private String mbrNo;
     private LocalDateTime sysRegDtime;
+    private LocalDateTime cpnUseDt;
 
     public boolean isValidPeriod(){
 
@@ -34,7 +35,14 @@ public class CouponInfo {
         return mbrNo.equals(paramMbrNo);
     }
 
+    public boolean isUsedCoupon(){
+        return cpnUseDt != null;
+    }
+
     public void validateUsingCoupon(CouponRequest request){
+        if(isUsedCoupon()){
+            throw new IllegalArgumentException("이미 사용된 쿠폰입니다.");
+        }
         if(!isValidPeriod()){
             throw new IllegalArgumentException("프로모션 기간이 아닙니다.");
         }
@@ -43,6 +51,10 @@ public class CouponInfo {
         }
     }
 
-
+    public void validateCancelCoupon(){
+        if(!isUsedCoupon()){
+            throw new IllegalArgumentException("사용하지 않은 쿠폰입니다.");
+        }
+    }
 
 }
