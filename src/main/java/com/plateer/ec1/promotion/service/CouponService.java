@@ -63,6 +63,9 @@ public class CouponService {
         CouponInfo couponInfo = getCouponInfo(request);
         request.setPrmNo(couponInfo.getPrmNo());
 
+        // 쿠폰 취소 validate
+        couponInfo.validateCancelCoupon();
+
         // 프로모션 종료일시가 현재 이후일 때만 신규쿠폰 발급
         if(couponInfo.isValidPeriod()){
             couponTrxMapper.insertRestoreCoupon(request.makeInsertRestoreCouponModel());

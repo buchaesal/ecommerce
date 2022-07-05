@@ -19,17 +19,24 @@ public class ProductCoupon {
 
     public void applyBenefit(){
 
-        if(!this.promotionList.isEmpty()){
+        if(!promotionList.isEmpty()){
             // 혜택 적용
-            this.promotionList.forEach(promotion -> promotion.setBenefitPrice(product.getProductAmt()));
-            if(this.promotionList.size() > 1){
-                this.promotionList.stream()
-                        .max(Comparator.comparing(Promotion::getBenefitPrice))
-                        .get()
-                        .setMaxBenefitYn("Y");
-            }
+            promotionList.forEach(promotion -> promotion.setBenefitPrice(product.getProductAmt()));
+            promotionList.stream().sorted(makeComparator());
+            promotionList.get(0).setMaxBenefitYn("Y");
+
         }
 
+    }
+
+    private Comparator<Promotion> makeComparator(){
+
+        Comparator<Promotion> compareBenefit = Comparator.comparing(Promotion::getBenefitPrice).reversed();
+        Comparator<Promotion> compareProductNo = Comparator.comparing(Promotion::getPrmNo);
+        Comparator<Promotion> compareCpnIssNo = Comparator.comparing(Promotion::getCpnIssNo);
+        Comparator<Promotion> compareApplyYn = Comparator.comparing(Promotion::getApplyYn).reversed();
+
+        return compareBenefit.thenComparing(compareProductNo).thenComparing(compareCpnIssNo).thenComparing(compareApplyYn);
     }
 
 }
