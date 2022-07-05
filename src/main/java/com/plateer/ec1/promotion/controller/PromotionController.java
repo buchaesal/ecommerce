@@ -29,7 +29,7 @@ public class PromotionController {
      */
     @Validated(Download.class)
     @PostMapping("/downloadCoupon")
-    public void downloadCoupon(@RequestBody CouponRequest request){
+    public void downloadCoupon(@RequestBody @Valid CouponRequest request){
         couponService.downloadCoupon(request);
     }
 

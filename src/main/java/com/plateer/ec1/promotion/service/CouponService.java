@@ -3,6 +3,7 @@ package com.plateer.ec1.promotion.service;
 import com.plateer.ec1.promotion.mapper.CouponMapper;
 import com.plateer.ec1.promotion.mapper.CouponTrxMapper;
 import com.plateer.ec1.promotion.validation.Cancel;
+import com.plateer.ec1.promotion.validation.Download;
 import com.plateer.ec1.promotion.validation.Use;
 import com.plateer.ec1.promotion.vo.CouponInfo;
 import com.plateer.ec1.promotion.vo.req.CouponRequest;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 @Validated
@@ -22,14 +24,15 @@ public class CouponService {
     private final CouponMapper couponMapper;
     private final CouponTrxMapper couponTrxMapper;
 
+    @Validated(Download.class)
     @Transactional
-    public void downloadCoupon(CouponRequest request){
+    public void downloadCoupon(@Valid CouponRequest request){
 
         // 다운로드 가능여부 체크
         // 다운로드 가능수량 조회 (조건 : 사용여부, 쿠폰 다운로드가능 시작/종료일)
         CouponCountResVO countRes = Optional.ofNullable(
                 couponMapper.getAvailableCouponCountByPrmNo(request.makeAvailableCouponCountRequest()))
-                .orElseThrow(() -> new IllegalArgumentException("프로모션 데이터를 찾을 수 없습니다."));
+                .orElseThrow(() -> new IllegalArgumentException("다운로드 가능한 쿠폰이 아닙니다."));
 
         // 다운로드 가능수량 검증
         countRes.validate();
@@ -41,7 +44,7 @@ public class CouponService {
 
     @Validated(Use.class)
     @Transactional
-    public void useCoupon(CouponRequest request){
+    public void useCoupon(@Valid CouponRequest request){
 
         CouponInfo couponInfo = getCouponInfo(request);
 
@@ -55,7 +58,7 @@ public class CouponService {
 
     @Validated(Cancel.class)
     @Transactional
-    public void cancelUsingCoupon(CouponRequest request){
+    public void cancelUsingCoupon(@Valid CouponRequest request){
 
         CouponInfo couponInfo = getCouponInfo(request);
         request.setPrmNo(couponInfo.getPrmNo());
