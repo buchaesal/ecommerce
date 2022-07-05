@@ -23,13 +23,15 @@ public class ProductCoupon {
         if(!promotionList.isEmpty()){
             // 혜택 적용
             promotionList.forEach(promotion -> promotion.setBenefitPrice(product.getProductAmt()));
-            promotionList = promotionList.stream().sorted(makeComparator()).collect(Collectors.toList());
-            promotionList.get(0).setMaxBenefitYn("Y");
-            // 기적용여부 맨 앞
-            promotionList = promotionList.stream().sorted(Comparator.comparing(Promotion::getApplyYn).reversed()).collect(Collectors.toList());
-
         }
 
+    }
+
+    public void sortPromotionList(){
+        promotionList = promotionList.stream().sorted(makeComparator()).collect(Collectors.toList());
+        promotionList.get(0).setMaxBenefitYn("Y");
+        // 기적용여부 맨 앞
+        promotionList = promotionList.stream().sorted(Comparator.comparing(Promotion::getApplyYn).reversed()).collect(Collectors.toList());
     }
 
     private Comparator<Promotion> makeComparator(){

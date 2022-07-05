@@ -19,6 +19,24 @@ class CouponInfoServiceTest {
                         .prmNo(1L)
                         .mbrNo("test01")
                         .build());
+
+        couponService.downloadCoupon(
+                CouponRequest.builder()
+                        .prmNo(3L)
+                        .mbrNo("test01")
+                        .build());
+
+        couponService.downloadCoupon(
+                CouponRequest.builder()
+                        .prmNo(4L)
+                        .mbrNo("test01")
+                        .build());
+
+        couponService.downloadCoupon(
+                CouponRequest.builder()
+                        .prmNo(5L)
+                        .mbrNo("test01")
+                        .build());
     }
 
     @Test

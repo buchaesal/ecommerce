@@ -16,11 +16,7 @@
     from cc_prm_base prm
              inner join cc_cpn_base cpn using (prm_no)
     where prm.use_yn = 'Y'
-      and case when cpn.dwl_priod_ccd = '10'
-            then current_date between cpn.dwl_avl_strt_dd::date and cpn.dwl_avl_end_dd::date + interval '1 day'
-            when cpn.dwl_priod_ccd = '20'
-            then current_date between cpn.dwl_avl_strt_dd::date and cpn.dwl_avl_strt_dd::date + interval '1 day' * cpn.dwl_std_dd
-            else false end
+      and current_date between cpn.dwl_avl_strt_dd::date and cpn.dwl_avl_end_dd::date + interval '1 day'
       and cpn.prm_no = #{prmNo}
 
     </select>

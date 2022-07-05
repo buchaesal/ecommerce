@@ -44,7 +44,10 @@ public class ProductCouponCalculator implements Calculator {
 
             // [상품 - 프로모션리스트] 객체 생성, 결과 리스트에 추가
             ProductCoupon productCoupon = new ProductCoupon(product, promotionList);
+            // 혜택적용
             productCoupon.applyBenefit();
+            // 정책기준 정렬
+            productCoupon.sortPromotionList();
             productCouponList.add(productCoupon);
 
         });
