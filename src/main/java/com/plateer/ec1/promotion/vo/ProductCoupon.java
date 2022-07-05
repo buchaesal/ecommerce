@@ -7,6 +7,7 @@ import lombok.ToString;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -22,10 +23,10 @@ public class ProductCoupon {
         if(!promotionList.isEmpty()){
             // 혜택 적용
             promotionList.forEach(promotion -> promotion.setBenefitPrice(product.getProductAmt()));
-            promotionList.stream().sorted(makeComparator());
+            promotionList = promotionList.stream().sorted(makeComparator()).collect(Collectors.toList());
             promotionList.get(0).setMaxBenefitYn("Y");
             // 기적용여부 맨 앞
-            promotionList.stream().sorted(Comparator.comparing(Promotion::getApplyYn).reversed());
+            promotionList = promotionList.stream().sorted(Comparator.comparing(Promotion::getApplyYn).reversed()).collect(Collectors.toList());
 
         }
 
