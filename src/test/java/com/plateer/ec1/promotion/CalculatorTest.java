@@ -26,14 +26,14 @@ class CalculatorTest {
                 .productNo("P001")
                 .productItemNo("1")
                 .productAmt(50000)
-                .prmNo(1L)
-                .cpnIssNo(1L)
                 .build();
 
         Product product1 = Product.builder()
                 .productNo("P001")
                 .productItemNo("2")
                 .productAmt(50000)
+                .prmNo(1L)
+                .cpnIssNo(1L)
                 .build();
 //
 //        Product product2 = Product.builder()

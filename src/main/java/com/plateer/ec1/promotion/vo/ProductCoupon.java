@@ -24,6 +24,8 @@ public class ProductCoupon {
             promotionList.forEach(promotion -> promotion.setBenefitPrice(product.getProductAmt()));
             promotionList.stream().sorted(makeComparator());
             promotionList.get(0).setMaxBenefitYn("Y");
+            // 기적용여부 맨 앞
+            promotionList.stream().sorted(Comparator.comparing(Promotion::getApplyYn).reversed());
 
         }
 
@@ -34,9 +36,8 @@ public class ProductCoupon {
         Comparator<Promotion> compareBenefit = Comparator.comparing(Promotion::getBenefitPrice).reversed();
         Comparator<Promotion> compareProductNo = Comparator.comparing(Promotion::getPrmNo);
         Comparator<Promotion> compareCpnIssNo = Comparator.comparing(Promotion::getCpnIssNo);
-        Comparator<Promotion> compareApplyYn = Comparator.comparing(Promotion::getApplyYn).reversed();
 
-        return compareBenefit.thenComparing(compareProductNo).thenComparing(compareCpnIssNo).thenComparing(compareApplyYn);
+        return compareBenefit.thenComparing(compareProductNo).thenComparing(compareCpnIssNo);
     }
 
 }
