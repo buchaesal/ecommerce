@@ -55,7 +55,13 @@ public class CartCouponCalculator implements Calculator {
 
         });
 
-        // 리턴객체 생성
+        // 장바구니쿠폰 응답객체 만들고 리턴
+        return makeCartCouponResponse(couponProductList);
+
+    }
+
+    private CartCouponResponse makeCartCouponResponse(List<CouponProduct> couponProductList){
+
         CartCouponResponse cartCouponResponse = new CartCouponResponse(couponProductList);
 
         // isValid true값들만 filter
