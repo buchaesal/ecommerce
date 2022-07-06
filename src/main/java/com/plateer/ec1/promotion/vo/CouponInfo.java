@@ -17,8 +17,11 @@ public class CouponInfo {
     private LocalDateTime prmEndDt;
     private int prmStdDd;
     private String mbrNo;
+    private String ordNo;
     private LocalDateTime sysRegDtime;
     private LocalDateTime cpnUseDt;
+    private Long orgCpnIssNo;
+    private int notUsedCouponCnt; // 재발급한 미사용 쿠폰 갯수
 
     public boolean isValidPeriod(){
 
@@ -55,6 +58,13 @@ public class CouponInfo {
         if(!isUsedCoupon()){
             throw new IllegalArgumentException("사용하지 않은 쿠폰입니다.");
         }
+        if(hasNotUsedRestoredCoupon()){
+            throw new IllegalArgumentException("이미 취소 된 쿠폰입니다.");
+        }
+    }
+
+    private boolean hasNotUsedRestoredCoupon(){
+        return notUsedCouponCnt > 0;
     }
 
 }

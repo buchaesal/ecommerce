@@ -14,9 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -46,13 +44,18 @@ public class CartCouponCalculator implements Calculator {
             // 프로모션에 해당하는 대상 상품리스트 조회
             List<Product> productList = getApplyProductList(request, promotion);
 
-            // [프로모션 - 상품리스트] 객체 생성, 검증, 결과 리스트에 추가
+            // [프로모션 - 상품리스트] 객체 생성
             CouponProduct couponProduct = new CouponProduct(promotion, productList);
+
+            // 검증
             couponProduct.validateCartCoupon();
+
+            // 결과 리스트에 추가
             couponProductList.add(couponProduct);
 
         });
 
+        // 리턴객체 생성
         CartCouponResponse cartCouponResponse = new CartCouponResponse(couponProductList);
 
         // isValid true값들만 filter

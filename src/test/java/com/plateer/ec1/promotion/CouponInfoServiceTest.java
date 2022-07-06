@@ -1,6 +1,9 @@
 package com.plateer.ec1.promotion;
 
+import com.plateer.ec1.common.model.promotion.CcCpnIssueModel;
+import com.plateer.ec1.promotion.mapper.CouponMapper;
 import com.plateer.ec1.promotion.service.CouponService;
+import com.plateer.ec1.promotion.vo.CouponInfo;
 import com.plateer.ec1.promotion.vo.req.CouponRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -8,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import javax.xml.bind.ValidationException;
+import javax.validation.ConstraintViolationException;
 
 @SpringBootTest
 class CouponInfoServiceTest {
@@ -16,11 +19,14 @@ class CouponInfoServiceTest {
     @Autowired
     CouponService couponService;
 
+    @Autowired
+    CouponMapper couponMapper;
+
     @Test
     @DisplayName("쿠폰 다운로드 필수값 테스트")
     void downloadCoupon1(){
 
-        Assertions.assertThrows(ValidationException.class, () -> {
+        Assertions.assertThrows(ConstraintViolationException.class, () -> {
             couponService.downloadCoupon(
                     CouponRequest.builder()
                             .prmNo(1L)
@@ -35,7 +41,7 @@ class CouponInfoServiceTest {
     void downloadCoupon2(){
 
         //prm_no = 3  : 6/1~6/30
-        Assertions.assertThrows(ValidationException.class, () -> {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
             couponService.downloadCoupon(
                     CouponRequest.builder()
                             .prmNo(3L)
@@ -49,31 +55,28 @@ class CouponInfoServiceTest {
     @DisplayName("쿠폰 다운로드 테스트")
     void downloadCoupon3(){
 
-        couponService.downloadCoupon(
+        Long prmNo = 1L;
+        String mbrNo = "test01";
+
+        CcCpnIssueModel model = couponService.downloadCoupon(
                 CouponRequest.builder()
-                        .prmNo(1L)
-                        .mbrNo("test01")
+                        .prmNo(prmNo)
+                        .mbrNo(mbrNo)
                         .build());
 
-    }
+        CouponInfo couponInfo = getCouponInfo(model.getCpnIssNo());
 
-    @Test
-    @DisplayName("쿠폰 취소 - 복원 안하는 case [프로모션 종료 후]")
-    void cancelCouponNoRestore(){
-        couponService.cancelUsingCoupon(
-                CouponRequest.builder()
-                .prmNo(2L)
-                .mbrNo("test01")
-                .cpnIssNo(8L)
-                .build()
-        );
+        Assertions.assertEquals(prmNo, couponInfo.getPrmNo());
+        Assertions.assertEquals(mbrNo, couponInfo.getMbrNo());
+        Assertions.assertEquals(null, couponInfo.getCpnUseDt());
+
     }
 
     @Test
     @DisplayName("쿠폰사용 필수값 체크")
     void useCoupon1(){
 
-        Assertions.assertThrows(ValidationException.class, () -> {
+        Assertions.assertThrows(ConstraintViolationException.class, () -> {
             couponService.useCoupon(
                     CouponRequest.builder()
                     .cpnIssNo(1L)
@@ -118,6 +121,29 @@ class CouponInfoServiceTest {
     }
 
     @Test
+    @DisplayName("쿠폰사용")
+    void useCoupon4(){
+
+        Long cpnIssNo = 2L;
+        String mbrNo = "test01";
+        String ordNo = "O3";
+
+        couponService.useCoupon(
+                CouponRequest.builder()
+                        .cpnIssNo(cpnIssNo)
+                        .mbrNo(mbrNo)
+                        .ordNo(ordNo)
+                        .build());
+
+        CouponInfo couponInfo = getCouponInfo(cpnIssNo);
+
+        Assertions.assertNotNull(couponInfo.getCpnUseDt());
+        Assertions.assertEquals(ordNo, couponInfo.getOrdNo());
+
+
+    }
+
+    @Test
     @DisplayName("쿠폰사용 - 기사용쿠폰 체크")
     void useCoupon5(){
 
@@ -132,30 +158,57 @@ class CouponInfoServiceTest {
 
     }
 
-
     @Test
-    @DisplayName("쿠폰사용")
-    void useCoupon4(){
+    @DisplayName("쿠폰취소 - 복원 필수값체크")
+    void cancelCoupon1(){
 
-        couponService.useCoupon(
-                CouponRequest.builder()
-                .cpnIssNo(2L)
-                .mbrNo("test01")
-                .ordNo("O3")
-                .build());
+        Assertions.assertThrows(ConstraintViolationException.class, () -> {
+            couponService.cancelUsingCoupon(
+                    CouponRequest.builder()
+                    .prmNo(2L)
+//                .mbrNo("test01")
+                    .cpnIssNo(8L)
+                    .build());
+        });
 
     }
 
     @Test
     @DisplayName("쿠폰 취소 - 복원 하는 case [프로모션 종료 전]")
-    void cancelCouponRestore(){
-        couponService.cancelUsingCoupon(
+    void cancelCouponRestore1(){
+
+        Long cpnIssNo = 2L;
+
+        CcCpnIssueModel model = couponService.cancelUsingCoupon(
                 CouponRequest.builder()
-                        .prmNo(2L)
                         .mbrNo("test01")
-                        .cpnIssNo(8L)
+                        .cpnIssNo(cpnIssNo)
                         .build()
         );
+
+        CouponInfo couponInfo = getCouponInfo(model.getCpnIssNo());
+        Assertions.assertEquals(cpnIssNo, couponInfo.getOrgCpnIssNo());
+
+    }
+
+    @Test
+    @DisplayName("쿠폰 취소 - 복원 안하는 case [프로모션 종료 후]")
+    void cancelCouponRestore2(){
+
+        String mbrNo = "test01";
+        Long cpnIssNo = 1L;
+
+        couponService.cancelUsingCoupon(
+                CouponRequest.builder()
+                        .mbrNo(mbrNo)
+                        .cpnIssNo(cpnIssNo)
+                        .build()
+        );
+
+    }
+
+    CouponInfo getCouponInfo(Long cpnIssNo){
+        return couponMapper.getCouponInfo(cpnIssNo);
     }
 
 }

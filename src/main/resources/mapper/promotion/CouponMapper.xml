@@ -43,8 +43,11 @@
             cpb.prm_end_dt,
             cpb.prm_std_dd,
             cci.mbr_no,
+            cci.ord_no,
             cci.sys_reg_dtime,
-            cci.cpn_use_dt
+            cci.cpn_use_dt,
+            cci.org_cpn_iss_no,
+            (select count(*) from cc_cpn_issue where org_cpn_iss_no = #{cpnIssNo} and cpn_use_dt is null) as notUsedCouponCnt
             from cc_prm_base cpb inner join cc_cpn_issue cci using (prm_no)
             where cci.cpn_iss_no = #{cpnIssNo}
     </select>

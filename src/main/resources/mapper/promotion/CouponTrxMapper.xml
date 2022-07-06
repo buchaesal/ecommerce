@@ -4,7 +4,9 @@
 <mapper namespace="com.plateer.ec1.promotion.mapper.CouponTrxMapper">
 
     <insert id="insertCouponIssue"
-            parameterType="com.plateer.ec1.common.model.promotion.CcCpnIssueModel">
+            parameterType="com.plateer.ec1.common.model.promotion.CcCpnIssueModel"
+            useGeneratedKeys="true"
+            keyProperty="cpnIssNo">
     /* 쿠폰발급회원에 다운로드 쿠폰 데이터 insert */
         insert into cc_cpn_issue
         (prm_no,
@@ -35,7 +37,9 @@
     </update>
     
     <insert id="insertRestoreCoupon"
-            parameterType="com.plateer.ec1.common.model.promotion.CcCpnIssueModel">
+            parameterType="com.plateer.ec1.common.model.promotion.CcCpnIssueModel"
+            useGeneratedKeys="true"
+            keyProperty="cpnIssNo">
         /* 쿠폰 복원 */
         insert into cc_cpn_issue
         (prm_no,
