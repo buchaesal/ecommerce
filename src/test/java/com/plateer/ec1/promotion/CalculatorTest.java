@@ -1,5 +1,6 @@
 package com.plateer.ec1.promotion;
 
+import com.plateer.ec1.promotion.calculator.impl.CartCouponCalculator;
 import com.plateer.ec1.promotion.calculator.impl.ProductCouponCalculator;
 import com.plateer.ec1.promotion.vo.Product;
 import com.plateer.ec1.promotion.vo.req.PromotionRequest;
@@ -17,6 +18,9 @@ class CalculatorTest {
 
     @Autowired
     ProductCouponCalculator productCouponCalculator;
+
+    @Autowired
+    CartCouponCalculator cartCouponCalculator;
 
     @Test
     @DisplayName("상품쿠폰")
@@ -75,7 +79,7 @@ class CalculatorTest {
         request.setMbrNo("test01");
         request.setProductList(productList);
 
-        productCouponCalculator.getCalculationData(request);
+        cartCouponCalculator.getCalculationData(request);
     }
 
 }

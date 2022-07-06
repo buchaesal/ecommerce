@@ -10,7 +10,6 @@ import com.plateer.ec1.promotion.vo.req.ProductCouponRequest;
 import com.plateer.ec1.promotion.vo.req.PromotionRequest;
 import com.plateer.ec1.promotion.vo.res.ProductCouponResponseVO;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -19,7 +18,6 @@ import java.util.List;
 /**
  * 다운로드 받은 쿠폰 리스트 중, 해당 상품에 적용가능한 프로모션 리스트 혜택계산 후 반환
  */
-@Slf4j
 @Component
 @RequiredArgsConstructor
 public class ProductCouponCalculator implements Calculator {
@@ -44,10 +42,13 @@ public class ProductCouponCalculator implements Calculator {
 
             // [상품 - 프로모션리스트] 객체 생성, 결과 리스트에 추가
             ProductCoupon productCoupon = new ProductCoupon(product, promotionList);
+
             // 혜택적용
             productCoupon.applyBenefit();
+
             // 정책기준 정렬
             productCoupon.sortPromotionList();
+
             productCouponList.add(productCoupon);
 
         });

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -52,10 +53,15 @@ public class CartCouponCalculator implements Calculator {
 
         });
 
-        // valid true filter, 최대혜택 프로모션 YN set
-        setMaxBenefitYn(couponProductList);
+        CartCouponResponse cartCouponResponse = new CartCouponResponse(couponProductList);
 
-        return new CartCouponResponse(couponProductList);
+        // isValid true값들만 filter
+        cartCouponResponse.filterValidated();
+
+        // 최대혜택 프로모션 YN set
+        cartCouponResponse.setMaxBenefitYn();
+
+        return cartCouponResponse;
 
     }
 
@@ -68,15 +74,6 @@ public class CartCouponCalculator implements Calculator {
                 .filter(product -> applyProductNoList.contains(product.getProductNo()))
                 .collect(Collectors.toList());
 
-    }
-
-    private void setMaxBenefitYn(List<CouponProduct> couponProductList){
-        couponProductList.stream()
-                .filter(CouponProduct::isValid)
-                .max(Comparator.comparing(couponProduct -> couponProduct.getPromotion().getBenefitPrice()))
-                .get()
-                .getPromotion()
-                .setMaxBenefitYn("Y");
     }
 
 }

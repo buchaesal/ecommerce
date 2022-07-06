@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.plateer.ec1.promotion.mapper.CalculationMapper">
 
-    <sql id="selectPromotionList">
+    <sql id="calculationCommon">
             cci.cpn_iss_no,
             cpb.dc_ccd,
             cpb.dc_val,
@@ -41,7 +41,7 @@
             case when cci.cpn_iss_no = #{cpnIssNo}
             then 'Y'
             else 'N' end as applyYn,
-        <include refid="selectPromotionList"/>
+        <include refid="calculationCommon"/>
         and cpat.aply_tgt_no = #{productNo}
         and cpb.min_pur_amt <![CDATA[ <= ]]> #{productPrice}
     </select>
@@ -52,7 +52,7 @@
             resultType="com.plateer.ec1.promotion.vo.Promotion">
         select
         distinct on (cpb.prm_no) cpb.prm_no,
-        <include refid="selectPromotionList"/>
+        <include refid="calculationCommon"/>
         and aply_tgt_no in
         <foreach item="item" collection="productList" open="(" separator="," close=")">
             #{item.productNo}
