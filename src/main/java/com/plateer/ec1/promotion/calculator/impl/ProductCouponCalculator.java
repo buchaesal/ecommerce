@@ -53,10 +53,7 @@ public class ProductCouponCalculator implements Calculator {
 
         });
 
-        ProductCouponResponseVO response = new ProductCouponResponseVO();
-        response.setProductCouponList(productCouponList);
-
-        return response;
+        return new ProductCouponResponseVO(productCouponList);
 
     }
 
