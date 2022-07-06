@@ -17,8 +17,8 @@ public class CcCpnIssueModel {
     private String cpnCertNo;
     private String ordNo;
     private Long prmNo;
-    private LocalDateTime sysRegDt;
+    private LocalDateTime sysRegDtime;
     private String sysRegId;
-    private LocalDateTime sysModDt;
+    private LocalDateTime sysModDtime;
     private String sysModId;
 }

@@ -63,7 +63,7 @@ public class CouponService {
 
     @Validated(Cancel.class)
     @Transactional
-    public CcCpnIssueModel cancelUsingCoupon(@Valid CouponRequest request){
+    public void cancelUsingCoupon(@Valid CouponRequest request){
 
         CouponInfo couponInfo = getCouponInfo(request);
         request.setPrmNo(couponInfo.getPrmNo());
@@ -72,13 +72,9 @@ public class CouponService {
         couponInfo.validateCancelCoupon();
 
         // 프로모션 종료일시가 현재 이후일 때만 신규쿠폰 발급
-        CcCpnIssueModel model = new CcCpnIssueModel();
         if(couponInfo.isValidPeriod()){
-            model = request.makeInsertRestoreCouponModel();
-            couponTrxMapper.insertRestoreCoupon(model);
+            couponTrxMapper.insertRestoreCoupon(request.makeInsertRestoreCouponModel());
         }
-
-        return model;
 
     }
 

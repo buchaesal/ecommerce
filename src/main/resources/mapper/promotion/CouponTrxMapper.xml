@@ -37,9 +37,10 @@
     </update>
     
     <insert id="insertRestoreCoupon"
-            parameterType="com.plateer.ec1.common.model.promotion.CcCpnIssueModel"
-            useGeneratedKeys="true"
-            keyProperty="cpnIssNo">
+            parameterType="com.plateer.ec1.common.model.promotion.CcCpnIssueModel">
+        <selectKey resultType="java.time.LocalDateTime" keyProperty="sysRegDtime" order="BEFORE">
+            select sys_reg_dtime from cc_cpn_issue where cpn_iss_no = #{cpnIssNo}
+        </selectKey>
         /* 쿠폰 복원 */
         insert into cc_cpn_issue
         (prm_no,
@@ -53,11 +54,10 @@
         (#{prmNo},
         #{mbrNo},
         #{cpnIssNo},
-        now(),
+        #{sysRegDtime},
         'admin',
         now(),
         'admin')
-
     </insert>
 
 </mapper>
