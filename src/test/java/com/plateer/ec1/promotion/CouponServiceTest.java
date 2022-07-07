@@ -52,10 +52,18 @@ class CouponServiceTest {
     }
 
     @Test
-    @DisplayName("쿠폰 다운로드 테스트")
-    void downloadCoupon3(){
+    void downloadCoupon(){
+        Long[] list = {1L, 2L};
+        for(Long prmNo : list){
+            downloadCoupon3(prmNo);
+        }
 
-        Long prmNo = 1L;
+    }
+
+    @Test
+    @DisplayName("쿠폰 다운로드 테스트")
+    void downloadCoupon3(Long prmNo){
+
         String mbrNo = "test01";
 
         CcCpnIssueModel model = couponService.downloadCoupon(

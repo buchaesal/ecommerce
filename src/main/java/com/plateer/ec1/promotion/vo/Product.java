@@ -1,9 +1,6 @@
 package com.plateer.ec1.promotion.vo;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
 
@@ -11,6 +8,7 @@ import javax.validation.constraints.NotEmpty;
 @Setter
 @Builder
 @ToString
+@AllArgsConstructor
 public class Product {
     @NotEmpty
     private String productNo; // 상품번호
