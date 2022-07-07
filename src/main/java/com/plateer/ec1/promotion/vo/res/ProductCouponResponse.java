@@ -3,7 +3,6 @@ package com.plateer.ec1.promotion.vo.res;
 import com.plateer.ec1.promotion.vo.MaxBenefit;
 import com.plateer.ec1.promotion.vo.Product;
 import com.plateer.ec1.promotion.vo.ProductCoupon;
-import com.plateer.ec1.promotion.vo.Promotion;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -28,7 +27,6 @@ public class ProductCouponResponse extends BaseResponseVO {
             Long key = iterator.next();
             MaxBenefit maxBenefit = maxBenefitMap.get(key);
             Product maxBenefitProduct = maxBenefit.getProduct();
-            Promotion maxBenefitPromotion = maxBenefit.getPromotion();
 
             productCouponList.forEach((productCoupon) -> {
                 Product product = productCoupon.getProduct();
