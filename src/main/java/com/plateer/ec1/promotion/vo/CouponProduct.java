@@ -16,11 +16,16 @@ public class CouponProduct {
     private boolean isValid;
 
     public CouponProduct(Promotion promotion, List<Product> productList){
+
         this.promotion = promotion;
         this.productList = productList;
+
+        // 검증, 혜택가 set
+        validateAndSetBenefit();
+
     }
 
-    public void validateCartCoupon(){
+    private void validateAndSetBenefit(){
 
         // 장바구니 상품 총합 계산 (가격*수량)
         long cartSum = this.productList.stream()

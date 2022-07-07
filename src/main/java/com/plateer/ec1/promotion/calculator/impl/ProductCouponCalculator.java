@@ -40,15 +40,10 @@ public class ProductCouponCalculator implements Calculator {
             // 상품 별 적용가능 프로모션 리스트 조회
             List<Promotion> promotionList = getProductPromotionList(request, product);
 
-            // [상품 - 프로모션리스트] 객체 생성, 결과 리스트에 추가
+            // [상품 - 프로모션리스트] 객체 생성
             ProductCoupon productCoupon = new ProductCoupon(product, promotionList);
 
-            // 혜택적용
-            productCoupon.applyBenefit();
-
-            // 정책기준 정렬
-            productCoupon.sortPromotionList();
-
+            // 결과 리스트에 추가
             productCouponList.add(productCoupon);
 
         });

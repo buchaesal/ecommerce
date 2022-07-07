@@ -11,10 +11,21 @@ import java.util.stream.Collectors;
 
 @Getter
 @Setter
-@AllArgsConstructor
 public class CartCouponResponse extends BaseResponseVO {
 
     private List<CouponProduct> couponProductList;
+
+    public CartCouponResponse(List<CouponProduct> couponProductList){
+
+        this.couponProductList = couponProductList;
+
+        // isValid true값들만 filter
+        filterValidated();
+
+        // 최대혜택 프로모션 YN set
+        setMaxBenefitYn();
+
+    }
 
     public void filterValidated(){
         couponProductList = couponProductList.stream()

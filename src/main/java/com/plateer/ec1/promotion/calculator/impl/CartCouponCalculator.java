@@ -44,11 +44,8 @@ public class CartCouponCalculator implements Calculator {
             // 프로모션에 해당하는 대상 상품리스트 조회
             List<Product> productList = getApplyProductList(request, promotion);
 
-            // [프로모션 - 상품리스트] 객체 생성
+            // [프로모션 - 상품리스트] 형태의 상품쿠폰 객체 생성
             CouponProduct couponProduct = new CouponProduct(promotion, productList);
-
-            // 검증
-            couponProduct.validateCartCoupon();
 
             // 결과 리스트에 추가
             couponProductList.add(couponProduct);
@@ -56,21 +53,7 @@ public class CartCouponCalculator implements Calculator {
         });
 
         // 장바구니쿠폰 응답객체 만들고 리턴
-        return makeCartCouponResponse(couponProductList);
-
-    }
-
-    private CartCouponResponse makeCartCouponResponse(List<CouponProduct> couponProductList){
-
-        CartCouponResponse cartCouponResponse = new CartCouponResponse(couponProductList);
-
-        // isValid true값들만 filter
-        cartCouponResponse.filterValidated();
-
-        // 최대혜택 프로모션 YN set
-        cartCouponResponse.setMaxBenefitYn();
-
-        return cartCouponResponse;
+        return new CartCouponResponse(couponProductList);
 
     }
 

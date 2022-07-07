@@ -1,6 +1,5 @@
 package com.plateer.ec1.promotion.vo;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -12,22 +11,31 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @ToString
-@AllArgsConstructor
 public class ProductCoupon {
 
     private Product product;
     private List<Promotion> promotionList;
 
-    public void applyBenefit(){
+    public ProductCoupon(Product product, List<Promotion> promotionList){
 
-        if(!promotionList.isEmpty()){
+        this.product = product;
+        this.promotionList = promotionList;
+
+        if(!this.promotionList.isEmpty()){
             // 혜택 적용
-            promotionList.forEach(promotion -> promotion.setBenefitPrice(product.getProductAmt()));
+            applyBenefit();
+
+            // 정책기준 정렬
+            sortPromotionList();
         }
 
     }
 
-    public void sortPromotionList(){
+    private void applyBenefit(){
+        promotionList.forEach(promotion -> promotion.setBenefitPrice(product.getProductAmt()));
+    }
+
+    private void sortPromotionList(){
         promotionList = promotionList.stream().sorted(makeComparator()).collect(Collectors.toList());
         promotionList.get(0).setMaxBenefitYn("Y");
         // 기적용여부 맨 앞

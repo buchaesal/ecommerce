@@ -5,6 +5,7 @@ import com.plateer.ec1.promotion.vo.Product;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -15,7 +16,7 @@ public class PromotionRequest {
     @NotEmpty
     private String mbrNo;
     @NotNull
-    private List<Product> productList;
+    private List<@Valid Product> productList;
     @NotNull
     private PromotionType promotionType;
 }

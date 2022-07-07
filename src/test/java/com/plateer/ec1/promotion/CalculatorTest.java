@@ -63,6 +63,7 @@ class CalculatorTest {
     void getCartCouponData(){
         Product product = Product.builder()
                 .productNo("P007")
+                .productCnt(1)
                 .productAmt(50000).build();
 
         Product product1 = Product.builder()
