@@ -64,7 +64,6 @@ public class ProductCoupon {
                 || product.getProductItemNo().compareTo(target.getProduct().getProductItemNo()) < 0){
                     coverMapMaxBenefit(maxBenefitMap, maxPromotion);
                 }
-
             }
 
         }else{

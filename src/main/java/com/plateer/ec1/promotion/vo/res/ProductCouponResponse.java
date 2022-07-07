@@ -23,6 +23,8 @@ public class ProductCouponResponse extends BaseResponseVO {
         // 최종리턴전, 최대혜택YN을 set해줘야한다.
         Iterator<Long> iterator = maxBenefitMap.keySet().iterator();
 
+        // 최대혜택프로모션 정보가 들어있는 Map (쿠폰발급번호, 프로모션정보) 을 하나씩 꺼내서,
+        // 해당 상품프로모션을 찾아 최대혜택값여부 YN을 세팅해준다.
         while(iterator.hasNext()){
             Long key = iterator.next();
             MaxBenefit maxBenefit = maxBenefitMap.get(key);
