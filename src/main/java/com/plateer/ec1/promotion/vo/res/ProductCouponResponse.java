@@ -10,6 +10,7 @@ import lombok.ToString;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -37,7 +38,7 @@ public class ProductCouponResponse extends BaseResponseVO {
                 && product.getProductItemNo().equals(maxBenefitProduct.getProductItemNo())){
                     // key(쿠폰발급번호)로 프로모션 찾기
                     productCoupon.getPromotionList().stream()
-                            .filter((promotion) -> promotion.getCpnIssNo() == key)
+                            .filter((promotion) -> Objects.equals(promotion.getCpnIssNo(), key))
                             .findFirst()
                             .get()
                             .setMaxBenefitYn("Y");

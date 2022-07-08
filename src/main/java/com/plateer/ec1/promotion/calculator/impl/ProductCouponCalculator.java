@@ -36,7 +36,8 @@ public class ProductCouponCalculator implements Calculator {
 
         ProductCouponRequest request = new ProductCouponRequest(promotionRequest);
         List<ProductCoupon> productCouponList = new ArrayList<>();
-        // key: 발급번호, value: 최대혜택정보
+
+        // key: 발급번호, value: 최대혜택정보 ==> 최대혜택Y를 해줘야하는 상품-프로모션 정보가 들어있는 map
         Map<Long, MaxBenefit> maxBenefitMap = new HashMap<>();
 
         // 넘어온 상품 반복문 조회 시작

@@ -33,7 +33,7 @@ public class CouponService {
         // 다운로드 가능수량 조회 (조건 : 사용여부, 쿠폰 다운로드가능 시작/종료일)
         CouponCountResVO countRes = Optional.ofNullable(
                 couponMapper.getAvailableCouponCountByPrmNo(request.makeAvailableCouponCountRequest()))
-                .orElseThrow(() -> new IllegalArgumentException("다운로드 가능한 쿠폰이 아닙니다."));
+                .orElseThrow(() -> new RuntimeException("다운로드 가능한 쿠폰이 아닙니다."));
 
         // 다운로드 가능수량 검증
         countRes.validate();
@@ -51,7 +51,7 @@ public class CouponService {
     public void useCoupon(@Valid CouponRequest request){
 
         CouponInfo couponInfo = Optional.ofNullable(getCouponInfo(request))
-                .orElseThrow(() -> new IllegalArgumentException("사용하려는 쿠폰이 존재하지 않습니다."));
+                .orElseThrow(() -> new RuntimeException("사용하려는 쿠폰이 존재하지 않습니다."));
 
         // 쿠폰사용 validate
         couponInfo.validateUsingCoupon(request);

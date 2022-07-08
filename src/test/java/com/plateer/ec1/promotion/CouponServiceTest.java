@@ -29,8 +29,8 @@ class CouponServiceTest {
         Assertions.assertThrows(ConstraintViolationException.class, () -> {
             couponService.downloadCoupon(
                     CouponRequest.builder()
-                            .prmNo(1L)
-//                        .mbrNo("test01")
+//                            .prmNo(1L)
+                        .mbrNo("test01")
                             .build());
         });
 
@@ -41,7 +41,7 @@ class CouponServiceTest {
     void downloadCoupon2(){
 
         //prm_no = 3  : 6/1~6/30
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        Assertions.assertThrows(RuntimeException.class, () -> {
             couponService.downloadCoupon(
                     CouponRequest.builder()
                             .prmNo(3L)
@@ -76,7 +76,7 @@ class CouponServiceTest {
 
         Assertions.assertEquals(prmNo, couponInfo.getPrmNo());
         Assertions.assertEquals(mbrNo, couponInfo.getMbrNo());
-        Assertions.assertEquals(null, couponInfo.getCpnUseDt());
+        Assertions.assertNull(couponInfo.getCpnUseDt());
 
     }
 
@@ -101,7 +101,7 @@ class CouponServiceTest {
     void useCoupon2(){
 
         //프로모션기간 prm_no=6 : 6/1~6/30
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        Assertions.assertThrows(RuntimeException.class, () -> {
             couponService.useCoupon(
                     CouponRequest.builder()
                     .mbrNo("test01")
@@ -117,7 +117,7 @@ class CouponServiceTest {
     void useCoupon3(){
 
         // 쿠폰발급번호 14L은 존재하지 않음.
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        Assertions.assertThrows(RuntimeException.class, () -> {
             couponService.useCoupon(
                     CouponRequest.builder()
                     .cpnIssNo(14L)
@@ -155,7 +155,7 @@ class CouponServiceTest {
     @DisplayName("쿠폰사용 - 기사용쿠폰 체크")
     void useCoupon5(){
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        Assertions.assertThrows(RuntimeException.class, () -> {
             couponService.useCoupon(
                     CouponRequest.builder()
                     .cpnIssNo(2L)

@@ -54,6 +54,7 @@ public class ProductCoupon {
             Promotion targetPromotion = target.getPromotion();
 
             if(maxPromotion.getBenefitPrice() > targetPromotion.getBenefitPrice()){
+
                 // 혜택가가 더 크다면 map에 덮어씌운다.
                 coverMapMaxBenefit(maxBenefitMap, maxPromotion);
 
@@ -64,12 +65,11 @@ public class ProductCoupon {
                 || product.getProductItemNo().compareTo(target.getProduct().getProductItemNo()) < 0){
                     coverMapMaxBenefit(maxBenefitMap, maxPromotion);
                 }
-            }
 
+            }
         }else{
             // null이라면 최초이므로 넣어줌
             coverMapMaxBenefit(maxBenefitMap, maxPromotion);
-
         }
     }
 
