@@ -39,7 +39,7 @@ public class OrderContext {
             insertOrderData(dto);
 
             // 결제
-            payService.approve(orderRequest.getPayInfo());
+            payService.approve(null);
 
             // 금액검증
             amountValidation(orderRequest.getOrderNo());

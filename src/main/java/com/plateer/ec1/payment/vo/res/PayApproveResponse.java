@@ -1,19 +1,16 @@
-package com.plateer.ec1.payment.vo;
+package com.plateer.ec1.payment.vo.res;
 
 import com.plateer.ec1.payment.enums.PaymentType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 @Getter
 @Setter
 @AllArgsConstructor
-public class PayInfo {
+public class PayApproveResponse {
 
-    private Long payAmount;
-    private String bankCode;
     private PaymentType paymentType;
-    private String depositorName;
+    private String ablePartialCancelYn;
 
 }

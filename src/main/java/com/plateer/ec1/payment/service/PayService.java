@@ -1,33 +1,37 @@
 package com.plateer.ec1.payment.service;
 
-import com.plateer.ec1.payment.vo.OriginalOrder;
-import com.plateer.ec1.payment.vo.PayInfo;
-import com.plateer.ec1.payment.vo.req.NetCancelReqVO;
-import com.plateer.ec1.payment.vo.req.PayCancelReqVO;
-import com.plateer.ec1.payment.vo.res.PayApproveResVO;
 import com.plateer.ec1.payment.enums.PaymentType;
 import com.plateer.ec1.payment.factory.PaymentServiceFactory;
+import com.plateer.ec1.payment.vo.OrderInfo;
+import com.plateer.ec1.payment.vo.OriginalOrder;
+import com.plateer.ec1.payment.vo.req.NetCancelReqVO;
+import com.plateer.ec1.payment.vo.req.PayCancelReqVO;
+import com.plateer.ec1.payment.vo.req.PaymentRequest;
+import com.plateer.ec1.payment.vo.res.PayApproveResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-@Slf4j
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class PayService {
 
     private final PaymentServiceFactory paymentServiceFactory;
 
-    /**
-     * 승인
-     * @param payInfo
-     * @return
-     */
-    public PayApproveResVO approve(PayInfo payInfo){
-        log.info("결제 승인 - payInfo : {}", payInfo);
-        PaymentService service = paymentServiceFactory.getPaymentService(payInfo.getPaymentType());
-        service.validateAuth(payInfo);
-        return service.approvePay(payInfo);
+    public List<PayApproveResponse> approve(PaymentRequest paymentRequest){
+
+        List<PayApproveResponse> resultList = new ArrayList<>();
+        OrderInfo orderInfo = paymentRequest.getOrderInfo();
+
+        paymentRequest.getPayInfoList().forEach(payInfo -> {
+            PaymentService service = paymentServiceFactory.getPaymentService(payInfo.getPaymentType());
+            resultList.add(service.approvePay(orderInfo, payInfo));
+        });
+
+        return resultList;
+
     }
 
     /**
@@ -35,7 +39,6 @@ public class PayService {
      * @param reqVO
      */
     public void cancel(PayCancelReqVO reqVO){
-        log.info("결제 취소 요청 - PayCancelReqVO : {}", reqVO);
         OriginalOrder originalOrder = getOriginalOrder(reqVO);
         paymentServiceFactory.getPaymentService(originalOrder.getPaymentType()).cancelPay(originalOrder);
     }
@@ -46,7 +49,6 @@ public class PayService {
      * @return
      */
     private OriginalOrder getOriginalOrder(PayCancelReqVO reqVO){
-        log.info("원 주문 조회");
         OriginalOrder originalOrder = new OriginalOrder();
         originalOrder.setPaymentType(PaymentType.INICIS);
         return originalOrder;
