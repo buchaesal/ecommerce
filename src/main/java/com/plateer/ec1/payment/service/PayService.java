@@ -26,8 +26,10 @@ public class PayService {
         OrderInfo orderInfo = paymentRequest.getOrderInfo();
 
         paymentRequest.getPayInfoList().forEach(payInfo -> {
-            PaymentService service = paymentServiceFactory.getPaymentService(payInfo.getPaymentType());
-            resultList.add(service.approvePay(orderInfo, payInfo));
+            PayApproveResponse response = paymentServiceFactory
+                    .getPaymentService(payInfo.getPaymentType())
+                    .executePayment(orderInfo, payInfo);
+            resultList.add(response);
         });
 
         return resultList;

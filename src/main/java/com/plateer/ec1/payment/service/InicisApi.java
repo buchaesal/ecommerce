@@ -10,6 +10,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
+import java.util.Optional;
 
 @Component
 public class InicisApi {
@@ -22,7 +23,8 @@ public class InicisApi {
 
 
     public Map<String, String> requestVirtualAccount(MultiValueMap<String, String> cancelRequest) {
-        String result = exchangeFormRequest(cancelRequest, InicisFactory.getApiUrl());
+        String result = Optional.ofNullable(exchangeFormRequest(cancelRequest, InicisFactory.getApiUrl()))
+                .orElseThrow(() -> new RuntimeException("api request fail"));
         return InicisUtil.parseJsonToStringMap(result);
     }
 

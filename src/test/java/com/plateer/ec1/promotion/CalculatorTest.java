@@ -114,18 +114,18 @@ class CalculatorTest {
 
     }
 
-//    @Test
-//    @DisplayName("주문2 - 상품쿠폰")
-//    void productCouponOrder2(){
-//        CartCouponResponse result = cartCouponCalculator.getCalculationData(getOrder2PromotionRequest());
-//
-//
-//    }
-//
-//    @Test
-//    @DisplayName("주문2 - 장바구니쿠폰")
-//    void cartCouponOrder2(){
-//
-//    }
+    @Test
+    @DisplayName("주문2 - 상품쿠폰")
+    void productCouponOrder2(){
+        CartCouponResponse result = cartCouponCalculator.getCalculationData(getOrder2PromotionRequest());
+
+
+    }
+
+    @Test
+    @DisplayName("주문2 - 장바구니쿠폰")
+    void cartCouponOrder2(){
+
+    }
 
 }
