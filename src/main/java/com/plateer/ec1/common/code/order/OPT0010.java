@@ -6,8 +6,8 @@ package com.plateer.ec1.common.code.order;
 
 public enum OPT0010 {
 
-    PERIOD("10"),
-    DAYS("20");
+    APPROVE("10"),
+    CANCEL("20");
 
     public String code;
     OPT0010(String code) {

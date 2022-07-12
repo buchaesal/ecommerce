@@ -1,5 +1,6 @@
 package com.plateer.ec1.payment.factory;
 
+import com.plateer.ec1.payment.utils.PaymentUtil;
 import com.plateer.ec1.payment.vo.OrderInfo;
 import com.plateer.ec1.payment.vo.PayInfo;
 import org.springframework.util.LinkedMultiValueMap;
@@ -32,7 +33,7 @@ public class InicisFactory {
         String price = String.valueOf(payInfo.getPayAmount());
 
         // INIAPIKey+type+paymethod+timestamp+clientIp+mid+moid+price
-        String hashData = hashSha512(appendString(API_KEY, type, paymethod, timestamp, clientIp, MID, moid, price));
+        String hashData = hashSha512(PaymentUtil.appendString(API_KEY, type, paymethod, timestamp, clientIp, MID, moid, price));
 
         MultiValueMap<String, String> result = new LinkedMultiValueMap<>();
         result.add("type", type);
@@ -83,13 +84,6 @@ public class InicisFactory {
         return result;
     }
 
-    private static String appendString(String ...strs){
-        StringBuilder builder = new StringBuilder();
-        for (String str : strs) {
-            builder.append(str);
-        }
-        return builder.toString();
-    }
 
     public static String getApiUrl(){
         return API_URL;

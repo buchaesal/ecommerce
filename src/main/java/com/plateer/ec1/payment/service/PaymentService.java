@@ -7,12 +7,12 @@ import com.plateer.ec1.payment.vo.PayInfo;
 import com.plateer.ec1.payment.vo.api.PaymentResultBase;
 import com.plateer.ec1.payment.vo.req.NetCancelReqVO;
 import com.plateer.ec1.payment.vo.res.PayApproveResponse;
+import org.springframework.transaction.annotation.Transactional;
 
 public abstract class PaymentService<T extends PaymentResultBase> {
 
     abstract public PaymentType getType();
-
-     PayApproveResponse executePayment(OrderInfo orderInfo, PayInfo payInfo){
+    PayApproveResponse executePayment(OrderInfo orderInfo, PayInfo payInfo){
 
          // 인증값 검증
         validateAuth(payInfo);

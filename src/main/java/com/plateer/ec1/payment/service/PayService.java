@@ -10,6 +10,7 @@ import com.plateer.ec1.payment.vo.req.PaymentRequest;
 import com.plateer.ec1.payment.vo.res.PayApproveResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,7 @@ public class PayService {
 
     private final PaymentServiceFactory paymentServiceFactory;
 
+    @Transactional
     public List<PayApproveResponse> approve(PaymentRequest paymentRequest){
 
         List<PayApproveResponse> resultList = new ArrayList<>();

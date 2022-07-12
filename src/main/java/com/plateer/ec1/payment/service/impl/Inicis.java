@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.plateer.ec1.common.model.payment.OpPayInfoModel;
 import com.plateer.ec1.payment.enums.PaymentType;
 import com.plateer.ec1.payment.factory.InicisFactory;
+import com.plateer.ec1.payment.mapper.PaymentTrxMapper;
 import com.plateer.ec1.payment.service.InicisApi;
 import com.plateer.ec1.payment.service.PaymentService;
 import com.plateer.ec1.payment.vo.OrderInfo;
@@ -23,6 +24,7 @@ import java.util.Map;
 public class Inicis extends PaymentService<InicisVirtualAccount> {
 
     private final InicisApi inicisApi;
+    private final PaymentTrxMapper paymentTrxMapper;
 
     public PaymentType getType(){
         return PaymentType.INICIS;
@@ -44,7 +46,8 @@ public class Inicis extends PaymentService<InicisVirtualAccount> {
 
 
     public void savePaymentData(OrderInfo orderInfo, PayInfo payInfo, InicisVirtualAccount result) {
-        OpPayInfoModel model = result.makeInsertModel(orderInfo, payInfo);
+        OpPayInfoModel model = result.makeApproveInsertModel(orderInfo, payInfo);
+        paymentTrxMapper.insertOrderPayment(model);
     }
 
     public void cancelPay(OriginalOrder originalOrder) {
