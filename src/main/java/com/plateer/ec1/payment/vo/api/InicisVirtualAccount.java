@@ -12,9 +12,6 @@ import com.plateer.ec1.payment.vo.PayInfo;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 @Getter
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -23,8 +20,8 @@ public class InicisVirtualAccount extends PaymentResultBase {
     private String resultCode;
     private String tid; // 가상계좌 채번TID
     private String vacct; // 가상계좌번호
-    private String authDate;
-    private String authTime;
+    private String validDate;
+    private String validTime;
 
     public void validateApprove(){
       if(!PaymentType.INICIS.getApproveSuccessCode().equals(resultCode)){
@@ -41,9 +38,10 @@ public class InicisVirtualAccount extends PaymentResultBase {
                 .payPrgsScd(OPT0011.REQUEST_APPROVE.code)
                 .payAmt(payInfo.getPayAmount())
                 .cnclAmt(0L)
-                .rfndAvlAmt(payInfo.getPayAmount())
+                .rfndAvlAmt(0L)
                 .trsnId(tid)
-                .payCmtDtime(LocalDateTime.parse(authDate + authTime, DateTimeFormatter.ofPattern("yyyyMMddHHmmss")))
+                .vrValDt(validDate)
+                .vrValTt(validTime)
                 .vrAcct(vacct)
                 .build();
   }

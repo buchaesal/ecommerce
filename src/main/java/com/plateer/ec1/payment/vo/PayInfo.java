@@ -6,14 +6,18 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.validation.constraints.NotNull;
+
 @Getter
 @Setter
 @AllArgsConstructor
 public class PayInfo {
 
+    @NotNull
     private Long payAmount;
-    private String bankCode;
+    @NotNull
     private PaymentType paymentType;
+    private String bankCode;
     private String depositorName;
 
 }
