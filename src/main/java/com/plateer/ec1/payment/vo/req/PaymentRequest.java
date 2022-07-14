@@ -16,8 +16,9 @@ import java.util.List;
 public class PaymentRequest {
 
     @NotNull
+    @Valid
     OrderInfo orderInfo;
     @NotNull
-    List<@Valid PayInfo> payInfoList;
+    List<@Valid @NotNull PayInfo> payInfoList;
 
 }

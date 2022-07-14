@@ -13,10 +13,13 @@ import com.plateer.ec1.payment.vo.res.PayApproveResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
+@Validated
 @Service
 @RequiredArgsConstructor
 public class PayService {
@@ -25,7 +28,8 @@ public class PayService {
     private final PaymentServiceFactory paymentServiceFactory;
 
     @Transactional
-    public List<PayApproveResponse> approve(PaymentRequest paymentRequest){
+    @Validated
+    public List<PayApproveResponse> approve(@Valid PaymentRequest paymentRequest){
 
         List<PayApproveResponse> resultList = new ArrayList<>();
         OrderInfo orderInfo = paymentRequest.getOrderInfo();

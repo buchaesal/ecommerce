@@ -7,6 +7,7 @@ import com.plateer.ec1.payment.factory.InicisFactory;
 import com.plateer.ec1.payment.mapper.PaymentTrxMapper;
 import com.plateer.ec1.payment.service.InicisApi;
 import com.plateer.ec1.payment.service.PaymentService;
+import com.plateer.ec1.payment.validation.VirtualAccount;
 import com.plateer.ec1.payment.vo.OrderInfo;
 import com.plateer.ec1.payment.vo.OriginalOrder;
 import com.plateer.ec1.payment.vo.PayInfo;
@@ -15,10 +16,12 @@ import com.plateer.ec1.payment.vo.req.NetCancelReqVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.Map;
 
 
+@Validated
 @Component
 @RequiredArgsConstructor
 public class Inicis extends PaymentService<InicisVirtualAccount> {
@@ -34,6 +37,7 @@ public class Inicis extends PaymentService<InicisVirtualAccount> {
     }
 
 
+    @Validated(VirtualAccount.class)
     public InicisVirtualAccount approve(OrderInfo orderInfo, PayInfo payInfo) {
 
         MultiValueMap<String, String> requestMap = InicisFactory.inicisVirtualAccountRequest(orderInfo, payInfo);
