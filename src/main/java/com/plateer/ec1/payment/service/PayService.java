@@ -18,6 +18,7 @@ import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Validated
 @Service
@@ -61,8 +62,8 @@ public class PayService {
     }
 
     @Transactional
-    public void completeDeposit(ChangeDepositCompleteRequest request){
-        paymentTrxMapper.updateDepositCompleteStatus(request);
+    public void completeDeposit(Map<String, String> apiResultMap){
+        paymentTrxMapper.updateDepositCompleteStatus(new ChangeDepositCompleteRequest(apiResultMap));
     }
 
 }

@@ -20,8 +20,8 @@ public class InicisVirtualAccount extends PaymentResultBase {
     private String resultCode;
     private String tid; // 가상계좌 채번TID
     private String vacct; // 가상계좌번호
-    private String validDate;
-    private String validTime;
+    private String validDate; // 입금기한일
+    private String validTime; // 입금기한시간
 
     public void validateApprove(){
       if(!PaymentType.INICIS.getApproveSuccessCode().equals(resultCode)){
