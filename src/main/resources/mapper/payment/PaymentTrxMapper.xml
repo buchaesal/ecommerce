@@ -22,6 +22,8 @@
          sys_mod_dtime,
          sys_modr_id,
          vr_acct,
+         vr_acct_nm,
+         vr_bnk_cd,
          vr_val_dt,
          vr_val_tt
          )
@@ -41,6 +43,8 @@
          now(),
          'admin',
          #{vrAcct},
+         #{vrAcctNm},
+         #{vrBnkCd},
          #{vrValDt},
          #{vrValTt}
         )
@@ -60,5 +64,15 @@
     where trsn_id = #{noReqTid}
 
  </update>
+
+    <update id="updateCancelRefundAmount"
+            parameterType="com.plateer.ec1.common.model.payment.OpPayInfoModel">
+
+        update op_pay_info
+        set cncl_amt = #{cnclAmt},
+            rfnd_avl_amt = #{rfndAvlAmt}
+        where pay_no = #{payNo}
+
+    </update>
 
 </mapper>

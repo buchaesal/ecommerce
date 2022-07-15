@@ -3,8 +3,30 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.plateer.ec1.payment.mapper.PaymentMapper">
 
-    <select id="test" resultType="String">
-        select 'aaa';
+    <select id="getOriginalOrder"
+            parameterType="String"
+            resultType="com.plateer.ec1.payment.vo.OriginalOrder">
+
+        select
+            pay_no,
+            ord_no,
+            pay_mn_cd,
+            pay_prgs_scd,
+            rfnd_avl_amt,
+            pay_amt,
+            trsn_id,
+            pay_cmt_dtime,
+            vr_acct,
+            vr_acct_nm,
+            vr_bnk_cd,
+            vr_val_dt,
+            vr_val_tt
+        from op_pay_info
+        where
+            ord_no = #{ordNo}
+        and pay_prgs_scd in ('10', '20')
+        order by sys_reg_dtime desc
+        limit 1
     </select>
 
 </mapper>

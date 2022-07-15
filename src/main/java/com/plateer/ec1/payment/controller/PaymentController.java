@@ -17,10 +17,12 @@ public class PaymentController {
     private final PayService payService;
 
     @PostMapping(path = "deposit")
-    public void completeDeposit(@RequestParam Map<String, String> result) {
+    public String completeDeposit(@RequestParam Map<String, String> result) {
         if("0200".equals(result.get("type_msg"))){
             payService.completeDeposit(result);
+            return "OK";
         }
+        return "";
     }
 
 }

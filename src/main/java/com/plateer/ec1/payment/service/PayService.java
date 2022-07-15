@@ -2,12 +2,11 @@ package com.plateer.ec1.payment.service;
 
 import com.plateer.ec1.payment.enums.PaymentType;
 import com.plateer.ec1.payment.factory.PaymentServiceFactory;
-import com.plateer.ec1.payment.mapper.PaymentTrxMapper;
 import com.plateer.ec1.payment.vo.OrderInfo;
 import com.plateer.ec1.payment.vo.OriginalOrder;
 import com.plateer.ec1.payment.vo.req.ChangeDepositCompleteRequest;
-import com.plateer.ec1.payment.vo.req.NetCancelReqVO;
-import com.plateer.ec1.payment.vo.req.PayCancelReqVO;
+import com.plateer.ec1.payment.vo.req.NetCancelRequest;
+import com.plateer.ec1.payment.vo.req.PaymentCancelRequest;
 import com.plateer.ec1.payment.vo.req.PaymentRequest;
 import com.plateer.ec1.payment.vo.res.PayApproveResponse;
 import lombok.RequiredArgsConstructor;
@@ -20,16 +19,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@Validated
 @Service
+@Validated
 @RequiredArgsConstructor
 public class PayService {
 
-    private final PaymentTrxMapper paymentTrxMapper;
+    private final OrderPaymentDataService dataService;
     private final PaymentServiceFactory paymentServiceFactory;
 
-    @Transactional
     @Validated
+    @Transactional
     public List<PayApproveResponse> approve(@Valid PaymentRequest paymentRequest){
 
         List<PayApproveResponse> resultList = new ArrayList<>();
@@ -38,7 +37,7 @@ public class PayService {
         paymentRequest.getPayInfoList().forEach(payInfo -> {
             PayApproveResponse response = paymentServiceFactory
                     .getPaymentService(payInfo.getPaymentType())
-                    .executePayment(orderInfo, payInfo);
+                    .executeApproveProcess(orderInfo, payInfo);
             resultList.add(response);
         });
 
@@ -46,24 +45,32 @@ public class PayService {
 
     }
 
-    public void cancel(PayCancelReqVO reqVO){
-        OriginalOrder originalOrder = getOriginalOrder(reqVO);
-        paymentServiceFactory.getPaymentService(originalOrder.getPaymentType()).cancelPay(originalOrder);
+    @Validated
+    @Transactional
+    public void manipulateAmount(@Valid PaymentCancelRequest request){
+
+        OriginalOrder originalOrder = dataService.getOriginalOrder(request);
+        originalOrder.validateAmount(request.getCnclAmt());
+        dataService.updateCancelRefundAmount(request, originalOrder);
+
     }
 
-    private OriginalOrder getOriginalOrder(PayCancelReqVO reqVO){
-        OriginalOrder originalOrder = new OriginalOrder();
-        originalOrder.setPaymentType(PaymentType.INICIS);
-        return originalOrder;
-    }
+    @Validated
+    @Transactional
+    public void cancel(@Valid PaymentCancelRequest request){
 
-    public void netCancel(NetCancelReqVO netCancelReqVO){
-        paymentServiceFactory.getPaymentService(netCancelReqVO.getPaymentType()).netCancel(netCancelReqVO);
+        OriginalOrder originalOrder = dataService.getOriginalOrder(request);
+        paymentServiceFactory.getPaymentService(PaymentType.findPaymentType(originalOrder.getPayMnCd()))
+                .executeCancelProcess(request, originalOrder);
+
     }
 
     @Transactional
     public void completeDeposit(Map<String, String> apiResultMap){
-        paymentTrxMapper.updateDepositCompleteStatus(new ChangeDepositCompleteRequest(apiResultMap));
+        dataService.changeDepositCompleteStatus(new ChangeDepositCompleteRequest(apiResultMap));
+    }
+
+    public void netCancel(NetCancelRequest netCancelRequest){
     }
 
 }

@@ -4,6 +4,6 @@ import com.plateer.ec1.payment.enums.PaymentType;
 import lombok.Data;
 
 @Data
-public class NetCancelReqVO {
+public class NetCancelRequest {
     private PaymentType paymentType;
 }

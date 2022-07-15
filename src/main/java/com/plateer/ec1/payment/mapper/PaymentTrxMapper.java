@@ -9,5 +9,6 @@ public interface PaymentTrxMapper {
 
     void insertOrderPayment(OpPayInfoModel model);
     void updateDepositCompleteStatus(ChangeDepositCompleteRequest request);
+    void updateCancelRefundAmount(OpPayInfoModel model);
 
 }
