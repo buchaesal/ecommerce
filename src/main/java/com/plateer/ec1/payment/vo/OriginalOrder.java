@@ -1,6 +1,7 @@
 package com.plateer.ec1.payment.vo;
 
 import com.plateer.ec1.common.code.order.OPT0011;
+import com.plateer.ec1.payment.enums.PaymentType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,6 +24,8 @@ public class OriginalOrder {
     private String vrBnkCd;
     private String vrValDt;
     private String vrValTt;
+    private String goodsNm;
+    private String ordNm;
 
     private Long newRfndAvlAmt = 0L;
 
@@ -39,6 +42,22 @@ public class OriginalOrder {
             newRfndAvlAmt = rfndAvlAmt - requestCancelAmount;
         }
 
+    }
+
+    public boolean isBeforeDeposit(){
+        return OPT0011.REQUEST_APPROVE.code.equals(payPrgsScd);
+    }
+
+    public boolean isCompleteDeposit(){
+        return OPT0011.COMPLETE_APPROVE.code.equals(payPrgsScd);
+    }
+
+    public OrderInfo makeOrderInfo(){
+        return new OrderInfo(ordNo, goodsNm, ordNm, "");
+    }
+
+    public PayInfo makePayInfo(Long payAmount){
+        return new PayInfo(payAmount, PaymentType.findPaymentType(payMnCd), vrBnkCd, vrAcctNm);
     }
 
 }

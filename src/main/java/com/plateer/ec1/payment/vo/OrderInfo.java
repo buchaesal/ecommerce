@@ -13,8 +13,8 @@ public class OrderInfo {
 
     @NotEmpty
     private String ordNo;
-    private String goodName;
-    private String buyerName;
-    private String buyerEmail;
+    private String goodsNm;
+    private String ordNm;
+    private String ordEmail;
 
 }

@@ -45,7 +45,7 @@ public abstract class PaymentService<T extends PaymentResultBase> {
         dataService.saveOrderPaymentData(result.makeCancelInsertModel(request, originalOrder));
 
         // 후처리
-        afterCancelProcess();
+        afterCancelProcess(request, originalOrder);
 
     }
 
@@ -57,7 +57,7 @@ public abstract class PaymentService<T extends PaymentResultBase> {
         return originalOrder.getPayAmt() != request.getCnclAmt();
     }
 
-    public void afterCancelProcess(){
+    public void afterCancelProcess(PaymentCancelRequest request, OriginalOrder originalOrder){
     }
 
 }

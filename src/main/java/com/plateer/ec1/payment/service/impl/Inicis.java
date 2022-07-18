@@ -1,7 +1,6 @@
 package com.plateer.ec1.payment.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.plateer.ec1.common.code.order.OPT0011;
 import com.plateer.ec1.common.component.ApiComponent;
 import com.plateer.ec1.payment.enums.PaymentType;
 import com.plateer.ec1.payment.factory.InicisFactory;
@@ -61,7 +60,7 @@ public class Inicis extends PaymentService<InicisVirtualAccount> {
 
         InicisVirtualAccount result = new InicisVirtualAccount();
 
-        if(OPT0011.REQUEST_APPROVE.code.equals(originalOrder.getPayPrgsScd())){
+        if(originalOrder.isCompleteDeposit()){
             // 원주문이 결제완료일때만 취소 if 호출
             MultiValueMap<String, String> requestMap = isPartialCancel(request, originalOrder) ?
                     InicisFactory.partialRefundVirtualAccount(request, originalOrder) :
@@ -77,7 +76,13 @@ public class Inicis extends PaymentService<InicisVirtualAccount> {
     }
 
     @Override
-    public void afterCancelProcess(){
+    public void afterCancelProcess(PaymentCancelRequest request, OriginalOrder originalOrder){
+
+        // 입금전 부분취소 일때, 부분취소후 남은금액 재결제 가상계좌발급
+        if(originalOrder.isBeforeDeposit() && isPartialCancel(request, originalOrder)){
+            Long approveAmount = originalOrder.getPayAmt() - request.getCnclAmt();
+            approve(originalOrder.makeOrderInfo(), originalOrder.makePayInfo(approveAmount));
+        }
 
     }
 

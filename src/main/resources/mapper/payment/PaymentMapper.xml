@@ -8,24 +8,28 @@
             resultType="com.plateer.ec1.payment.vo.OriginalOrder">
 
         select
-            pay_no,
-            ord_no,
-            pay_mn_cd,
-            pay_prgs_scd,
-            rfnd_avl_amt,
-            pay_amt,
-            trsn_id,
-            pay_cmt_dtime,
-            vr_acct,
-            vr_acct_nm,
-            vr_bnk_cd,
-            vr_val_dt,
-            vr_val_tt
-        from op_pay_info
+            opi.pay_no,
+            opi.ord_no,
+            opi.pay_mn_cd,
+            opi.pay_prgs_scd,
+            opi.rfnd_avl_amt,
+            opi.pay_amt,
+            opi.trsn_id,
+            opi.pay_cmt_dtime,
+            opi.vr_acct,
+            opi.vr_acct_nm,
+            opi.vr_bnk_cd,
+            opi.vr_val_dt,
+            opi.vr_val_tt,
+            ogi.goods_nm,
+            oob.ord_nm
+        from op_pay_info opi
+        inner join op_goods_info ogi using (ord_no)
+        inner join op_ord_base oob using (ord_no)
         where
-            ord_no = #{ordNo}
-        and pay_prgs_scd in ('10', '20')
-        order by sys_reg_dtime desc
+            opi.ord_no = #{ordNo}
+        and opi.pay_prgs_scd in ('10', '20')
+        order by opi.sys_reg_dtime desc
         limit 1
     </select>
 
