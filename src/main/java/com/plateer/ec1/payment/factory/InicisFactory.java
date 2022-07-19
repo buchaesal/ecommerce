@@ -15,7 +15,6 @@ import java.math.BigInteger;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
-import java.security.Key;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
@@ -52,9 +51,9 @@ public class InicisFactory {
         result.add("mid", MID);
         result.add("url", "");
         result.add("moid", moid); // 가맹점 주문번호
-        result.add("goodName", orderInfo.getGoodName());
-        result.add("buyerName", orderInfo.getBuyerName());
-        result.add("buyerEmail", orderInfo.getBuyerEmail());
+        result.add("goodName", orderInfo.getGoodsNm());
+        result.add("buyerName", orderInfo.getOrdNm());
+        result.add("buyerEmail", orderInfo.getOrdEmail());
         result.add("price", price);
         result.add("currency", "WON");
         result.add("bankCode", payInfo.getBankCode());

@@ -1,4 +1,4 @@
-package com.plateer.ec1.payment.service.impl;
+package com.plateer.ec1.payment.service;
 
 import com.plateer.ec1.payment.enums.PaymentType;
 import com.plateer.ec1.payment.service.PayService;

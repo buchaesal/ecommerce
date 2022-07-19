@@ -15,9 +15,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @Validated
@@ -49,7 +51,8 @@ public class PayService {
     @Transactional
     public void manipulateAmount(@Valid PaymentCancelRequest request){
 
-        OriginalOrder originalOrder = dataService.getOriginalOrder(request);
+        OriginalOrder originalOrder = Optional.ofNullable(dataService.getOriginalOrder(request))
+                .orElseThrow(() -> new IllegalArgumentException("주문을 찾을 수 없습니다."));
         originalOrder.validateAmount(request.getCnclAmt());
         dataService.updateCancelRefundAmount(request, originalOrder);
 
@@ -60,13 +63,14 @@ public class PayService {
     public void cancel(@Valid PaymentCancelRequest request){
 
         OriginalOrder originalOrder = dataService.getOriginalOrder(request);
-        paymentServiceFactory.getPaymentService(PaymentType.findPaymentType(originalOrder.getPayMnCd()))
-                .executeCancelProcess(request, originalOrder);
+        PaymentService paymentService = paymentServiceFactory.getPaymentService(PaymentType.findPaymentType(originalOrder.getPayMnCd()));
+        paymentService.executeCancelProcess(request, originalOrder);
 
     }
 
+    @Validated
     @Transactional
-    public void completeDeposit(Map<String, String> apiResultMap){
+    public void completeDeposit(@NotNull Map<String, String> apiResultMap){
         dataService.changeDepositCompleteStatus(new ChangeDepositCompleteRequest(apiResultMap));
     }
 

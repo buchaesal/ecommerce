@@ -14,6 +14,7 @@ import com.plateer.ec1.payment.vo.PayInfo;
 import com.plateer.ec1.payment.vo.api.InicisVirtualAccount;
 import com.plateer.ec1.payment.vo.req.NetCancelRequest;
 import com.plateer.ec1.payment.vo.req.PaymentCancelRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
 import org.springframework.validation.annotation.Validated;
@@ -44,8 +45,7 @@ public class Inicis extends PaymentService<InicisVirtualAccount> {
 
 
     @Override
-    @Validated(VirtualAccount.class)
-    public InicisVirtualAccount approve(OrderInfo orderInfo, @Valid PayInfo payInfo) {
+    public InicisVirtualAccount approve(OrderInfo orderInfo, PayInfo payInfo) {
 
         MultiValueMap<String, String> requestMap = InicisFactory.inicisVirtualAccountRequest(orderInfo, payInfo);
         Map<String, String> apiResult = InicisUtil.parseJsonToStringMap(apiComponent.exchangeFormRequest(requestMap, InicisFactory.getApiUrl()));

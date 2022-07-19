@@ -9,15 +9,22 @@ import com.plateer.ec1.payment.vo.req.NetCancelRequest;
 import com.plateer.ec1.payment.vo.req.PaymentCancelRequest;
 import com.plateer.ec1.payment.vo.res.PayApproveResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 
-@RequiredArgsConstructor
+import javax.validation.Valid;
+
+@Validated
 public abstract class PaymentService<T extends PaymentResultBase> {
 
-    private final OrderPaymentDataService dataService;
+    private OrderPaymentDataService dataService;
+
+    public PaymentService(OrderPaymentDataService dataService){
+        this.dataService = dataService;
+    }
 
     abstract public PaymentType getType();
 
-    PayApproveResponse executeApproveProcess(OrderInfo orderInfo, PayInfo payInfo){
+    PayApproveResponse executeApproveProcess(OrderInfo orderInfo, @Valid PayInfo payInfo){
 
          // 인증값 검증
         validateAuth(payInfo);

@@ -1,14 +1,13 @@
 package com.plateer.ec1.order.context;
 
-import com.plateer.ec1.order.vo.OrderVO;
-import com.plateer.ec1.order.vo.OrderProductView;
-import com.plateer.ec1.order.vo.OrderRequest;
-import com.plateer.ec1.order.vo.OrderValidationVO;
 import com.plateer.ec1.order.enums.OrderValidator;
 import com.plateer.ec1.order.service.OrderHistoryService;
 import com.plateer.ec1.order.strategy.AfterStrategy;
 import com.plateer.ec1.order.strategy.DataStrategy;
-import com.plateer.ec1.payment.service.PayService;
+import com.plateer.ec1.order.vo.OrderProductView;
+import com.plateer.ec1.order.vo.OrderRequest;
+import com.plateer.ec1.order.vo.OrderVO;
+import com.plateer.ec1.order.vo.OrderValidationVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -21,7 +20,6 @@ import java.util.Arrays;
 public class OrderContext {
 
     private final OrderHistoryService orderHistoryService;
-    private final PayService payService;
 
     public void execute(DataStrategy dataStrategy, AfterStrategy afterStrategy, OrderRequest orderRequest){
 

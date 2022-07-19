@@ -18,11 +18,6 @@ class Ec1ApplicationTests {
     OrderService orderService;
 
     @Test
-    void test(){
-        paymentMapper.test();
-    }
-
-    @Test
     void orderTest(){
         OrderRequest orderRequest = new OrderRequest();
         orderRequest.setOrderType(OrderType.GENERAL);

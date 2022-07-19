@@ -35,7 +35,7 @@ public class OriginalOrder {
             throw new IllegalStateException("취소요청금액이 결제금액보다 큽니다.");
         }
 
-        if(OPT0011.COMPLETE_APPROVE.code.equals(payPrgsScd)){
+        if(isCompleteDeposit()){
             if(rfndAvlAmt < requestCancelAmount){
                 throw new IllegalStateException("취소요청금액이 환불가능금액보다 큽니다.");
             }

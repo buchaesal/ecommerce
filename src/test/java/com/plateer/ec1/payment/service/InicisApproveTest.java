@@ -1,6 +1,8 @@
-package com.plateer.ec1.payment.service.impl;
+package com.plateer.ec1.payment.service;
 
 import com.plateer.ec1.payment.enums.PaymentType;
+import com.plateer.ec1.payment.service.OrderPaymentDataService;
+import com.plateer.ec1.payment.service.impl.Inicis;
 import com.plateer.ec1.payment.vo.OrderInfo;
 import com.plateer.ec1.payment.vo.PayInfo;
 import com.plateer.ec1.payment.vo.api.InicisVirtualAccount;
@@ -15,6 +17,8 @@ public class InicisApproveTest {
 
     @Autowired
     Inicis inicis;
+    @Autowired
+    OrderPaymentDataService dataService;
     OrderInfo orderInfo;
     PayInfo payInfo;
 
@@ -31,7 +35,7 @@ public class InicisApproveTest {
 
         InicisVirtualAccount response = inicis.approve(orderInfo, payInfo);
         Assertions.assertNotNull(response.getTid());
-        inicis.savePaymentData(orderInfo, payInfo, response);
+        dataService.saveOrderPaymentData(response.makeApproveInsertModel(orderInfo, payInfo));
 
     }
 

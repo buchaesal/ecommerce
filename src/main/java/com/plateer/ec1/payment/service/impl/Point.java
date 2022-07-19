@@ -31,8 +31,8 @@ public class Point extends PaymentService<PaymentResultBase> {
     }
 
     @Override
-    public void cancel(PaymentCancelRequest request, OriginalOrder originalOrder) {
-
+    public PaymentResultBase cancel(PaymentCancelRequest request, OriginalOrder originalOrder) {
+        return null;
     }
 
     public void cancel(OriginalOrder originalOrder) {
