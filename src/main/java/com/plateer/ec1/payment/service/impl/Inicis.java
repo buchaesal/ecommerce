@@ -7,23 +7,18 @@ import com.plateer.ec1.payment.factory.InicisFactory;
 import com.plateer.ec1.payment.service.OrderPaymentDataService;
 import com.plateer.ec1.payment.service.PaymentService;
 import com.plateer.ec1.payment.utils.InicisUtil;
-import com.plateer.ec1.payment.validation.VirtualAccount;
 import com.plateer.ec1.payment.vo.OrderInfo;
 import com.plateer.ec1.payment.vo.OriginalOrder;
 import com.plateer.ec1.payment.vo.PayInfo;
 import com.plateer.ec1.payment.vo.api.InicisVirtualAccount;
 import com.plateer.ec1.payment.vo.req.NetCancelRequest;
 import com.plateer.ec1.payment.vo.req.PaymentCancelRequest;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
-import org.springframework.validation.annotation.Validated;
 
-import javax.validation.Valid;
 import java.util.Map;
 
 
-@Validated
 @Component
 public class Inicis extends PaymentService<InicisVirtualAccount> {
 

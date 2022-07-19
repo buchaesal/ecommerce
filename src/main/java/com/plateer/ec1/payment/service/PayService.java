@@ -63,8 +63,8 @@ public class PayService {
     public void cancel(@Valid PaymentCancelRequest request){
 
         OriginalOrder originalOrder = dataService.getOriginalOrder(request);
-        PaymentService paymentService = paymentServiceFactory.getPaymentService(PaymentType.findPaymentType(originalOrder.getPayMnCd()));
-        paymentService.executeCancelProcess(request, originalOrder);
+        paymentServiceFactory.getPaymentService(PaymentType.findPaymentType(originalOrder.getPayMnCd()))
+                .executeCancelProcess(request, originalOrder);
 
     }
 
