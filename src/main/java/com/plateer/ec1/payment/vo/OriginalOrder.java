@@ -26,6 +26,9 @@ public class OriginalOrder {
     private String vrValTt;
     private String goodsNm;
     private String ordNm;
+    private String rfndBnkCk;
+    private String rfndAcctNo;
+    private String rfndAcctOwnNm;
 
     private Long newRfndAvlAmt = 0L;
 

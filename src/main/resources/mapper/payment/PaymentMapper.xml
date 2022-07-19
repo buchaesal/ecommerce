@@ -22,7 +22,10 @@
             opi.vr_val_dt,
             opi.vr_val_tt,
             ogi.goods_nm,
-            oob.ord_nm
+            oob.ord_nm,
+            oob.rfnd_bnk_ck,
+            oob.rfnd_acct_no,
+            oob.rfnd_acct_own_nm
         from op_pay_info opi
         inner join op_goods_info ogi using (ord_no)
         inner join op_ord_base oob using (ord_no)

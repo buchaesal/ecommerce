@@ -99,9 +99,9 @@ public class InicisFactory {
         result.add("mid", MID);
         result.add("tid", originalOrder.getTrsnId());
         result.add("msg", "none");
-        result.add("refundAcctNum", encAES(originalOrder.getVrAcct()));
-        result.add("refundBankCode", originalOrder.getVrBnkCd());
-        result.add("refundAcctName", originalOrder.getVrAcctNm());
+        result.add("refundAcctNum", encAES(originalOrder.getRfndAcctNo()));
+        result.add("refundBankCode", originalOrder.getRfndBnkCk());
+        result.add("refundAcctName", originalOrder.getRfndAcctOwnNm());
 
         return result;
 
