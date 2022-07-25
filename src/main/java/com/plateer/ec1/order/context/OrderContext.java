@@ -40,7 +40,7 @@ public class OrderContext {
 //            payService.approve(null);
 
             // 금액검증
-            amountValidation(orderRequest.getOrderNo());
+            amountValidation(orderRequest.getOrdNo());
 
             // 후처리
             afterStrategy.call(orderRequest, dto);

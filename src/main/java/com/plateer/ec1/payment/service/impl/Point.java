@@ -27,15 +27,14 @@ public class Point extends PaymentService<PointPayment> {
 
     @Override
     public PointPayment approve(OrderInfo orderInfo, PayInfo payInfo) {
+        // 프로모션에서 제공하는 포인트 승인 api 호출
         return new PointPayment();
     }
 
     @Override
     public PointPayment cancel(PaymentCancelRequest request, OriginalOrder originalOrder) {
+        // 프로모션에 제공하는 포인트 취소 api 호출
         return null;
-    }
-
-    public void cancel(OriginalOrder originalOrder) {
     }
 
     public void netCancel(NetCancelRequest netCancelRequest) {

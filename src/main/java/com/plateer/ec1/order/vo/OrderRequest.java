@@ -15,7 +15,7 @@ public class OrderRequest {
 
     private OrderType orderType;
     private OrderSystemType systemType;
-    private String orderNo;
+    private String ordNo;
     private OrderBase orderBase;
     private List<OrderProduct> productList;
     private List<OrderBenefit> orderBenefitList; // 주문혜택정보
