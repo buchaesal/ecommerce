@@ -4,7 +4,7 @@ import com.plateer.ec1.common.model.order.OpOrdClmMntLogModel;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
-public interface OrderTrxMapper {
+public interface OrderTrxDao {
 
     void insertOrderClaimMonitoringLog(OpOrdClmMntLogModel model);
     void updateOrderClaimMonitoringLog(OpOrdClmMntLogModel model);

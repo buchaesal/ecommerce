@@ -1,11 +1,11 @@
 package com.plateer.ec1.common.model.order;
 
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Getter
+@Setter
 @Builder
 public class OpOrdClmMntLogModel {
 

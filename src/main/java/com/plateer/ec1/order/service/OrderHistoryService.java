@@ -3,7 +3,7 @@ package com.plateer.ec1.order.service;
 import com.google.gson.Gson;
 import com.plateer.ec1.common.code.order.OPT0012;
 import com.plateer.ec1.common.model.order.OpOrdClmMntLogModel;
-import com.plateer.ec1.order.mapper.OrderTrxMapper;
+import com.plateer.ec1.order.mapper.OrderTrxDao;
 import com.plateer.ec1.order.vo.OrderRequest;
 import com.plateer.ec1.order.vo.OrderVO;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class OrderHistoryService {
 
-    private final OrderTrxMapper orderTrxMapper;
+    private final OrderTrxDao orderTrxDao;
 
     public Long insertOrderHistory(OrderRequest orderRequest){
 
@@ -23,7 +23,7 @@ public class OrderHistoryService {
                 .ordNo(orderRequest.getOrdNo())
                 .reqPram(new Gson().toJson(orderRequest))
                 .build();
-        orderTrxMapper.insertOrderClaimMonitoringLog(model);
+        orderTrxDao.insertOrderClaimMonitoringLog(model);
 
         return model.getLogSeq();
 
@@ -37,7 +37,7 @@ public class OrderHistoryService {
             // 에러에 따라 procCcd set
         }
 
-        orderTrxMapper.updateOrderClaimMonitoringLog(OpOrdClmMntLogModel.builder()
+        orderTrxDao.updateOrderClaimMonitoringLog(OpOrdClmMntLogModel.builder()
                 .insData(new Gson().toJson(orderVO))
                 .logSeq(logSeq)
                 .ProcCcd(procCcd)
