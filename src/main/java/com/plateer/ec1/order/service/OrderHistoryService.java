@@ -1,20 +1,47 @@
 package com.plateer.ec1.order.service;
 
-import com.plateer.ec1.order.vo.OrderVO;
+import com.google.gson.Gson;
+import com.plateer.ec1.common.code.order.OPT0012;
+import com.plateer.ec1.common.model.order.OpOrdClmMntLogModel;
+import com.plateer.ec1.order.mapper.OrderTrxMapper;
 import com.plateer.ec1.order.vo.OrderRequest;
-import lombok.extern.slf4j.Slf4j;
+import com.plateer.ec1.order.vo.OrderVO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-@Slf4j
+import java.util.Objects;
+
 @Service
+@RequiredArgsConstructor
 public class OrderHistoryService {
 
+    private final OrderTrxMapper orderTrxMapper;
+
     public Long insertOrderHistory(OrderRequest orderRequest){
-        log.info("주문 이력 insert");
-        return null;
+
+        OpOrdClmMntLogModel model = OpOrdClmMntLogModel.builder()
+                .ordNo(orderRequest.getOrdNo())
+                .reqPram(new Gson().toJson(orderRequest))
+                .build();
+        orderTrxMapper.insertOrderClaimMonitoringLog(model);
+
+        return model.getLogSeq();
+
     }
 
-    public void updateOrderHistory(Long historyNo, OrderVO orderVO){
+    public void updateOrderHistory(Long logSeq, OrderVO orderVO, Exception ex){
+
+        String procCcd = OPT0012.SUCCESS.code;
+
+        if(Objects.nonNull(ex)){
+            // 에러에 따라 procCcd set
+        }
+
+        orderTrxMapper.updateOrderClaimMonitoringLog(OpOrdClmMntLogModel.builder()
+                .insData(new Gson().toJson(orderVO))
+                .logSeq(logSeq)
+                .ProcCcd(procCcd)
+                .build());
 
     }
 

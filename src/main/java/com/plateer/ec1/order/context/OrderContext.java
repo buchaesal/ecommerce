@@ -11,6 +11,7 @@ import com.plateer.ec1.order.vo.OrderValidationVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 
@@ -21,11 +22,14 @@ public class OrderContext {
 
     private final OrderHistoryService orderHistoryService;
 
+    @Transactional
     public void execute(DataStrategy dataStrategy, AfterStrategy afterStrategy, OrderRequest orderRequest){
 
-        Long historyNo = orderHistoryService.insertOrderHistory(orderRequest);
+        Long logSeq = orderHistoryService.insertOrderHistory(orderRequest);
 
         OrderVO dto = null;
+        Exception exception = null;
+
         try {
             // validation
             OrderValidator.get(orderRequest).test(new OrderValidationVO(orderRequest, Arrays.asList(new OrderProductView())));
@@ -46,9 +50,10 @@ public class OrderContext {
             afterStrategy.call(orderRequest, dto);
 
         } catch (Exception ex) {
+            exception = ex;
             log.info("error: {}", ex);
         } finally {
-            orderHistoryService.updateOrderHistory(historyNo, dto);
+            orderHistoryService.updateOrderHistory(logSeq, dto, exception);
         }
     }
 

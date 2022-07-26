@@ -4,6 +4,7 @@
 <mapper namespace="com.plateer.ec1.order.mapper.OrderTrxMapper">
 
     <insert id="insertOrderClaimMonitoringLog"
+            parameterType="com.plateer.ec1.common.model.order.OpOrdClmMntLogModel"
             useGeneratedKeys="true"
             keyProperty="logSeq"
             keyColumn="log_seq">
@@ -36,5 +37,18 @@
         )
 
     </insert>
+
+    <update id="updateOrderClaimMonitoringLog"
+            parameterType="com.plateer.ec1.common.model.order.OpOrdClmMntLogModel">
+
+        update op_ord_clm_mnt_log
+        set
+        ins_data = to_json(#{insData}::json),
+        upt_data = to_json(#{uptData}::json),
+        sys_mod_dtime = now(),
+        proc_ccd = #{procCcd}
+        where log_seq = #{logSeq}
+
+    </update>
 
 </mapper>

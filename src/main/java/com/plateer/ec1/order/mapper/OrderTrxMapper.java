@@ -7,5 +7,6 @@ import org.apache.ibatis.annotations.Mapper;
 public interface OrderTrxMapper {
 
     void insertOrderClaimMonitoringLog(OpOrdClmMntLogModel model);
+    void updateOrderClaimMonitoringLog(OpOrdClmMntLogModel model);
 
 }
