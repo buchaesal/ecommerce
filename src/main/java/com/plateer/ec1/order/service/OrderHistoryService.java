@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.plateer.ec1.common.code.order.OPT0012;
 import com.plateer.ec1.common.model.order.OpOrdClmMntLogModel;
 import com.plateer.ec1.order.mapper.OrderTrxDao;
+import com.plateer.ec1.order.vo.OrderBase;
 import com.plateer.ec1.order.vo.OrderRequest;
 import com.plateer.ec1.order.vo.OrderVO;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,7 @@ public class OrderHistoryService {
     private final OrderTrxDao orderTrxDao;
 
     public Long insertOrderHistory(OrderRequest orderRequest){
-
+        orderRequest.setOrderBase(new OrderBase());
         OpOrdClmMntLogModel model = OpOrdClmMntLogModel.builder()
                 .ordNo(orderRequest.getOrdNo())
                 .reqPram(new Gson().toJson(orderRequest))

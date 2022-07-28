@@ -1,6 +1,7 @@
 package com.plateer.ec1.order.context;
 
 import com.plateer.ec1.order.enums.OrderValidator;
+import com.plateer.ec1.order.mapper.OrderDao;
 import com.plateer.ec1.order.service.OrderHistoryService;
 import com.plateer.ec1.order.strategy.AfterStrategy;
 import com.plateer.ec1.order.strategy.DataStrategy;
@@ -13,13 +14,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
+import java.util.List;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class OrderContext {
 
+    private final OrderDao orderDao;
     private final OrderHistoryService orderHistoryService;
 
     @Transactional
@@ -31,11 +33,13 @@ public class OrderContext {
         Exception exception = null;
 
         try {
+            List<OrderProductView> productViewList = orderDao.selectOrderProductViewList(orderRequest.getProductList());
+
             // validation
-            OrderValidator.get(orderRequest).test(new OrderValidationVO(orderRequest, Arrays.asList(new OrderProductView())));
+            OrderValidator.get(orderRequest).test(new OrderValidationVO(orderRequest, productViewList));
 
             // 데이터 생성
-            dto = dataStrategy.create(orderRequest, Arrays.asList(new OrderProductView()));
+            dto = dataStrategy.create(orderRequest);
 
             // 주문 데이터 입력
             insertOrderData(dto);

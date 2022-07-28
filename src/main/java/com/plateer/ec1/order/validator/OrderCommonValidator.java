@@ -1,23 +1,47 @@
 package com.plateer.ec1.order.validator;
 
+import com.plateer.ec1.common.code.product.PRD0003;
+import com.plateer.ec1.order.vo.OrderProduct;
+import com.plateer.ec1.order.vo.OrderProductView;
 import com.plateer.ec1.order.vo.OrderValidationVO;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.List;
 import java.util.function.Predicate;
 
 /**
  * 파라메터 유효성검사 - 공통유효성
- * 1. 상품유효성(재고, 판매상태, 최대/최소 구매제한)
- * 2. 업체유효성(업체 상태)
- * 3. 프로모션(쿠폰적용가능여부)
- * 4. 배송지(배송지 유무)
  */
 @Slf4j
 public class OrderCommonValidator {
 
-    public static Predicate<OrderValidationVO> commonValidator = (dto) -> {
-        log.info("주문 공통 유효성검사 : {}", dto);
-        return dto != null;
+    public static Predicate<OrderValidationVO> commonValidator = (vo) -> {
+
+        List<OrderProductView> productViewList = vo.getProductViewList();
+        List<OrderProduct> productList = vo.getOrderRequest().getProductList();
+
+
+        productList.forEach((product) -> {
+            productViewList.forEach((productView) -> {
+
+                // 1. 상품(단품)이 존재 하는지
+                if(!(productView.getGoodsNo().equals(product.getOrdGoodsNo())
+                        && productView.getItemNo().equals(product.getOrdItemNo()))){
+                    log.error("not found product : {}, view: {}", product, productView);
+                    throw new RuntimeException("상품 정보가 존재하지 않습니다.");
+                }
+
+                // 2. 상품 판매 상태 확인
+                if(!PRD0003.ON_SAIL.code.equals(productView.getPrgsStatCd())){
+                    log.error("product progress status error : {}, view: {}", product, productView);
+                    throw new RuntimeException("상품진행상태코드 확인");
+                }
+
+            });
+        });
+
+        return true;
+
     };
 
 }

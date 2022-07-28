@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface DataStrategy {
     OrderType getType();
-    OrderVO create(OrderRequest orderRequest, List<OrderProductView> viewList);
+    OrderVO create(OrderRequest orderRequest);
 }

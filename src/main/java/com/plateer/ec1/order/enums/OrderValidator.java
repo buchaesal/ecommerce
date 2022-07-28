@@ -14,9 +14,11 @@ import java.util.function.Predicate;
 public enum OrderValidator implements Predicate<OrderValidationVO> {
 
     FO_GENERAL(OrderSystemType.FO, OrderType.GENERAL,
-            OrderCommonValidator.commonValidator),
+            OrderCommonValidator.commonValidator
+                    .and(OrderTypeValidator.isAbleGeneralOrder)),
     BO_GENERAL(OrderSystemType.BO, OrderType.GENERAL,
             OrderCommonValidator.commonValidator
+                    .and(OrderTypeValidator.isAbleGeneralOrder)
                     .and(OrderSystemValidator.isAbleBoOrder)),
     FO_ECOUPON(OrderSystemType.FO, OrderType.ECOUPON,
             OrderCommonValidator.commonValidator
@@ -30,8 +32,8 @@ public enum OrderValidator implements Predicate<OrderValidationVO> {
     private final Predicate predicate;
 
     @Override
-    public boolean test(OrderValidationVO orderValidationVO){
-        return predicate.test(orderValidationVO);
+    public boolean test(OrderValidationVO vo){
+        return predicate.test(vo);
     }
 
     public static OrderValidator get(OrderRequest orderRequest){

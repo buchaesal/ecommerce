@@ -2,9 +2,11 @@ package com.plateer.ec1.order.vo;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 public class Benefit {
 
     private String prmNo;

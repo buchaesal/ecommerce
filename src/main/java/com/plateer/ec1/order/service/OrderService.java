@@ -6,21 +6,22 @@ import com.plateer.ec1.order.strategy.AfterStrategy;
 import com.plateer.ec1.order.strategy.DataStrategy;
 import com.plateer.ec1.order.vo.OrderRequest;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
-@Slf4j
+import javax.validation.Valid;
+
 @Service
+@Validated
 @RequiredArgsConstructor
 public class OrderService {
 
     private final OrderContext orderContext;
     private final StrategyFactory strategyFactory;
 
-    public void order(OrderRequest orderRequest){
-        log.info("--------주문결제 시작-------- orderRequest : {}", orderRequest);
+    @Validated
+    public void order(@Valid OrderRequest orderRequest){
         orderContext.execute(getDataStrategy(orderRequest), getAfterStrategy(orderRequest), orderRequest);
-        log.info("--------주문결제 끝--------");
     }
 
     private DataStrategy getDataStrategy(OrderRequest orderRequest){
