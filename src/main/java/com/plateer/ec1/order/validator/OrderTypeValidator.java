@@ -49,7 +49,11 @@ public class OrderTypeValidator {
         int deliveryAddressCount = vo.getOrderRequest().getDeliveryList().size();
         int productOrderCount = vo.getOrderRequest().getProductList().get(0).getOrderCount();
 
-
+        if(!(deliveryAddressCount == 1 || deliveryAddressCount == productOrderCount)){
+            log.error("delivery Address count error, deliveryAddressCount : {}, productOrderCount : {} ",
+                    deliveryAddressCount, productOrderCount);
+            throw new IllegalStateException("배송지 수가 잘못되었습니다.");
+        }
 
         return true;
 

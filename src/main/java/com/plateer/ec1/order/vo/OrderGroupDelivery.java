@@ -12,5 +12,6 @@ public class OrderGroupDelivery {
 
     private Long dvGrpNo;
     private List<Product> productList;
+    private List<DeliveryFee> feeList;
 
 }
