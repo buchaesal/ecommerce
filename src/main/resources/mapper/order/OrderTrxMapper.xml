@@ -51,4 +51,292 @@
 
     </update>
 
+    <insert id="insertOrderBase"
+            parameterType="com.plateer.ec1.common.model.order.OpOrdBase">
+
+        insert into op_ord_base
+        (
+         ord_no,
+         mbr_no,
+         ord_tp_cd,
+         ord_sys_ccd,
+         ord_req_dtime,
+         ord_sell_no,
+         rfnd_bnk_ck,
+         rfnd_acct_no,
+         rfnd_acct_own_nm,
+         sys_reg_dtime,
+         sys_regr_id,
+         sys_mod_dtime,
+         sys_modr_id
+        ) values
+        (
+         #{ordNo},
+         #{mbrNo},
+         #{ordTpCd},
+         #{ordSysCcd},
+         now(),
+         #{ordSellNo},
+         #{rfndBnkCk},
+         #{rfndAcctNo},
+         #{rfndAcctOwnNm},
+         now(),
+         'admin',
+         now(),
+         'admin'
+        )
+
+    </insert>
+
+    <insert id="insertOrderGoods"
+            parameterType="com.plateer.ec1.common.model.order.OpGoodsInfo">
+
+        insert into op_goods_info
+        (
+         ord_no,
+         ord_goods_no,
+         ord_item_no,
+         goods_sell_tp_cd,
+         goods_dlv_tp_cd,
+         sell_amt,
+         sell_dc_amt,
+         sys_reg_dtime,
+         sys_regr_id,
+         sys_mod_dtime,
+         sys_modr_id
+        )
+        values
+        (
+         #{ordNo},
+         #{ordGoodsNo},
+         #{ordItemNo},
+         #{goodsSellTpCd},
+         #{goodsDlvTpCd},
+         #{sellAmt},
+         #{sellDcAmt},
+         now(),
+         'admin',
+         now(),
+         'admin'
+        )
+
+    </insert>
+
+    <insert id="insertOrderClaim"
+            parameterType="com.plateer.ec1.common.model.order.OpClmInfo">
+
+    insert into op_clm_info
+    (
+     ord_no,
+     ord_goods_no,
+     ord_item_no,
+     ord_seq,
+     proc_seq,
+     ord_clm_tp_cd,
+     ord_prgs_scd,
+     dv_rvt_ccd,
+     ord_amt,
+     ord_cnt,
+     cncl_cnt,
+     rtgs_cnt,
+     dv_grp_no,
+     ord_clm_req_dtime,
+     sys_reg_dtime,
+     sys_regr_id,
+     sys_mod_dtime,
+     sys_modr_id,
+     org_proc_seq
+    ) values
+    (
+     #{ordNo},
+     #{ordGoodsNo},
+     #{ordItemNo},
+     #{ordSeq},
+     #{procSeq},
+     #{ordClmTpCd},
+     #{ordPrgsScd},
+     #{dvRvtCcd},
+     #{ordAmt},
+     #{ordCnt},
+     #{cnclCnt},
+     #{rtgsCnt},
+     #{dvGrpNo},
+     now(),
+     now(),
+     'admin',
+     now(),
+     'admin',
+     #{orgProcSeq}
+    )
+
+    </insert>
+
+    <insert id="insertOrderDeliveryArea"
+    parameterType="com.plateer.ec1.common.model.order.OpDvpAreaInfo">
+
+        insert into op_dvp_area_info
+        (
+         ord_no,
+         dvp_seq,
+         rmti_nm,
+         rmti_hp_no,
+         rmti_addr,
+         rmti_addr_dtl,
+         sys_reg_dtime,
+         sys_regr_id,
+         sys_mod_dtime,
+         sys_modr_id
+        ) values
+        (
+         #{ordNo},
+         #{dvpSeq},
+         #{rmtiNm},
+         #{rmtiHpNo},
+         #{rmtiAddr},
+         #{rmtiAddrDtl},
+         now(),
+         'admin',
+         now(),
+         'admin'
+        )
+
+    </insert>
+
+    <insert id="insertOrderDeliveryInfo"
+    parameterType="com.plateer.ec1.common.model.order.OpDvpInfo">
+
+        insert into op_dvp_info
+        (
+         dv_grp_no,
+         ord_no,
+         dvp_seq,
+         sys_reg_dtime,
+         sys_regr_id,
+         sys_mod_dtime,
+         sys_modr_id,
+         dv_mthd_cd
+        ) values
+        (
+         #{dvGrpNo},
+         #{ordNo},
+         #{dvpSeq},
+         now(),
+         'admin',
+         now(),
+         'admin',
+         #{dvMthdCd}
+        )
+
+    </insert>
+
+    <insert id="insertOrderCost"
+            parameterType="com.plateer.ec1.common.model.order.OpOrdCostInfo">
+
+        insert into op_ord_cost_info
+        (
+         ord_cst_no,
+         dv_grp_no,
+         aply_ccd,
+         org_ord_cst_no,
+         clm_no,
+         ord_no,
+         dv_amt_tp_cd,
+         org_dv_amt,
+         dv_bnf_amt,
+         aply_dv_amt,
+         imtn_rsn_ccd,
+         sys_reg_dtime,
+         sys_regr_id,
+         sys_mod_dtime,
+         sys_modr_id,
+         dv_plc_tp_cd,
+         cncl_dv_amt
+        ) values
+        (
+         #{ordCstNo},
+         #{dvGrpNo},
+         #{aplyCcd},
+         #{orgOrdCstNo},
+         #{clmNo},
+         #{ordNo},
+         #{dvAmtTpCd},
+         #{orgDvAmt},
+         #{dvBnfAmt},
+         #{aplyDvAmt},
+         #{imtnRsnCcd},
+         now(),
+         'admin',
+         now(),
+         'admin',
+         #{dvPlcTpCd},
+         #{cnclDvAmt}
+        )
+
+    </insert>
+
+    <insert id="insertOrderBenefitRelation"
+            parameterType="com.plateer.ec1.common.model.order.OpOrdBnfRelInfo">
+
+        insert into op_ord_bnf_rel_info
+        (
+         ord_no,
+         ord_seq,
+         proc_seq,
+         ord_bnf_no,
+         aply_cncl_ccd,
+         aply_amt,
+         clm_no,
+         sys_reg_dtime,
+         sys_regr_id,
+         sys_mod_dtime,
+         sys_modr_id
+        ) values
+        (
+         #{ordNo},
+         #{ordSeq},
+         #{procSeq},
+         #{ordBnfNo},
+         #{aplyCnclCcd},
+         #{aplyAmt},
+         #{clmNo},
+         now(),
+         'admin',
+         now(),
+         'admin'
+        )
+
+    </insert>
+
+    <insert id="insertOrderBenefit" parameterType="com.plateer.ec1.common.model.order.OpOrdBnfInfo">
+
+        insert into op_ord_bnf_info
+        (
+         ord_bnf_no,
+         ord_bnf_amt,
+         prm_no,
+         cpn_iss_no,
+         ord_cncl_bnf_amt,
+         degr_ccd,
+         sys_reg_dtime,
+         sys_regr_id,
+         sys_mod_dtime,
+         sys_modr_id,
+         cpn_knd_cd
+        ) values
+        (
+         #{ordBnfNo},
+         #{ordBnfAmt},
+         #{prmNo},
+         #{cpnIssNo},
+         #{ordCnclBnfAmt},
+         #{degrCcd},
+         now(),
+         'admin',
+         now(),
+         'admin',
+         #{cpnKndCd}
+        )
+
+    </insert>
+
 </mapper>
