@@ -10,6 +10,8 @@ import javax.validation.constraints.NotEmpty;
 public class OrderBase {
 
     @NotEmpty
+    private String ordNo;
+    @NotEmpty
     private String mbrNo;
     @NotEmpty
     private String ordTpCd; // 주문유형코드(OPT0001)
@@ -19,9 +21,10 @@ public class OrderBase {
     private String ordNm;
     @NotEmpty
     private String ordSellNo;
-    @NotEmpty
     private String ordAddr;
-    @NotEmpty
     private String ordAddrDtl;
+    private String rfndBnkCk;
+    private String rfndAcctNo;
+    private String rfndAcctOwnNm;
 
 }

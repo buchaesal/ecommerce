@@ -20,7 +20,9 @@ public class OrderProduct {
     private String goodsSellTpCd; // 상품판매유형코드(PRD0001)
     @NotEmpty
     @Min(1)
-    private Integer orderCount; // 주문수량
+    private Long orderCount; // 주문수량
+    private Long sellAmt;
+    private Long sellDcAmt;
     private List<Benefit> benefitList;
 
 }

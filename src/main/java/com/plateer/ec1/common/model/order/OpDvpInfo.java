@@ -1,10 +1,14 @@
 package com.plateer.ec1.common.model.order;
 
+import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Getter
+@Setter
+@Builder
 public class OpDvpInfo {
 
     private Long dvGrpNo;
