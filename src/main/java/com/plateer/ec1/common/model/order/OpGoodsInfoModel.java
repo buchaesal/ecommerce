@@ -7,14 +7,17 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class OpDvpAreaInfo {
+public class OpGoodsInfoModel {
 
     private String ordNo;
-    private Long dvpSeq;
-    private String rmtiNm;
-    private String rmtiHpNo;
-    private String rmtiAddr;
-    private String rmtiAddrDtl;
+    private String ordGoodsNo;
+    private String ordItemNo;
+    private String goodsSellTpCd;
+    private String goodsDlvTpCd;
+    private String goodsNm;
+    private String itemNm;
+    private Long sellAmt;
+    private Long sellDcAmt;
     private LocalDateTime sysRegDtime;
     private String sysRegrId;
     private LocalDateTime sysModDtime;

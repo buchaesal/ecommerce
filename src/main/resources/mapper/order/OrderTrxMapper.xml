@@ -52,7 +52,7 @@
     </update>
 
     <insert id="insertOrderBase"
-            parameterType="com.plateer.ec1.common.model.order.OpOrdBase">
+            parameterType="com.plateer.ec1.common.model.order.OpOrdBaseModel">
 
         insert into op_ord_base
         (
@@ -89,7 +89,7 @@
     </insert>
 
     <insert id="insertOrderGoods"
-            parameterType="com.plateer.ec1.common.model.order.OpGoodsInfo">
+            parameterType="com.plateer.ec1.common.model.order.OpGoodsInfoModel">
 
         insert into op_goods_info
         (
@@ -123,7 +123,7 @@
     </insert>
 
     <insert id="insertOrderClaim"
-            parameterType="com.plateer.ec1.common.model.order.OpClmInfo">
+            parameterType="com.plateer.ec1.common.model.order.OpClmInfoModel">
 
     insert into op_clm_info
     (
@@ -176,7 +176,7 @@
     </insert>
 
     <insert id="insertOrderDeliveryArea"
-    parameterType="com.plateer.ec1.common.model.order.OpDvpAreaInfo">
+    parameterType="com.plateer.ec1.common.model.order.OpDvpAreaInfoModel">
 
         insert into op_dvp_area_info
         (
@@ -207,7 +207,7 @@
     </insert>
 
     <insert id="insertOrderDeliveryInfo"
-    parameterType="com.plateer.ec1.common.model.order.OpDvpInfo">
+    parameterType="com.plateer.ec1.common.model.order.OpDvpInfoModel">
 
         insert into op_dvp_info
         (
@@ -234,7 +234,11 @@
     </insert>
 
     <insert id="insertOrderCost"
-            parameterType="com.plateer.ec1.common.model.order.OpOrdCostInfo">
+            parameterType="com.plateer.ec1.common.model.order.OpOrdCostInfoModel">
+
+        <selectKey keyProperty="ordCstNo" resultType="int" order="BEFORE">
+            select nextval('nextval_cost_no')
+        </selectKey>
 
         insert into op_ord_cost_info
         (
@@ -279,7 +283,7 @@
     </insert>
 
     <insert id="insertOrderBenefitRelation"
-            parameterType="com.plateer.ec1.common.model.order.OpOrdBnfRelInfo">
+            parameterType="com.plateer.ec1.common.model.order.OpOrdBnfRelInfoModel">
 
         insert into op_ord_bnf_rel_info
         (
@@ -311,7 +315,11 @@
 
     </insert>
 
-    <insert id="insertOrderBenefit" parameterType="com.plateer.ec1.common.model.order.OpOrdBnfInfo">
+    <insert id="insertOrderBenefit" parameterType="com.plateer.ec1.common.model.order.OpOrdBnfInfoModel">
+
+        <selectKey keyProperty="ordBnfNo" resultType="String" order="BEFORE">
+            select concat('B', nextval('nextval_bnf_no'))
+        </selectKey>
 
         insert into op_ord_bnf_info
         (

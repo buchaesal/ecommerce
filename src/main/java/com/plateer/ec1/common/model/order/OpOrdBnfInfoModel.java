@@ -1,18 +1,22 @@
 package com.plateer.ec1.common.model.order;
 
+import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Getter
-public class OpOrdBnfInfo {
+@Setter
+@Builder
+public class OpOrdBnfInfoModel {
 
     private String ordBnfNo;
     private Long ordBnfAmt;
     private Long prmNo;
     private Long cpnIssNo;
     private Long ordCnclBnfAmt;
-    private Long degrCcd;
+    private String degrCcd;
     private LocalDateTime sysRegDtime;
     private String sysRegrId;
     private LocalDateTime sysModDtime;

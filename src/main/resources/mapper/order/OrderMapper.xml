@@ -22,4 +22,10 @@
 
     </select>
 
+    <select id="getOrderBenefitNumber" resultType="String">
+
+        select concat('B', nextval('nextval_bnf_no'))
+
+    </select>
+
 </mapper>

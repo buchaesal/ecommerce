@@ -9,15 +9,24 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Builder
-public class OpDvpInfo {
+public class OpOrdCostInfoModel {
 
+    private String ordCstNo;
     private Long dvGrpNo;
+    private String aplyCcd;
+    private String orgOrdCstNo;
+    private String clmNo;
     private String ordNo;
-    private Long dvpSeq;
+    private String dvAmtTpCd;
+    private Long orgDvAmt;
+    private Long dvBnfAmt;
+    private Long aplyDvAmt;
+    private String imtnRsnCcd;
     private LocalDateTime sysRegDtime;
     private String sysRegrId;
     private LocalDateTime sysModDtime;
     private String sysModrId;
-    private String dvMthdCd;
+    private String dvPlcTpCd;
+    private Long cnclDvAmt;
 
 }

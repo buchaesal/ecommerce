@@ -2,6 +2,7 @@ package com.plateer.ec1.order.context;
 
 import com.plateer.ec1.order.enums.OrderValidator;
 import com.plateer.ec1.order.mapper.OrderDao;
+import com.plateer.ec1.order.mapper.OrderTrxDao;
 import com.plateer.ec1.order.service.OrderHistoryService;
 import com.plateer.ec1.order.strategy.AfterStrategy;
 import com.plateer.ec1.order.strategy.DataStrategy;
@@ -23,6 +24,7 @@ import java.util.List;
 public class OrderContext {
 
     private final OrderDao orderDao;
+    private final OrderTrxDao orderTrxDao;
     private final PayService payService;
     private final OrderHistoryService orderHistoryService;
 
@@ -31,7 +33,7 @@ public class OrderContext {
 
         Long logSeq = orderHistoryService.insertOrderHistory(orderRequest);
 
-        OrderVO dto = null;
+        OrderVO orderVO = null;
         Exception exception = null;
 
         try {
@@ -41,25 +43,25 @@ public class OrderContext {
             OrderValidator.get(orderRequest).test(new OrderValidationVO(orderRequest, productViewList));
 
             // 데이터 생성
-            dto = dataStrategy.create(orderRequest);
+            orderVO = dataStrategy.create(orderRequest);
 
             // 결제
             payService.approve(orderRequest.getPaymentRequest());
 
             // 주문 데이터 입력
-            insertOrderData(dto);
+            insertOrderData(orderVO);
 
             // 금액검증
             amountValidation(orderRequest.getOrdNo());
 
             // 후처리
-            afterStrategy.call(orderRequest, dto);
+            afterStrategy.call(orderRequest, orderVO);
 
         } catch (Exception ex) {
             exception = ex;
             log.info("error: {}", ex);
         } finally {
-            orderHistoryService.updateOrderHistory(logSeq, dto, exception);
+            orderHistoryService.updateOrderHistory(logSeq, orderVO, exception);
         }
     }
 
@@ -68,7 +70,15 @@ public class OrderContext {
     }
 
     private void insertOrderData(OrderVO orderVO){
-        log.info("주문 데이터 insert - OrderDto : {}", orderVO);
+
+        orderTrxDao.insertOrderBase(orderVO.getOpOrdBaseModel());
+        orderVO.getOpGoodsInfoModelList().forEach(model -> orderTrxDao.insertOrderGoods(model));
+        orderVO.getOpClmInfoModelList().forEach(model -> orderTrxDao.insertOrderClaim(model));
+        orderVO.getOpDvpAreaInfoModelList().forEach(model -> orderTrxDao.insertOrderDeliveryArea(model));
+        orderVO.getOpDvpInfoModelList().forEach(model -> orderTrxDao.insertOrderDeliveryInfo(model));
+        orderVO.getOpOrdBnfRelInfoModelList().forEach(model -> orderTrxDao.insertOrderBenefitRelation(model));
+        orderVO.getOpOrdBnfInfoModelList().forEach(model -> orderTrxDao.insertOrderBenefit(model));
+
     }
 
 }

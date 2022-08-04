@@ -10,13 +10,13 @@ import java.util.List;
 @Setter
 public class OrderVO {
 
-    private OpOrdBase opOrdBase;
-    private List<OpGoodsInfo> opGoodsInfoList;
-    private List<OpClmInfo> opClmInfoList;
-    private OpDvpAreaInfo opDvpAreaInfo;
-    private List<OpDvpInfo> opDvpInfoList;
-    private List<OpOrdCostInfo> opOrdCostInfo;
-    private OpOrdBnfRelInfo opOrdBnfRelInfo;
-    private OpOrdBnfInfo opOrdBnfInfo;
+    private OpOrdBaseModel opOrdBaseModel;
+    private List<OpGoodsInfoModel> opGoodsInfoModelList;
+    private List<OpClmInfoModel> opClmInfoModelList;
+    private List<OpDvpAreaInfoModel> opDvpAreaInfoModelList;
+    private List<OpDvpInfoModel> opDvpInfoModelList;
+    private List<OpOrdCostInfoModel> opOrdCostInfoModelList;
+    private List<OpOrdBnfRelInfoModel> opOrdBnfRelInfoModelList;
+    private List<OpOrdBnfInfoModel> opOrdBnfInfoModelList;
 
 }

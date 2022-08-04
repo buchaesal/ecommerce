@@ -5,6 +5,8 @@ import lombok.Getter;
 @Getter
 public class DeliveryFee {
 
-    private Integer feeAmount;
+    private Long orgDvAmt;
+    private Long dvBnfAmt;
+    private String dvAmtTpCd; // 배송비구분코드
 
 }

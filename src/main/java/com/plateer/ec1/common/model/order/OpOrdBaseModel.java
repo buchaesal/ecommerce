@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class OpOrdBase {
+public class OpOrdBaseModel {
 
     private String ordNo;
     private String mbrNo;

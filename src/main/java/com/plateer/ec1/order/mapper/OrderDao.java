@@ -10,5 +10,6 @@ import java.util.List;
 public interface OrderDao {
 
     List<OrderProductView> selectOrderProductViewList(List<OrderProduct> orderProductList);
+    String getOrderBenefitNumber();
 
 }

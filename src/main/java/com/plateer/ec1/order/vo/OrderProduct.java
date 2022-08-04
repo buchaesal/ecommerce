@@ -18,11 +18,12 @@ public class OrderProduct {
     @NotEmpty
     private String ordItemNo;
     private String goodsSellTpCd; // 상품판매유형코드(PRD0001)
+    private String goodsDlvTpCd;
     @NotEmpty
     @Min(1)
-    private Long orderCount; // 주문수량
-    private Long sellAmt;
-    private Long sellDcAmt;
+    private long orderCount; // 주문수량
+    private long sellAmt;
+    private long sellDcAmt;
     private List<Benefit> benefitList;
 
 }

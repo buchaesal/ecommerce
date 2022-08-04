@@ -9,9 +9,10 @@ import lombok.ToString;
 @ToString
 public class Benefit {
 
-    private String prmNo;
+    private Long prmNo;
     private String cpnKndCd; // 쿠폰종류코드(PRM0004)
     private String cpnIssNo;
     private String degrCcd; // 차수구분코드(PRM0012)
+    private Long ordBnfAmt; // 혜택금액
 
 }

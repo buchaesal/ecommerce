@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Builder
 @Getter
-public class OpClmInfo {
+public class OpClmInfoModel {
 
     private String ordNo;
     private String ordGoodsNo;
