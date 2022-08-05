@@ -46,7 +46,7 @@ public class OrderContext {
             orderVO = dataStrategy.create(orderRequest);
 
             // 결제
-            payService.approve(orderRequest.getPaymentRequest());
+//            payService.approve(orderRequest.getPaymentRequest());
 
             // 주문 데이터 입력
             insertOrderData(orderVO);

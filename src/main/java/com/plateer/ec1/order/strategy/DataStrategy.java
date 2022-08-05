@@ -24,6 +24,7 @@ import java.util.Map;
 public abstract class DataStrategy {
 
     private final OrderDao orderDao;
+    private Map<String, Long> ordSeqMap = new HashMap<>();
 
     protected DataStrategy(OrderDao orderDao) {
         this.orderDao = orderDao;
@@ -89,36 +90,35 @@ public abstract class DataStrategy {
 
     public void setOrderClaimModel(OrderRequest orderRequest, OrderVO orderVO){
 
-        boolean isVirtualAccount = orderRequest.getPaymentRequest().getPayInfoList()
-                .stream()
-                .anyMatch((payInfo -> payInfo.getPaymentType() == PaymentType.INICIS));
+        boolean hasVirtualAccount = orderRequest.getPaymentTypeList().contains(PaymentType.INICIS);
 
         List<OpClmInfoModel> opClmInfoModelList = new ArrayList<>();
 
         long seq = 1;
-        for(OrderGroupDelivery groupDelivery : orderRequest.getDeliveryList().get(0).getGroupDeliveryList()){
+        for(OrderDelivery delivery : orderRequest.getDeliveryList()){
+            for(OrderGroupDelivery groupDelivery : delivery.getGroupDeliveryList()){
+                for(Product product : groupDelivery.getProductList()){
+                    ordSeqMap.put(product.getProductNo() + product.getProductItemNo(), seq);
+                    OpClmInfoModel opClmInfoModel = OpClmInfoModel.builder()
+                            .ordNo(orderRequest.getOrdNo())
+                            .ordSeq(seq++)
+                            .procSeq(1L)
+                            .ordGoodsNo(product.getProductNo())
+                            .ordItemNo(product.getProductItemNo())
+                            .ordClmTpCd(OPT0003.ORDER.code)
+                            .dvRvtCcd(OPT0014.DELIVERY.code)
+                            .ordCnt(product.getProductCnt())
+                            .ordAmt(product.getProductAmt())
+                            .cnclCnt(0L)
+                            .rtgsCnt(0L)
+                            .dvGrpNo(groupDelivery.getDvGrpNo())
+                            .ordPrgsScd(hasVirtualAccount ? OPT0004.ORDER_WAITING.code : OPT0004.ORDER_COMPLETE.code)
+                            .ordClmAcptDtime(LocalDateTime.now())
+                            .ordClmCmtDtime(hasVirtualAccount ? null : LocalDateTime.now())
+                            .build();
 
-            for(Product product : groupDelivery.getProductList()){
-
-                OpClmInfoModel opClmInfoModel = OpClmInfoModel.builder()
-                        .ordSeq(seq++)
-                        .procSeq(1L)
-                        .ordGoodsNo(product.getProductNo())
-                        .ordItemNo(product.getProductItemNo())
-                        .ordClmTpCd(OPT0003.ORDER.code)
-                        .dvRvtCcd(OPT0014.DELIVERY.code)
-                        .ordCnt(product.getProductCnt())
-                        .ordAmt(product.getProductAmt())
-                        .cnclCnt(0L)
-                        .rtgsCnt(0L)
-                        .dvGrpNo(groupDelivery.getDvGrpNo())
-                        .ordPrgsScd(isVirtualAccount ? OPT0004.ORDER_WAITING.code : OPT0004.ORDER_COMPLETE.code)
-                        .ordClmAcptDtime(LocalDateTime.now())
-                        .ordClmCmtDtime(isVirtualAccount ? null : LocalDateTime.now())
-                        .build();
-
-                opClmInfoModelList.add(opClmInfoModel);
-
+                    opClmInfoModelList.add(opClmInfoModel);
+                }
             }
         }
 
@@ -207,10 +207,15 @@ public abstract class DataStrategy {
                 .build();
 
         long productBenefitSeq = 1;
+        String mapKey;
         for(OrderProduct product : orderRequest.getProductList()){
 
-            productAmtMap.put(product.getOrdGoodsNo() + product.getOrdItemNo(),
+            mapKey = product.getOrdGoodsNo() + product.getOrdItemNo();
+
+            productAmtMap.put(mapKey,
                     product.getSellDcAmt() - product.getBenefitList().stream().mapToLong(benefit -> benefit.getOrdBnfAmt()).sum());
+
+            bnfRelInfo.setOrdSeq(ordSeqMap.get(mapKey));
 
             for(Benefit benefit : product.getBenefitList()){
 
@@ -230,7 +235,7 @@ public abstract class DataStrategy {
 
 
         long cartBenefitSeq = 1;
-        long payAmount = orderRequest.getPaymentRequest().getPayInfoList().stream().mapToLong(payInfo -> payInfo.getPayAmount()).sum();
+        long payAmount = orderRequest.getPayAmount();
         for(OrderBenefit benefit : orderRequest.getOrderBenefitList()){
 
             String ordBnfNo = getNewOrderBenefitNumber();
@@ -240,9 +245,11 @@ public abstract class DataStrategy {
             bnfInfoList.add(bnfInfo);
 
             for(Product product : benefit.getProductList()){
+                mapKey = product.getProductNo() + product.getProductItemNo();
+                bnfRelInfo.setOrdSeq(ordSeqMap.get(mapKey));
                 bnfRelInfo.setOrdBnfNo(ordBnfNo);
                 bnfRelInfo.setProcSeq(cartBenefitSeq++);
-                bnfRelInfo.setAplyAmt(benefit.getOrdBnfAmt() * (productAmtMap.get(product.getProductNo() + product.getProductItemNo()) / payAmount));
+                bnfRelInfo.setAplyAmt(benefit.getOrdBnfAmt() * (productAmtMap.get(mapKey) / payAmount));
                 bnfRelInfoList.add(bnfRelInfo);
             }
 

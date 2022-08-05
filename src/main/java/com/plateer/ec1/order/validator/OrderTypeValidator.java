@@ -47,7 +47,7 @@ public class OrderTypeValidator {
 
         // 배송지 수가 1개거나 상품 주문 수량이랑 같은지
         int deliveryAddressCount = vo.getOrderRequest().getDeliveryList().size();
-        int productOrderCount = vo.getOrderRequest().getProductList().get(0).getOrderCount();
+        long productOrderCount = vo.getOrderRequest().getProductList().get(0).getOrderCount();
 
         if(!(deliveryAddressCount == 1 || deliveryAddressCount == productOrderCount)){
             log.error("delivery Address count error, deliveryAddressCount : {}, productOrderCount : {} ",

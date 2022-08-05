@@ -19,7 +19,7 @@ public class OrderHistoryService {
     private final OrderTrxDao orderTrxDao;
 
     public Long insertOrderHistory(OrderRequest orderRequest){
-        orderRequest.setOrderBase(new OrderBase());
+
         OpOrdClmMntLogModel model = OpOrdClmMntLogModel.builder()
                 .ordNo(orderRequest.getOrdNo())
                 .reqPram(new Gson().toJson(orderRequest))
