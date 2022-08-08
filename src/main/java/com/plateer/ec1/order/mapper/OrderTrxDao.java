@@ -15,5 +15,6 @@ public interface OrderTrxDao {
     void insertOrderDeliveryInfo(OpDvpInfoModel model);
     void insertOrderBenefitRelation(OpOrdBnfRelInfoModel model);
     void insertOrderBenefit(OpOrdBnfInfoModel model);
+    void insertOrderCost(OpOrdCostInfoModel model);
 
 }

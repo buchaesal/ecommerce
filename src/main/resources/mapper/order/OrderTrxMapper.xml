@@ -236,7 +236,7 @@
     <insert id="insertOrderCost"
             parameterType="com.plateer.ec1.common.model.order.OpOrdCostInfoModel">
 
-        <selectKey keyProperty="ordCstNo" resultType="int" order="BEFORE">
+        <selectKey keyProperty="ordCstNo" resultType="long" order="BEFORE">
             select nextval('nextval_cost_no')
         </selectKey>
 

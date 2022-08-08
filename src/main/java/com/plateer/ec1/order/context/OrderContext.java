@@ -24,7 +24,6 @@ import java.util.List;
 public class OrderContext {
 
     private final OrderDao orderDao;
-    private final OrderTrxDao orderTrxDao;
     private final PayService payService;
     private final OrderHistoryService orderHistoryService;
 
@@ -46,10 +45,10 @@ public class OrderContext {
             orderVO = dataStrategy.create(orderRequest);
 
             // 결제
-//            payService.approve(orderRequest.getPaymentRequest());
+            payService.approve(orderRequest.getPaymentRequest());
 
             // 주문 데이터 입력
-            insertOrderData(orderVO);
+            orderHistoryService.insertOrderData(orderVO);
 
             // 금액검증
             amountValidation(orderRequest.getOrdNo());
@@ -65,19 +64,11 @@ public class OrderContext {
         }
     }
 
-    private void amountValidation(String orderNo){
-        log.info("주문 금액검증");
-    }
+    private void amountValidation(String ordNo){
 
-    private void insertOrderData(OrderVO orderVO){
-
-        orderTrxDao.insertOrderBase(orderVO.getOpOrdBaseModel());
-        orderVO.getOpGoodsInfoModelList().forEach(model -> orderTrxDao.insertOrderGoods(model));
-        orderVO.getOpClmInfoModelList().forEach(model -> orderTrxDao.insertOrderClaim(model));
-        orderVO.getOpDvpAreaInfoModelList().forEach(model -> orderTrxDao.insertOrderDeliveryArea(model));
-        orderVO.getOpDvpInfoModelList().forEach(model -> orderTrxDao.insertOrderDeliveryInfo(model));
-        orderVO.getOpOrdBnfRelInfoModelList().forEach(model -> orderTrxDao.insertOrderBenefitRelation(model));
-        orderVO.getOpOrdBnfInfoModelList().forEach(model -> orderTrxDao.insertOrderBenefit(model));
+        if(!orderDao.validateOrderAmount(ordNo)){
+            throw new IllegalArgumentException("주문 금액검증 실패");
+        }
 
     }
 

@@ -11,5 +11,6 @@ public interface OrderDao {
 
     List<OrderProductView> selectOrderProductViewList(List<OrderProduct> orderProductList);
     String getOrderBenefitNumber();
+    boolean validateOrderAmount(String ordNo);
 
 }

@@ -22,9 +22,30 @@
 
     </select>
 
-    <select id="getOrderBenefitNumber" resultType="String">
+    <select id="getOrderBenefitNumber" resultType="String" flushCache="true" useCache="false">
 
         select concat('B', nextval('nextval_bnf_no'))
+
+    </select>
+
+    <select id="validateOrderAmount" parameterType="String" resultType="boolean">
+
+        select
+                (select sum(ord_amt * ord_cnt)
+                 from op_clm_info
+                 where ord_no = #{ordNo})
+                +
+                (select sum(aply_dv_amt)
+                 from op_ord_cost_info
+                 where ord_no = #{ordNo})
+                -
+                (select sum(aply_amt)
+                 from op_ord_bnf_rel_info
+                 where ord_no = #{ordNo})
+                 =
+                (select pay_amt
+                 from op_pay_info
+                 where ord_no = #{ordNo} and pay_ccd = '10')
 
     </select>
 

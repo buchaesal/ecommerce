@@ -11,6 +11,7 @@ import com.plateer.ec1.payment.vo.OrderInfo;
 import com.plateer.ec1.payment.vo.OriginalOrder;
 import com.plateer.ec1.payment.vo.PayInfo;
 import com.plateer.ec1.payment.vo.req.PaymentCancelRequest;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.util.StringUtils;

@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Builder
 public class OpOrdCostInfoModel {
 
-    private String ordCstNo;
+    private Long ordCstNo;
     private Long dvGrpNo;
     private String aplyCcd;
     private String orgOrdCstNo;

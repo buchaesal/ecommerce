@@ -16,6 +16,7 @@ import com.plateer.ec1.promotion.vo.Product;
 import org.springframework.beans.BeanUtils;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -130,21 +131,18 @@ public abstract class DataStrategy {
 
         List<OpOrdCostInfoModel> opOrdCostInfoModelList = new ArrayList<>();
 
-        OpOrdCostInfoModel opOrdCostInfoModel = OpOrdCostInfoModel.builder()
-                .ordNo(orderRequest.getOrdNo())
-                .aplyCcd(OPT0005.APPLY.code)
-                .build();
-
-        for(OrderGroupDelivery groupDelivery : orderRequest.getDeliveryList().get(0).getGroupDeliveryList()){
-
-            for(DeliveryFee deliveryFee : groupDelivery.getFeeList()){
-                opOrdCostInfoModel.setDvAmtTpCd(deliveryFee.getDvAmtTpCd());
-                opOrdCostInfoModel.setOrgDvAmt(deliveryFee.getOrgDvAmt());
-                opOrdCostInfoModel.setDvBnfAmt(deliveryFee.getDvBnfAmt());
-                opOrdCostInfoModel.setAplyDvAmt(deliveryFee.getOrgDvAmt() - deliveryFee.getDvBnfAmt());
-                opOrdCostInfoModelList.add(opOrdCostInfoModel);
+        for(OrderDelivery delivery : orderRequest.getDeliveryList()){
+            for(OrderGroupDelivery groupDelivery : delivery.getGroupDeliveryList()){
+                for(DeliveryFee deliveryFee : groupDelivery.getFeeList()){
+                    OpOrdCostInfoModel opOrdCostInfoModel = getCommonCostInfoModel(orderRequest);
+                    opOrdCostInfoModel.setDvGrpNo(groupDelivery.getDvGrpNo());
+                    opOrdCostInfoModel.setDvAmtTpCd(deliveryFee.getDvAmtTpCd());
+                    opOrdCostInfoModel.setOrgDvAmt(deliveryFee.getOrgDvAmt());
+                    opOrdCostInfoModel.setDvBnfAmt(deliveryFee.getDvBnfAmt());
+                    opOrdCostInfoModel.setAplyDvAmt(deliveryFee.getOrgDvAmt() - deliveryFee.getDvBnfAmt());
+                    opOrdCostInfoModelList.add(opOrdCostInfoModel);
+                }
             }
-
         }
 
         orderVO.setOpOrdCostInfoModelList(opOrdCostInfoModelList);
@@ -194,17 +192,11 @@ public abstract class DataStrategy {
         List<OpOrdBnfInfoModel> bnfInfoList = new ArrayList<>();
         List<OpOrdBnfRelInfoModel> bnfRelInfoList = new ArrayList<>();
 
-        OpOrdBnfInfoModel bnfInfo = OpOrdBnfInfoModel.builder()
-                .cpnKndCd(PRM0004.PRODUCT.code)
-                .degrCcd(PRM0012.FIRST.code)
-                .ordCnclBnfAmt(0L)
-                .build();
-
-        OpOrdBnfRelInfoModel bnfRelInfo = OpOrdBnfRelInfoModel.builder()
-                .ordNo(orderRequest.getOrdNo())
-                .procSeq(1L)
-                .aplyCnclCcd(OPT0005.APPLY.code)
-                .build();
+//        OpOrdBnfInfoModel bnfInfo = OpOrdBnfInfoModel.builder()
+//                .cpnKndCd(PRM0004.PRODUCT.code)
+//                .degrCcd(PRM0012.FIRST.code)
+//                .ordCnclBnfAmt(0L)
+//                .build();
 
         long productBenefitSeq = 1;
         String mapKey;
@@ -215,11 +207,14 @@ public abstract class DataStrategy {
             productAmtMap.put(mapKey,
                     product.getSellDcAmt() - product.getBenefitList().stream().mapToLong(benefit -> benefit.getOrdBnfAmt()).sum());
 
+            OpOrdBnfRelInfoModel bnfRelInfo = getCommonBnfRelInfoModel(orderRequest);
             bnfRelInfo.setOrdSeq(ordSeqMap.get(mapKey));
 
             for(Benefit benefit : product.getBenefitList()){
 
                 String ordBnfNo = getNewOrderBenefitNumber();
+//                String ordBnfNo = getTmpBnfRelNo() + productBenefitSeq;
+                OpOrdBnfInfoModel bnfInfo = getCommonBnfInfoModel();
                 bnfInfo.setOrdBnfNo(ordBnfNo);
                 bnfInfo.setPrmNo(benefit.getPrmNo());
                 bnfInfo.setOrdBnfAmt(benefit.getOrdBnfAmt());
@@ -239,6 +234,8 @@ public abstract class DataStrategy {
         for(OrderBenefit benefit : orderRequest.getOrderBenefitList()){
 
             String ordBnfNo = getNewOrderBenefitNumber();
+//            String ordBnfNo = getTmpBnfRelNo() + cartBenefitSeq + "C";
+            OpOrdBnfInfoModel bnfInfo = getCommonBnfInfoModel();
             bnfInfo.setOrdBnfNo(ordBnfNo);
             bnfInfo.setPrmNo(benefit.getPrmNo());
             bnfInfo.setOrdBnfAmt(benefit.getOrdBnfAmt());
@@ -246,6 +243,7 @@ public abstract class DataStrategy {
 
             for(Product product : benefit.getProductList()){
                 mapKey = product.getProductNo() + product.getProductItemNo();
+                OpOrdBnfRelInfoModel bnfRelInfo = getCommonBnfRelInfoModel(orderRequest);
                 bnfRelInfo.setOrdSeq(ordSeqMap.get(mapKey));
                 bnfRelInfo.setOrdBnfNo(ordBnfNo);
                 bnfRelInfo.setProcSeq(cartBenefitSeq++);
@@ -258,6 +256,33 @@ public abstract class DataStrategy {
         orderVO.setOpOrdBnfInfoModelList(bnfInfoList);
         orderVO.setOpOrdBnfRelInfoModelList(bnfRelInfoList);
 
+    }
+
+    private String getTmpBnfRelNo(){
+        return "B"+LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddhhmmss"));
+    }
+
+    private OpOrdCostInfoModel getCommonCostInfoModel(OrderRequest orderRequest){
+        return OpOrdCostInfoModel.builder()
+                .ordNo(orderRequest.getOrdNo())
+                .aplyCcd(OPT0005.APPLY.code)
+                .build();
+    }
+
+    private OpOrdBnfRelInfoModel getCommonBnfRelInfoModel(OrderRequest orderRequest){
+        return OpOrdBnfRelInfoModel.builder()
+                .ordNo(orderRequest.getOrdNo())
+                .procSeq(1L)
+                .aplyCnclCcd(OPT0005.APPLY.code)
+                .build();
+    }
+
+    private OpOrdBnfInfoModel getCommonBnfInfoModel(){
+        return OpOrdBnfInfoModel.builder()
+                .cpnKndCd(PRM0004.PRODUCT.code)
+                .degrCcd(PRM0012.FIRST.code)
+                .ordCnclBnfAmt(0L)
+                .build();
     }
 
 }
