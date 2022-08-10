@@ -16,7 +16,6 @@ import com.plateer.ec1.promotion.vo.Product;
 import org.springframework.beans.BeanUtils;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -67,18 +66,20 @@ public abstract class DataStrategy {
     }
 
     public void setOrderBaseModel(OrderRequest orderRequest, OrderVO orderVO){
+
         OpOrdBaseModel opOrdBaseModel = new OpOrdBaseModel();
         BeanUtils.copyProperties(orderRequest.getOrderBase(), opOrdBaseModel);
         orderVO.setOpOrdBaseModel(opOrdBaseModel);
+
     }
 
     public void setOrderProductModel(OrderRequest orderRequest, OrderVO orderVO){
 
         List<OpGoodsInfoModel> opGoodsInfoModelList = new ArrayList<>();
-        OpGoodsInfoModel opGoodsInfoModel = new OpGoodsInfoModel();
 
         orderRequest.getProductList().forEach((product) -> {
 
+            OpGoodsInfoModel opGoodsInfoModel = new OpGoodsInfoModel();
             BeanUtils.copyProperties(product, opGoodsInfoModel);
             opGoodsInfoModel.setOrdNo(orderRequest.getOrdNo());
             opGoodsInfoModelList.add(opGoodsInfoModel);
@@ -99,6 +100,7 @@ public abstract class DataStrategy {
         for(OrderDelivery delivery : orderRequest.getDeliveryList()){
             for(OrderGroupDelivery groupDelivery : delivery.getGroupDeliveryList()){
                 for(Product product : groupDelivery.getProductList()){
+                    // TODO: 모바일 쿠폰일때 key가 중복됨
                     ordSeqMap.put(product.getProductNo() + product.getProductItemNo(), seq);
                     OpClmInfoModel opClmInfoModel = OpClmInfoModel.builder()
                             .ordNo(orderRequest.getOrdNo())

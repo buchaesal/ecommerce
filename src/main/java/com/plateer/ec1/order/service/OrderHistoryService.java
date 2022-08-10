@@ -8,6 +8,7 @@ import com.plateer.ec1.order.vo.OrderRequest;
 import com.plateer.ec1.order.vo.OrderVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
@@ -18,18 +19,21 @@ public class OrderHistoryService {
 
     private final OrderTrxDao orderTrxDao;
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Long insertOrderHistory(OrderRequest orderRequest){
 
         OpOrdClmMntLogModel model = OpOrdClmMntLogModel.builder()
                 .ordNo(orderRequest.getOrdNo())
                 .reqPram(new Gson().toJson(orderRequest))
                 .build();
+
         orderTrxDao.insertOrderClaimMonitoringLog(model);
 
         return model.getLogSeq();
 
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void updateOrderHistory(Long logSeq, OrderVO orderVO, Exception ex){
 
         String procCcd = OPT0012.SUCCESS.code;
