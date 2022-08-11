@@ -5,8 +5,8 @@ import com.plateer.ec1.claim.enums.ProcessorType;
 import com.plateer.ec1.claim.factory.CreatorFactory;
 import com.plateer.ec1.claim.factory.ValidatorFactory;
 import com.plateer.ec1.claim.service.ClaimDataManipulateService;
-import com.plateer.ec1.claim.service.MonitoringLogService;
 import com.plateer.ec1.claim.vo.ClaimVO;
+import com.plateer.ec1.order.service.OrderHistoryService;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -14,7 +14,7 @@ public abstract class ClaimProcessor {
 
     private final ValidatorFactory validatorFactory;
     private final CreatorFactory creatorFactory;
-    protected final MonitoringLogService monitoringLogService;
+    protected final OrderHistoryService orderHistoryService;
     protected final ClaimDataManipulateService manipulateService;
 
     protected void doValidationProcess(ClaimVO claimVO){

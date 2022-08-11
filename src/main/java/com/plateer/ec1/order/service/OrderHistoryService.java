@@ -1,6 +1,7 @@
 package com.plateer.ec1.order.service;
 
 import com.google.gson.Gson;
+import com.plateer.ec1.claim.vo.ClaimVO;
 import com.plateer.ec1.common.code.order.OPT0012;
 import com.plateer.ec1.common.model.order.OpOrdClmMntLogModel;
 import com.plateer.ec1.order.mapper.OrderTrxDao;
@@ -34,7 +35,22 @@ public class OrderHistoryService {
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void updateOrderHistory(Long logSeq, OrderVO orderVO, Exception ex){
+    public Long insertClaimHistory(ClaimVO claimVO){
+
+        OpOrdClmMntLogModel model = OpOrdClmMntLogModel.builder()
+                .ordNo(claimVO.getOrdNo())
+                .clmNo(claimVO.getClmNo())
+                .reqPram(new Gson().toJson(claimVO))
+                .build();
+
+        orderTrxDao.insertOrderClaimMonitoringLog(model);
+
+        return model.getLogSeq();
+
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void updateHistory(Long logSeq, Object targetVO, Exception ex){
 
         String procCcd = OPT0012.SUCCESS.code;
 
@@ -43,7 +59,7 @@ public class OrderHistoryService {
         }
 
         orderTrxDao.updateOrderClaimMonitoringLog(OpOrdClmMntLogModel.builder()
-                .insData(new Gson().toJson(orderVO))
+                .insData(new Gson().toJson(targetVO))
                 .logSeq(logSeq)
                 .ProcCcd(procCcd)
                 .build());

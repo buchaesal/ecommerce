@@ -59,7 +59,7 @@ public class OrderContext {
             exception = ex;
             log.info("error: {}", ex);
         } finally {
-            orderHistoryService.updateOrderHistory(logSeq, orderVO, exception);
+            orderHistoryService.updateHistory(logSeq, orderVO, exception);
         }
     }
 
