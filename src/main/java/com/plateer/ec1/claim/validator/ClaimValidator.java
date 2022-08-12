@@ -7,7 +7,6 @@ public abstract class ClaimValidator {
 
     public abstract ValidatorType getType();
 
-    public void validate(ClaimVO vo){
-    };
+    public abstract void validate(ClaimVO vo);
 
 }
