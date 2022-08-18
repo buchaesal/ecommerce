@@ -2,7 +2,7 @@ package com.plateer.ec1.claim.processor;
 
 import com.plateer.ec1.claim.enums.ProcessorType;
 import com.plateer.ec1.claim.factory.CreatorFactory;
-import com.plateer.ec1.claim.factory.ValidatorFactory;
+import com.plateer.ec1.claim.mapper.ClaimMapper;
 import com.plateer.ec1.claim.service.ClaimDataManipulateService;
 import com.plateer.ec1.claim.service.IFCallService;
 import com.plateer.ec1.claim.vo.ClaimVO;
@@ -17,12 +17,13 @@ public class CompleteProcessor extends ClaimProcessor {
 
     private final IFCallService ifCallService;
 
-    public CompleteProcessor(ValidatorFactory validatorFactory,
+    public CompleteProcessor(
+            ClaimMapper claimMapper,
                              CreatorFactory creatorFactory,
                              OrderHistoryService orderHistoryService,
                              ClaimDataManipulateService manipulateService,
                              IFCallService ifCallService) {
-        super(validatorFactory, creatorFactory, orderHistoryService, manipulateService);
+        super(claimMapper, creatorFactory, orderHistoryService, manipulateService);
         this.ifCallService = ifCallService;
     }
 

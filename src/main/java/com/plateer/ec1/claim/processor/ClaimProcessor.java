@@ -3,7 +3,6 @@ package com.plateer.ec1.claim.processor;
 import com.plateer.ec1.claim.enums.ClaimType;
 import com.plateer.ec1.claim.enums.ProcessorType;
 import com.plateer.ec1.claim.factory.CreatorFactory;
-import com.plateer.ec1.claim.factory.ValidatorFactory;
 import com.plateer.ec1.claim.mapper.ClaimMapper;
 import com.plateer.ec1.claim.service.ClaimDataManipulateService;
 import com.plateer.ec1.claim.vo.ClaimVO;
@@ -14,13 +13,16 @@ import lombok.RequiredArgsConstructor;
 public abstract class ClaimProcessor {
 
     private final ClaimMapper claimMapper;
-    private final ValidatorFactory validatorFactory;
     private final CreatorFactory creatorFactory;
     protected final OrderHistoryService orderHistoryService;
     protected final ClaimDataManipulateService manipulateService;
 
     protected void doValidationProcess(ClaimVO claimVO){
-        validatorFactory.findValidator(ClaimType.findClaimType(claimVO.getClaimCode(), claimVO.getProductTypeCode()).getValidatorType()).validate(claimVO, claimMapper.getOrderInfo(claimVO.getOrdNo()));
+        if(!ClaimType.findClaimTypeByClaimVO(claimVO)
+                .getValidStatuses()
+                .contains(claimMapper.getOrderInfo(claimVO.getOrdNo()))){
+            throw new IllegalArgumentException("Claim Validation Error");
+        }
     }
 
     protected void doClaimDataProcess(ClaimVO claimVO){

@@ -2,7 +2,7 @@ package com.plateer.ec1.claim.processor;
 
 import com.plateer.ec1.claim.enums.ProcessorType;
 import com.plateer.ec1.claim.factory.CreatorFactory;
-import com.plateer.ec1.claim.factory.ValidatorFactory;
+import com.plateer.ec1.claim.mapper.ClaimMapper;
 import com.plateer.ec1.claim.service.ClaimDataManipulateService;
 import com.plateer.ec1.claim.vo.ClaimVO;
 import com.plateer.ec1.order.service.OrderHistoryService;
@@ -14,11 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 public class AcceptWithdrawalProcessor extends ClaimProcessor {
 
-    private AcceptWithdrawalProcessor(ValidatorFactory validatorFactory,
+    private AcceptWithdrawalProcessor(ClaimMapper claimMapper,
                                       CreatorFactory creatorFactory,
                                       OrderHistoryService orderHistoryService,
                                       ClaimDataManipulateService manipulateService) {
-        super(validatorFactory, creatorFactory, orderHistoryService, manipulateService);
+        super(claimMapper, creatorFactory, orderHistoryService, manipulateService);
     }
 
     @Transactional
