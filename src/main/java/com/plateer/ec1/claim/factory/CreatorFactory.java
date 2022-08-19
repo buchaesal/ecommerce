@@ -1,6 +1,6 @@
 package com.plateer.ec1.claim.factory;
 
-import com.plateer.ec1.claim.creator.ClaimCreator;
+import com.plateer.ec1.claim.creator.abstracts.ClaimCreator;
 import com.plateer.ec1.claim.enums.ClaimType;
 import com.plateer.ec1.claim.vo.ClaimVO;
 import org.springframework.stereotype.Component;

@@ -1,6 +1,5 @@
 package com.plateer.ec1.claim.enums;
 
-import com.plateer.ec1.claim.creator.ClaimCreator;
 import com.plateer.ec1.claim.vo.ClaimVO;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +13,7 @@ public enum ClaimType {
 
     // 일반주문취소
     GCC(ProcessorType.COMPLETE, Arrays.asList("10","20"), Arrays.asList("10"), Boolean.TRUE, "C"),
-    // 모바일쿠폰주문취소요청
+    // 모바일쿠폰주문취소접수
     MCA(ProcessorType.ACCEPT_WITHDRAWAL, Arrays.asList("20"), Arrays.asList("20"), Boolean.TRUE, "C"),
     // 반품접수
     RA(ProcessorType.ACCEPT_WITHDRAWAL, Arrays.asList("50"), Arrays.asList("10","20"), Boolean.TRUE, "R"),
