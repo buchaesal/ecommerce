@@ -25,7 +25,6 @@ public class AcceptWithdrawalProcessor extends ClaimProcessor {
     @Override
     public void doProcess(ClaimVO claimVO) {
 
-        log.info("클레임 Accept Processor start");
         Long logKey = null;
         Exception ex = null;
 

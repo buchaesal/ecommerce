@@ -3,10 +3,20 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.plateer.ec1.claim.mapper.ClaimTrxMapper">
 
-<select id="insertOrderClaim" parameterType="String" resultType="com.plateer.ec1.claim.vo.ClaimOrderInfo">
+    <insert id="insertOrderClaimByCopy" parameterType="com.plateer.ec1.common.model.order.OpClmInfoModel">
 
+    </insert>
 
+    <insert id="insertOrderCostByCopy" parameterType="com.plateer.ec1.common.model.order.OpOrdCostInfoModel">
 
-</select>
+    </insert>
+
+    <insert id="insertOrderBenefitRelationByCopy" parameterType="com.plateer.ec1.common.model.order.OpOrdBnfRelInfoModel">
+
+    </insert>
+
+    <update id="updateOrderBenefit" parameterType="com.plateer.ec1.common.model.order.OpOrdBnfInfoModel">
+
+    </update>
 
 </mapper>
