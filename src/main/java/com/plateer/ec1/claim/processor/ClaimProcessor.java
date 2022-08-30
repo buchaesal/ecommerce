@@ -5,6 +5,7 @@ import com.plateer.ec1.claim.enums.ProcessorType;
 import com.plateer.ec1.claim.factory.CreatorFactory;
 import com.plateer.ec1.claim.mapper.ClaimMapper;
 import com.plateer.ec1.claim.service.ClaimDataManipulateService;
+import com.plateer.ec1.claim.vo.ClaimItem;
 import com.plateer.ec1.claim.vo.ClaimVO;
 import com.plateer.ec1.order.service.OrderHistoryService;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +27,7 @@ public abstract class ClaimProcessor {
     }
 
     protected void doClaimDataProcess(ClaimVO claimVO){
-        creatorFactory.findCreator(claimVO).doCreate(claimVO);
+        creatorFactory.findCreator(claimVO).execute(claimVO);
     }
 
     abstract public void doProcess(ClaimVO vo);

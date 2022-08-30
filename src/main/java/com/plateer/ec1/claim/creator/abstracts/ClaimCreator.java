@@ -17,7 +17,7 @@ public abstract class ClaimCreator {
 
     protected abstract ClaimDataModels makeClaimDataModels(ClaimVO claimVO);
 
-    void execute(ClaimVO claimVO){
+    public void execute(ClaimVO claimVO){
 
         ClaimDataModels models = makeClaimDataModels(claimVO);
         dataManipulateService.manipulateClaimData(models);
