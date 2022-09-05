@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public abstract class ClaimCreator {
 
-    private final ClaimDataManipulateService dataManipulateService;
+    public final ClaimDataManipulateService dataManipulateService;
 
     abstract public ClaimType getType();
 
