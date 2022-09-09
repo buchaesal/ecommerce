@@ -37,7 +37,7 @@ class CalculatorTest {
                 .productNo("P002")
                 .productItemNo("1")
                 .productAmt(10250)
-                .productCnt(3)
+                .productCnt(3L)
                 .build();
 
         List<Product> productList = new ArrayList<>();
@@ -53,17 +53,17 @@ class CalculatorTest {
 
     PromotionRequest getOrder2PromotionRequest(){
 
-        Product product1 = new Product("P001", 29000L, 1, "1", 1L,1L);
-        Product product2 = new Product("P001", 29000L, 2, "2", null,null);
-        Product product3 = new Product("P002", 10250L, 2, "1", null,null);
-        Product product4 = new Product("P002", 10250L, 1, "2", null,null);
-        Product product5 = new Product("P005", 9000L, 1, "1", null,null);
-        Product product6 = new Product("P005", 9000L, 1, "2", null,null);
-        Product product7 = new Product("P005", 9000L, 3, "3", null,null);
-        Product product8 = new Product("P006", 140000L, 1, "0", null,null);
-        Product product9 = new Product("P007", 24000L, 1, "1", null,null);
-        Product product10 = new Product("P007", 24000L, 2, "2", null,null);
-        Product product11 = new Product("P007", 24000L, 1, "3", null,null);
+        Product product1 = new Product("P001", 29000L, 1L, "1", 1L,1L);
+        Product product2 = new Product("P001", 29000L, 2L, "2", null,null);
+        Product product3 = new Product("P002", 10250L, 2L, "1", null,null);
+        Product product4 = new Product("P002", 10250L, 1L, "2", null,null);
+        Product product5 = new Product("P005", 9000L, 1L, "1", null,null);
+        Product product6 = new Product("P005", 9000L, 1L, "2", null,null);
+        Product product7 = new Product("P005", 9000L, 3L, "3", null,null);
+        Product product8 = new Product("P006", 140000L, 1L, "0", null,null);
+        Product product9 = new Product("P007", 24000L, 1L, "1", null,null);
+        Product product10 = new Product("P007", 24000L, 2L, "2", null,null);
+        Product product11 = new Product("P007", 24000L, 1L, "3", null,null);
 
         List<Product> productList = new ArrayList<>();
         productList.add(product1);

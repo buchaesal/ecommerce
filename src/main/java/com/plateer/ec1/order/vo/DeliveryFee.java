@@ -1,8 +1,10 @@
 package com.plateer.ec1.order.vo;
 
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
+@Builder
 public class DeliveryFee {
 
     private Long orgDvAmt;

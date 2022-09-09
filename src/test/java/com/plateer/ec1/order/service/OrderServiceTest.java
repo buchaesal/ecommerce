@@ -1,15 +1,18 @@
 package com.plateer.ec1.order.service;
 
+import com.plateer.ec1.common.code.order.OPT0006;
 import com.plateer.ec1.order.enums.OrderSystemType;
 import com.plateer.ec1.order.enums.OrderType;
-import com.plateer.ec1.order.vo.OrderBase;
-import com.plateer.ec1.order.vo.OrderRequest;
+import com.plateer.ec1.order.vo.*;
+import com.plateer.ec1.promotion.vo.Product;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 
 @SpringBootTest
 class OrderServiceTest {
@@ -20,7 +23,7 @@ class OrderServiceTest {
 
     @BeforeEach
     void init(){
-        String ordNo = "O"+LocalDateTime.now();
+        String ordNo = "O"+LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddhhmmss"));
         orderRequest = new OrderRequest();
         orderRequest.setOrdNo(ordNo);
         orderRequest.setOrderType(OrderType.GENERAL);
@@ -36,6 +39,18 @@ class OrderServiceTest {
                 "",
                 "",
                 ""));
+        orderRequest.setProductList(Arrays.asList(
+                OrderProduct.builder().orderCount(1).ordGoodsNo("P001").ordItemNo("1").build(),
+                OrderProduct.builder().orderCount(1).ordGoodsNo("P001").ordItemNo("2").build()));
+        orderRequest.setDeliveryList(Arrays.asList(
+                OrderDelivery.builder().dvpSeq(1L).rmtiHpNo("01047264128").rmtiNm("최단비").rmtiAddr("배송지주소").groupDeliveryList(
+                        Arrays.asList(
+                                OrderGroupDelivery.builder().dvGrpNo(1L).feeList(Arrays.asList(DeliveryFee.builder().orgDvAmt(0L).dvBnfAmt(0L).dvAmtTpCd(OPT0006.DELIVERY_FEE.code).build())).productList(
+                                        Arrays.asList(
+                                                Product.builder().productNo("P001").productItemNo("1").build(),
+                                                Product.builder().productNo("P001").productItemNo("2").build())).build()
+                        )).build()
+        ));
     }
 
     @Test

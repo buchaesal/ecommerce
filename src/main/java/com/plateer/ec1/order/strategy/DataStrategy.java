@@ -14,6 +14,7 @@ import com.plateer.ec1.order.vo.*;
 import com.plateer.ec1.payment.enums.PaymentType;
 import com.plateer.ec1.promotion.vo.Product;
 import org.springframework.beans.BeanUtils;
+import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -193,23 +194,52 @@ public abstract class DataStrategy {
 
     public void setOrderBenefit(OrderRequest orderRequest, OrderVO orderVO){
 
+        boolean hasCartBenefit = !CollectionUtils.isEmpty(orderRequest.getOrderBenefitList());
+
         Map<String, Long> productAmtMap = new HashMap<>();
         List<OpOrdBnfInfoModel> bnfInfoList = new ArrayList<>();
         List<OpOrdBnfRelInfoModel> bnfRelInfoList = new ArrayList<>();
 
         long productBenefitSeq = 1;
         String mapKey;
+
         for(OrderProduct product : orderRequest.getProductList()){
 
-            mapKey = product.getOrdGoodsNo() + product.getOrdItemNo();
+            if(hasCartBenefit || !CollectionUtils.isEmpty(product.getBenefitList())){
 
-            productAmtMap.put(mapKey,
-                    product.getSellDcAmt() - product.getBenefitList().stream().mapToLong(benefit -> benefit.getOrdBnfAmt()).sum());
+                mapKey = product.getOrdGoodsNo() + product.getOrdItemNo();
 
-            OpOrdBnfRelInfoModel bnfRelInfo = getCommonBnfRelInfoModel(orderRequest);
-            bnfRelInfo.setOrdSeq(ordSeqMap.get(mapKey));
+                productAmtMap.put(mapKey,
+                        product.getSellDcAmt() - product.getBenefitList().stream().mapToLong(benefit -> benefit.getOrdBnfAmt()).sum());
 
-            for(Benefit benefit : product.getBenefitList()){
+                OpOrdBnfRelInfoModel bnfRelInfo = getCommonBnfRelInfoModel(orderRequest);
+                bnfRelInfo.setOrdSeq(ordSeqMap.get(mapKey));
+
+                for(Benefit benefit : product.getBenefitList()){
+
+                    String ordBnfNo = getNewOrderBenefitNumber();
+                    OpOrdBnfInfoModel bnfInfo = getCommonBnfInfoModel();
+                    bnfInfo.setOrdBnfNo(ordBnfNo);
+                    bnfInfo.setPrmNo(benefit.getPrmNo());
+                    bnfInfo.setOrdBnfAmt(benefit.getOrdBnfAmt());
+                    bnfInfoList.add(bnfInfo);
+
+                    bnfRelInfo.setOrdBnfNo(ordBnfNo);
+                    bnfRelInfo.setProcSeq(productBenefitSeq++);
+                    bnfRelInfo.setAplyAmt(benefit.getOrdBnfAmt());
+                    bnfRelInfoList.add(bnfRelInfo);
+
+                }
+            }
+
+        }
+
+
+        if(hasCartBenefit){
+
+            long cartBenefitSeq = 1;
+            long payAmount = orderRequest.getPayAmount();
+            for(OrderBenefit benefit : orderRequest.getOrderBenefitList()){
 
                 String ordBnfNo = getNewOrderBenefitNumber();
                 OpOrdBnfInfoModel bnfInfo = getCommonBnfInfoModel();
@@ -218,36 +248,17 @@ public abstract class DataStrategy {
                 bnfInfo.setOrdBnfAmt(benefit.getOrdBnfAmt());
                 bnfInfoList.add(bnfInfo);
 
-                bnfRelInfo.setOrdBnfNo(ordBnfNo);
-                bnfRelInfo.setProcSeq(productBenefitSeq++);
-                bnfRelInfo.setAplyAmt(benefit.getOrdBnfAmt());
-                bnfRelInfoList.add(bnfRelInfo);
+                for(Product product : benefit.getProductList()){
+                    mapKey = product.getProductNo() + product.getProductItemNo();
+                    OpOrdBnfRelInfoModel bnfRelInfo = getCommonBnfRelInfoModel(orderRequest);
+                    bnfRelInfo.setOrdSeq(ordSeqMap.get(mapKey));
+                    bnfRelInfo.setOrdBnfNo(ordBnfNo);
+                    bnfRelInfo.setProcSeq(cartBenefitSeq++);
+                    bnfRelInfo.setAplyAmt(benefit.getOrdBnfAmt() * (productAmtMap.get(mapKey) / payAmount));
+                    bnfRelInfoList.add(bnfRelInfo);
+                }
 
             }
-        }
-
-
-        long cartBenefitSeq = 1;
-        long payAmount = orderRequest.getPayAmount();
-        for(OrderBenefit benefit : orderRequest.getOrderBenefitList()){
-
-            String ordBnfNo = getNewOrderBenefitNumber();
-            OpOrdBnfInfoModel bnfInfo = getCommonBnfInfoModel();
-            bnfInfo.setOrdBnfNo(ordBnfNo);
-            bnfInfo.setPrmNo(benefit.getPrmNo());
-            bnfInfo.setOrdBnfAmt(benefit.getOrdBnfAmt());
-            bnfInfoList.add(bnfInfo);
-
-            for(Product product : benefit.getProductList()){
-                mapKey = product.getProductNo() + product.getProductItemNo();
-                OpOrdBnfRelInfoModel bnfRelInfo = getCommonBnfRelInfoModel(orderRequest);
-                bnfRelInfo.setOrdSeq(ordSeqMap.get(mapKey));
-                bnfRelInfo.setOrdBnfNo(ordBnfNo);
-                bnfRelInfo.setProcSeq(cartBenefitSeq++);
-                bnfRelInfo.setAplyAmt(benefit.getOrdBnfAmt() * (productAmtMap.get(mapKey) / payAmount));
-                bnfRelInfoList.add(bnfRelInfo);
-            }
-
         }
 
         orderVO.setOpOrdBnfInfoModelList(bnfInfoList);

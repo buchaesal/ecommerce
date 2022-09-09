@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 public class AcceptWithdrawalProcessor extends ClaimProcessor {
 
-    private AcceptWithdrawalProcessor(ClaimMapper claimMapper,
+    public AcceptWithdrawalProcessor(ClaimMapper claimMapper,
                                       CreatorFactory creatorFactory,
                                       OrderHistoryService orderHistoryService,
                                       ClaimDataManipulateService manipulateService) {

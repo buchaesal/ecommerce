@@ -1,7 +1,7 @@
 package com.plateer.ec1.order.vo;
 
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 
 import javax.validation.constraints.Min;
@@ -9,7 +9,7 @@ import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 @Getter
-@Setter
+@Builder
 @ToString
 public class OrderProduct {
 
