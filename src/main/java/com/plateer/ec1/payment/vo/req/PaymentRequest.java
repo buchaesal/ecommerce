@@ -2,17 +2,15 @@ package com.plateer.ec1.payment.vo.req;
 
 import com.plateer.ec1.payment.vo.OrderInfo;
 import com.plateer.ec1.payment.vo.PayInfo;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Getter
-@Setter
-@AllArgsConstructor
+@Builder
 public class PaymentRequest {
 
     @NotNull

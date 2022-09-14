@@ -4,6 +4,10 @@ import com.plateer.ec1.common.code.order.OPT0006;
 import com.plateer.ec1.order.enums.OrderSystemType;
 import com.plateer.ec1.order.enums.OrderType;
 import com.plateer.ec1.order.vo.*;
+import com.plateer.ec1.payment.enums.PaymentType;
+import com.plateer.ec1.payment.vo.OrderInfo;
+import com.plateer.ec1.payment.vo.PayInfo;
+import com.plateer.ec1.payment.vo.req.PaymentRequest;
 import com.plateer.ec1.promotion.vo.Product;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -51,6 +55,7 @@ class OrderServiceTest {
                                                 Product.builder().productNo("P001").productItemNo("2").build())).build()
                         )).build()
         ));
+        orderRequest.setPaymentRequest(PaymentRequest.builder().orderInfo(OrderInfo.builder().ordNo(ordNo).build()).payInfoList(Arrays.asList(PayInfo.builder().payAmount(1000L).paymentType(PaymentType.POINT).build())).build());
     }
 
     @Test
