@@ -41,10 +41,18 @@ public class CompleteProcessor extends ClaimProcessor {
             doValidationProcess(claimVO);
             // 데이터 insert/update
             doClaimDataProcess(claimVO);
-            // 결제 if
-            ifCallService.callPaymentIF();
+            // 결제 데이터 수정요청
+
+            // 금액검증
+
             // 쿠폰 복원 if
             ifCallService.callRestoreCouponIF();
+
+            // 결제 취소
+
+            ifCallService.callPaymentIF();
+
+
         }catch (Exception e){
             ex = e;
             log.error(e.getMessage());

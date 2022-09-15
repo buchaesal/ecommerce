@@ -2,11 +2,9 @@ package com.plateer.ec1.claim.creator;
 
 import com.plateer.ec1.claim.creator.abstracts.ClaimCreator;
 import com.plateer.ec1.claim.enums.ClaimType;
-import com.plateer.ec1.claim.mapper.ClaimTrxMapper;
 import com.plateer.ec1.claim.service.ClaimDataManipulateService;
 import com.plateer.ec1.claim.vo.ClaimDataModels;
 import com.plateer.ec1.claim.vo.ClaimVO;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -24,6 +22,11 @@ public class GeneralCancelCreator extends ClaimCreator {
     @Override
     protected ClaimDataModels makeClaimDataModels(ClaimVO claimVO) {
         return null;
+    }
+
+    @Override
+    protected void updateOriginalOrderData(ClaimVO claimVO) {
+
     }
 
 

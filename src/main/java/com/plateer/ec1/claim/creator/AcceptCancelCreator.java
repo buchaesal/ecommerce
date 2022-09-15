@@ -22,4 +22,9 @@ public class AcceptCancelCreator extends ClaimCreator {
         return null;
     }
 
+    @Override
+    protected void updateOriginalOrderData(ClaimVO claimVO) {
+
+    }
+
 }

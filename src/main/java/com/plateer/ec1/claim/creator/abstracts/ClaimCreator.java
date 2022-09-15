@@ -17,8 +17,11 @@ public abstract class ClaimCreator {
 
     protected abstract ClaimDataModels makeClaimDataModels(ClaimVO claimVO);
 
+    protected abstract void updateOriginalOrderData(ClaimVO claimVO);
+
     public void execute(ClaimVO claimVO){
 
+        updateOriginalOrderData(claimVO);
         ClaimDataModels models = makeClaimDataModels(claimVO);
         dataManipulateService.manipulateClaimData(models);
 

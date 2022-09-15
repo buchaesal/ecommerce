@@ -22,4 +22,9 @@ public class ExchangeCreator extends ClaimCreator {
         return null;
     }
 
+    @Override
+    protected void updateOriginalOrderData(ClaimVO claimVO) {
+
+    }
+
 }

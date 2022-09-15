@@ -36,4 +36,9 @@ public class AcceptReturnCreator extends ClaimCreator {
 
     }
 
+    @Override
+    protected void updateOriginalOrderData(ClaimVO claimVO) {
+
+    }
+
 }

@@ -43,4 +43,9 @@ public class WithdrawalReturnCreator extends ClaimCreator {
 
     }
 
+    @Override
+    protected void updateOriginalOrderData(ClaimVO claimVO) {
+
+    }
+
 }
