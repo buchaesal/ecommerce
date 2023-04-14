@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @Builder
-public class PayInfo {
+public class PaymentMethod {
 
     @NotNull
     private Long payAmount;

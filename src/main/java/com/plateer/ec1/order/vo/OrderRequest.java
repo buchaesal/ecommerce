@@ -35,15 +35,15 @@ public class OrderRequest {
     private PaymentRequest paymentRequest;
 
     public boolean hasPayProcess(){
-        return Objects.nonNull(paymentRequest) && !CollectionUtils.isEmpty(paymentRequest.getPayInfoList());
+        return Objects.nonNull(paymentRequest) && !CollectionUtils.isEmpty(paymentRequest.getPaymentMethodList());
     }
 
     public long getPayAmount(){
-        return hasPayProcess() ? paymentRequest.getPayInfoList().stream().mapToLong(payInfo -> payInfo.getPayAmount()).sum() : 0;
+        return hasPayProcess() ? paymentRequest.getPaymentMethodList().stream().mapToLong(payInfo -> payInfo.getPayAmount()).sum() : 0;
     }
 
     public List<PaymentType> getPaymentTypeList(){
-        return hasPayProcess() ? paymentRequest.getPayInfoList().stream().map(payInfo -> payInfo.getPaymentType()).collect(Collectors.toList()) : Collections.EMPTY_LIST;
+        return hasPayProcess() ? paymentRequest.getPaymentMethodList().stream().map(payInfo -> payInfo.getPaymentType()).collect(Collectors.toList()) : Collections.EMPTY_LIST;
     }
 
 }

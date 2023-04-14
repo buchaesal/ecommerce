@@ -7,7 +7,7 @@ import javax.validation.constraints.NotEmpty;
 
 @Getter
 @Builder
-public class OrderInfo {
+public class Order {
 
     @NotEmpty
     private String ordNo;

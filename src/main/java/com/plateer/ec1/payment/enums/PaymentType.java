@@ -12,9 +12,9 @@ public enum PaymentType {
     INICIS("00", "00", "10"),
     POINT("", "", "20");
 
-    private final String approveSuccessCode;
-    private final String cancelSuccessCode;
-    private final String payMnCd;
+    private final String approveSuccessCode;    // 승인성공코드
+    private final String cancelSuccessCode;     // 취소실패코드
+    private final String payMnCd;               // 결제수단코드(OPT0009)
 
     public static PaymentType findPaymentType(String payMnCd){
         return Arrays.stream(PaymentType.values())

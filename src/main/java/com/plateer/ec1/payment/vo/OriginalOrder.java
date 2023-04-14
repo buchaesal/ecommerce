@@ -55,12 +55,12 @@ public class OriginalOrder {
         return OPT0011.COMPLETE_APPROVE.code.equals(payPrgsScd);
     }
 
-    public OrderInfo makeOrderInfo(){
-        return new OrderInfo(ordNo, goodsNm, ordNm, "");
+    public Order makeOrderInfo(){
+        return new Order(ordNo, goodsNm, ordNm, "");
     }
 
-    public PayInfo makePayInfo(Long payAmount){
-        return new PayInfo(payAmount, PaymentType.findPaymentType(payMnCd), vrBnkCd, vrAcctNm);
+    public PaymentMethod makePayInfo(Long payAmount){
+        return new PaymentMethod(payAmount, PaymentType.findPaymentType(payMnCd), vrBnkCd, vrAcctNm);
     }
 
 }

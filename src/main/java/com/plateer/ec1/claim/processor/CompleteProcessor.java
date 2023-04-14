@@ -49,7 +49,6 @@ public class CompleteProcessor extends ClaimProcessor {
             ifCallService.callRestoreCouponIF();
 
             // 결제 취소
-
             ifCallService.callPaymentIF();
 
 

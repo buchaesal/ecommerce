@@ -1,27 +1,27 @@
 package com.plateer.ec1.payment.service;
 
-import com.plateer.ec1.payment.vo.req.PaymentCancelRequest;
+import com.plateer.ec1.payment.vo.req.CancelRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class PayServiceTestCancel {
+class PaymentServiceTestCancel {
 
     @Autowired
-    PayService payService;
-    PaymentCancelRequest cancelRequest;
+    PaymentService paymentService;
+    CancelRequest cancelRequest;
 
     @BeforeEach
     void init(){
-        cancelRequest = new PaymentCancelRequest("O2", "C1", 100L);
+        cancelRequest = new CancelRequest("O2", "C1", 100L, null);
     }
 
     @Test
     void test1(){
-        payService.manipulateAmount(cancelRequest);
-        payService.cancel(cancelRequest);
+        paymentService.manipulateAmount(cancelRequest);
+        paymentService.cancel(cancelRequest);
     }
 
 }

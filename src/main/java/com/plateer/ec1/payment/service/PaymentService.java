@@ -1,67 +1,77 @@
 package com.plateer.ec1.payment.service;
 
+import com.plateer.ec1.payment.context.ApproveContext;
+import com.plateer.ec1.payment.context.CancelContext;
 import com.plateer.ec1.payment.enums.PaymentType;
-import com.plateer.ec1.payment.vo.OrderInfo;
+import com.plateer.ec1.payment.factory.PaymentStrategyFactory;
+import com.plateer.ec1.payment.vo.OrderPayment;
 import com.plateer.ec1.payment.vo.OriginalOrder;
-import com.plateer.ec1.payment.vo.PayInfo;
-import com.plateer.ec1.payment.vo.api.PaymentResultBase;
+import com.plateer.ec1.payment.vo.req.CancelRequest;
+import com.plateer.ec1.payment.vo.req.ChangeDepositCompleteRequest;
 import com.plateer.ec1.payment.vo.req.NetCancelRequest;
-import com.plateer.ec1.payment.vo.req.PaymentCancelRequest;
+import com.plateer.ec1.payment.vo.req.PaymentRequest;
 import com.plateer.ec1.payment.vo.res.PayApproveResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
-@Component
+@Service
+@Validated
 @RequiredArgsConstructor
-public abstract class PaymentService<T extends PaymentResultBase> {
+public class PaymentService {
 
-    private final OrderPaymentDataService dataService;
+    private final ApproveContext approveContext;
+    private final CancelContext cancelContext;
+    private final PaymentDataService dataService;
+    private final PaymentStrategyFactory paymentStrategyFactory;
 
-    abstract public PaymentType getType();
+    @Validated
+    @Transactional
+    public List<PayApproveResponse> approve(@Valid PaymentRequest paymentRequest){
 
-    PayApproveResponse executeApproveProcess(OrderInfo orderInfo, @Valid PayInfo payInfo){
+        List<PayApproveResponse> resultList = new ArrayList<>();
+        paymentRequest.getPaymentMethodList().forEach(payInfo -> {
+            OrderPayment orderPayment = OrderPayment.builder().order(paymentRequest.getOrder()).paymentMethod(payInfo).build();
+            approveContext.execute(paymentStrategyFactory.getPaymentStrategy(payInfo.getPaymentType()), orderPayment);
+        });
 
-         // 인증값 검증
-        validateAuth(payInfo);
-
-        // 승인요청
-        T result = approve(orderInfo, payInfo);
-
-        // 주문결제 데이터 저장
-        dataService.saveOrderPaymentData(result.makeApproveInsertModel(orderInfo, payInfo));
-
-        return new PayApproveResponse(payInfo.getPaymentType(), result.getAblePartialCancelYn());
-
-    }
-
-    abstract public void validateAuth(PayInfo payInfo);
-
-    abstract public T approve(OrderInfo orderInfo, PayInfo payInfo);
-
-    void executeCancelProcess(PaymentCancelRequest request, OriginalOrder originalOrder){
-
-        // 취소요청
-        T result = cancel(request, originalOrder);
-
-        // 주문결제 취소데이터 저장
-        dataService.saveOrderPaymentData(result.makeCancelInsertModel(request, originalOrder));
-
-        // 후처리
-        afterCancelProcess(request, originalOrder);
+        return resultList;
 
     }
 
-    abstract public T cancel(PaymentCancelRequest request, OriginalOrder originalOrder);
+    @Validated
+    @Transactional
+    public void manipulateAmount(@Valid CancelRequest request){
 
-    abstract public void netCancel(NetCancelRequest netCancelRequest);
+        OriginalOrder originalOrder = Optional.ofNullable(dataService.getOriginalOrder(request))
+                .orElseThrow(() -> new IllegalArgumentException("주문을 찾을 수 없습니다."));
+        originalOrder.validateAmount(request.getCnclAmt());
+        dataService.updateCancelRefundAmount(request, originalOrder);
 
-    public boolean isPartialCancel(PaymentCancelRequest request, OriginalOrder originalOrder){
-        return originalOrder.getPayAmt() != request.getCnclAmt();
     }
 
-    public void afterCancelProcess(PaymentCancelRequest request, OriginalOrder originalOrder){
+    @Validated
+    @Transactional
+    public void cancel(@Valid CancelRequest request){
+        OriginalOrder originalOrder = dataService.getOriginalOrder(request);
+        cancelContext.execute(paymentStrategyFactory.getPaymentStrategy(PaymentType.findPaymentType(originalOrder.getPayMnCd())), request);
+    }
+
+    @Validated
+    @Transactional
+    public void completeDeposit(@NotNull Map<String, String> apiResultMap){
+        dataService.changeDepositCompleteStatus(new ChangeDepositCompleteRequest(apiResultMap));
+    }
+
+    public void netCancel(NetCancelRequest netCancelRequest){
     }
 
 }

@@ -4,10 +4,10 @@ import com.plateer.ec1.common.code.order.OPT0009;
 import com.plateer.ec1.common.code.order.OPT0010;
 import com.plateer.ec1.common.code.order.OPT0011;
 import com.plateer.ec1.common.model.payment.OpPayInfoModel;
-import com.plateer.ec1.payment.vo.OrderInfo;
+import com.plateer.ec1.payment.vo.Order;
 import com.plateer.ec1.payment.vo.OriginalOrder;
-import com.plateer.ec1.payment.vo.PayInfo;
-import com.plateer.ec1.payment.vo.req.PaymentCancelRequest;
+import com.plateer.ec1.payment.vo.PaymentMethod;
+import com.plateer.ec1.payment.vo.req.CancelRequest;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,25 +15,26 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class PointPayment extends PaymentResultBase{
+public class PointPayment extends PaymentResultBase {
 
     @Override
-    public OpPayInfoModel makeApproveInsertModel(OrderInfo orderInfo, PayInfo payInfo){
+    public OpPayInfoModel makeApproveInsertModel(Order order, PaymentMethod paymentMethod){
         return OpPayInfoModel.builder()
-                .ordNo(orderInfo.getOrdNo())
+                .ordNo(order.getOrdNo())
                 .payMnCd(OPT0009.POINT.code)
                 .payCcd(OPT0010.APPROVE.code)
                 .payPrgsScd(OPT0011.COMPLETE_APPROVE.code)
-                .payAmt(payInfo.getPayAmount())
-                .rfndAvlAmt(payInfo.getPayAmount())
+                .payAmt(paymentMethod.getPayAmount())
+                .rfndAvlAmt(paymentMethod.getPayAmount())
                 .payCmtDtime(LocalDateTime.now())
                 .build();
     }
 
     @Override
-    public OpPayInfoModel makeCancelInsertModel(PaymentCancelRequest request, OriginalOrder originalOrder){
+    public OpPayInfoModel makeCancelInsertModel(CancelRequest request){
+        OriginalOrder originalOrder = request.getOriginalOrder();
         return OpPayInfoModel.builder()
-                .ordNo(request.getOrrNo())
+                .ordNo(request.getOrdNo())
                 .clmNo(request.getClmNo())
                 .payMnCd(OPT0009.POINT.code)
                 .payCcd(OPT0010.CANCEL.code)

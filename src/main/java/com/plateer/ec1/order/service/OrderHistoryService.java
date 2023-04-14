@@ -80,4 +80,11 @@ public class OrderHistoryService {
 
     }
 
+    @Transactional
+    public void errMethod(){
+        if(true){
+            throw new RuntimeException();
+        }
+    }
+
 }

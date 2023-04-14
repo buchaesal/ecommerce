@@ -1,18 +1,18 @@
-package com.plateer.ec1.payment.service.impl;
+package com.plateer.ec1.payment.strategy.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.plateer.ec1.common.component.ApiComponent;
 import com.plateer.ec1.payment.enums.PaymentType;
 import com.plateer.ec1.payment.factory.InicisFactory;
-import com.plateer.ec1.payment.service.OrderPaymentDataService;
-import com.plateer.ec1.payment.service.PaymentService;
+import com.plateer.ec1.payment.service.PaymentDataService;
+import com.plateer.ec1.payment.strategy.PaymentStrategy;
 import com.plateer.ec1.payment.utils.InicisUtil;
-import com.plateer.ec1.payment.vo.OrderInfo;
+import com.plateer.ec1.payment.vo.Order;
 import com.plateer.ec1.payment.vo.OriginalOrder;
-import com.plateer.ec1.payment.vo.PayInfo;
+import com.plateer.ec1.payment.vo.PaymentMethod;
 import com.plateer.ec1.payment.vo.api.InicisVirtualAccount;
+import com.plateer.ec1.payment.vo.req.CancelRequest;
 import com.plateer.ec1.payment.vo.req.NetCancelRequest;
-import com.plateer.ec1.payment.vo.req.PaymentCancelRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
 
@@ -20,11 +20,11 @@ import java.util.Map;
 
 
 @Component
-public class Inicis extends PaymentService<InicisVirtualAccount> {
+public class Inicis extends PaymentStrategy {
 
     private final ApiComponent apiComponent;
 
-    public Inicis(OrderPaymentDataService dataService, ApiComponent apiComponent) {
+    public Inicis(PaymentDataService dataService, ApiComponent apiComponent) {
         super(dataService);
         this.apiComponent = apiComponent;
     }
@@ -35,12 +35,12 @@ public class Inicis extends PaymentService<InicisVirtualAccount> {
     }
 
     @Override
-    public void validateAuth(PayInfo payInfo) {
+    public void validateAuth(PaymentMethod paymentMethod) {
     }
 
 
     @Override
-    public InicisVirtualAccount approve(OrderInfo orderInfo, PayInfo payInfo) {
+    public InicisVirtualAccount approve(Order order, PaymentMethod paymentMethod) {
 
 //        MultiValueMap<String, String> requestMap = InicisFactory.inicisVirtualAccountRequest(orderInfo, payInfo);
 //        Map<String, String> apiResult = InicisUtil.parseJsonToStringMap(apiComponent.exchangeFormRequest(requestMap, InicisFactory.getApiUrl()));
@@ -53,9 +53,10 @@ public class Inicis extends PaymentService<InicisVirtualAccount> {
     }
 
     @Override
-    public InicisVirtualAccount cancel(PaymentCancelRequest request, OriginalOrder originalOrder) {
+    public InicisVirtualAccount cancel(CancelRequest request) {
 
         InicisVirtualAccount result = new InicisVirtualAccount();
+        OriginalOrder originalOrder = request.getOriginalOrder();
 
         if(originalOrder.isCompleteDeposit()){
             // 원주문이 결제완료일때만 취소 if 호출
@@ -73,8 +74,9 @@ public class Inicis extends PaymentService<InicisVirtualAccount> {
     }
 
     @Override
-    public void afterCancelProcess(PaymentCancelRequest request, OriginalOrder originalOrder){
+    public void afterCancelProcess(CancelRequest request){
 
+        OriginalOrder originalOrder = request.getOriginalOrder();
         // 입금전 부분취소 일때, 부분취소후 남은금액 재결제 가상계좌발급
         if(originalOrder.isBeforeDeposit() && isPartialCancel(request, originalOrder)){
             Long approveAmount = originalOrder.getPayAmt() - request.getCnclAmt();

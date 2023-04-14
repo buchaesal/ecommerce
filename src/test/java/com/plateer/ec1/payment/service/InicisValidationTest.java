@@ -1,7 +1,7 @@
 package com.plateer.ec1.payment.service;
 
-import com.plateer.ec1.payment.vo.OrderInfo;
-import com.plateer.ec1.payment.vo.PayInfo;
+import com.plateer.ec1.payment.vo.Order;
+import com.plateer.ec1.payment.vo.PaymentMethod;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,10 +16,10 @@ import javax.validation.ConstraintViolationException;
 class InicisValidationTest {
 
     @Autowired
-    PayService payService;
+    PaymentService paymentService;
 
-    OrderInfo orderInfo;
-    PayInfo payInfo;
+    Order order;
+    PaymentMethod paymentMethod;
 
     @BeforeEach
     void init(){
@@ -32,7 +32,7 @@ class InicisValidationTest {
     @Test
     void validationTest1(){
 
-        orderInfo = null;
+        order = null;
 
         // orderInfo null
         Assertions.assertThrows(ConstraintViolationException.class, () -> {

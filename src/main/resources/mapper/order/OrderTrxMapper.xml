@@ -351,4 +351,15 @@
 
     </insert>
 
+    <insert id="insertTmpOrdBase">
+        insert into tmp_ord_base
+        (ord_no, error_conts)
+        values
+        (concat('O', nextval('tmp_ord_base_seq')), 'fail')
+    </insert>
+
+    <select id="getTmpOrdBaseSeq" resultType="String">
+        select concat('O', nextval('tmp_ord_base_seq'))
+    </select>
+
 </mapper>

@@ -9,7 +9,7 @@ import com.plateer.ec1.order.vo.OrderProductView;
 import com.plateer.ec1.order.vo.OrderRequest;
 import com.plateer.ec1.order.vo.OrderVO;
 import com.plateer.ec1.order.vo.OrderValidationVO;
-import com.plateer.ec1.payment.service.PayService;
+import com.plateer.ec1.payment.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -23,7 +23,7 @@ import java.util.List;
 public class OrderContext {
 
     private final OrderDao orderDao;
-    private final PayService payService;
+    private final PaymentService paymentService;
     private final OrderHistoryService orderHistoryService;
 
     @Transactional
@@ -44,7 +44,7 @@ public class OrderContext {
             orderVO = dataStrategy.create(orderRequest);
 
             // 결제
-            payService.approve(orderRequest.getPaymentRequest());
+            paymentService.approve(orderRequest.getPaymentRequest());
 
             // 주문 데이터 입력
             orderHistoryService.insertOrderData(orderVO);
@@ -56,8 +56,9 @@ public class OrderContext {
             afterStrategy.call(orderRequest, orderVO);
 
         } catch (Exception ex) {
-            exception = ex;
             log.info("error: {}", ex);
+            exception = ex;
+            throw ex;
         } finally {
             orderHistoryService.updateHistory(logSeq, orderVO, exception);
         }

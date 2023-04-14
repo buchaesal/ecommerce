@@ -7,16 +7,13 @@ import com.plateer.ec1.common.code.order.OPT0011;
 import com.plateer.ec1.common.model.payment.OpPayInfoModel;
 import com.plateer.ec1.payment.enums.PaymentType;
 import com.plateer.ec1.payment.utils.PaymentUtil;
-import com.plateer.ec1.payment.vo.OrderInfo;
+import com.plateer.ec1.payment.vo.Order;
 import com.plateer.ec1.payment.vo.OriginalOrder;
-import com.plateer.ec1.payment.vo.PayInfo;
-import com.plateer.ec1.payment.vo.req.PaymentCancelRequest;
-import lombok.AllArgsConstructor;
+import com.plateer.ec1.payment.vo.PaymentMethod;
+import com.plateer.ec1.payment.vo.req.CancelRequest;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.util.StringUtils;
-
-import java.util.Objects;
 
 @Getter
 @Setter
@@ -42,30 +39,31 @@ public class InicisVirtualAccount extends PaymentResultBase {
     }
 
   @Override
-  public OpPayInfoModel makeApproveInsertModel(OrderInfo orderInfo, PayInfo payInfo){
+  public OpPayInfoModel makeApproveInsertModel(Order order, PaymentMethod paymentMethod){
         return OpPayInfoModel.builder()
                 .payNo(PaymentUtil.getNewPayNo())
-                .ordNo(orderInfo.getOrdNo())
+                .ordNo(order.getOrdNo())
                 .payMnCd(OPT0009.VIRTUAL_ACCOUNT.code)
                 .payCcd(OPT0010.APPROVE.code)
                 .payPrgsScd(OPT0011.REQUEST_APPROVE.code)
-                .payAmt(payInfo.getPayAmount())
+                .payAmt(paymentMethod.getPayAmount())
                 .cnclAmt(0L)
                 .rfndAvlAmt(0L)
                 .trsnId(tid)
                 .vrValDt(validDate)
                 .vrValTt(validTime)
                 .vrAcct(vacct)
-                .vrAcctNm(payInfo.getDepositorName())
-                .vrBnkCd(payInfo.getBankCode())
+                .vrAcctNm(paymentMethod.getDepositorName())
+                .vrBnkCd(paymentMethod.getBankCode())
                 .build();
   }
 
   @Override
-  public OpPayInfoModel makeCancelInsertModel(PaymentCancelRequest request, OriginalOrder originalOrder){
+  public OpPayInfoModel makeCancelInsertModel(CancelRequest request){
+        OriginalOrder originalOrder = request.getOriginalOrder();
         return OpPayInfoModel.builder()
                 .payNo(PaymentUtil.getNewPayNo())
-                .ordNo(request.getOrrNo())
+                .ordNo(request.getOrdNo())
                 .clmNo(request.getClmNo())
                 .payMnCd(originalOrder.getPayMnCd())
                 .payCcd(OPT0010.CANCEL.code)

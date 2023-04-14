@@ -7,14 +7,14 @@ import com.plateer.ec1.payment.mapper.PaymentMapper;
 import com.plateer.ec1.payment.mapper.PaymentTrxMapper;
 import com.plateer.ec1.payment.vo.OriginalOrder;
 import com.plateer.ec1.payment.vo.req.ChangeDepositCompleteRequest;
-import com.plateer.ec1.payment.vo.req.PaymentCancelRequest;
+import com.plateer.ec1.payment.vo.req.CancelRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class OrderPaymentDataService {
+public class PaymentDataService {
 
     private final PaymentMapper paymentMapper;
     private final PaymentTrxMapper paymentTrxMapper;
@@ -36,14 +36,14 @@ public class OrderPaymentDataService {
     /*
     주문번호로 원주문건 데이터 조회
      */
-    public OriginalOrder getOriginalOrder(PaymentCancelRequest request){
-        return paymentMapper.getOriginalOrder(request.getOrrNo());
+    public OriginalOrder getOriginalOrder(CancelRequest request){
+        return paymentMapper.getOriginalOrder(request.getOrdNo());
     }
 
     /*
     취소, 환불가능금액 update
      */
-    public void updateCancelRefundAmount(PaymentCancelRequest request, OriginalOrder originalOrder){
+    public void updateCancelRefundAmount(CancelRequest request, OriginalOrder originalOrder){
 
         OpPayInfoModel model = new OpPayInfoModel();
         model.setCnclAmt(request.getCnclAmt());
@@ -54,7 +54,7 @@ public class OrderPaymentDataService {
 
     }
 
-    private OpPayInfoModel makeCancelDataModel(PaymentCancelRequest request, OriginalOrder originalOrder){
+    private OpPayInfoModel makeCancelDataModel(CancelRequest request, OriginalOrder originalOrder){
 
         OpPayInfoModel model = new OpPayInfoModel();
         BeanUtils.copyProperties(originalOrder, model);

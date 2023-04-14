@@ -1,7 +1,7 @@
 package com.plateer.ec1.payment.factory;
 
 import com.plateer.ec1.payment.enums.PaymentType;
-import com.plateer.ec1.payment.service.PaymentService;
+import com.plateer.ec1.payment.strategy.PaymentStrategy;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -9,15 +9,15 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class PaymentServiceFactory {
+public class PaymentStrategyFactory {
 
-    private final Map<PaymentType, PaymentService> map = new HashMap<>();
+    private final Map<PaymentType, PaymentStrategy> map = new HashMap<>();
 
-    public PaymentServiceFactory(List<PaymentService> serviceList){
-      serviceList.forEach(e -> map.put(e.getType(), e));
+    public PaymentStrategyFactory(List<PaymentStrategy> strategies){
+        strategies.forEach(e -> map.put(e.getType(), e));
     }
 
-    public PaymentService getPaymentService(PaymentType type){
+    public PaymentStrategy getPaymentStrategy(PaymentType type){
         try {
             return map.get(type);
         }catch (NullPointerException e){
