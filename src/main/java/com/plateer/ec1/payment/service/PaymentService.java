@@ -38,9 +38,9 @@ public class PaymentService {
     public List<PayApproveResponse> approve(@Valid PaymentRequest paymentRequest){
 
         List<PayApproveResponse> resultList = new ArrayList<>();
-        paymentRequest.getPaymentMethodList().forEach(payInfo -> {
-            OrderPayment orderPayment = OrderPayment.builder().order(paymentRequest.getOrder()).paymentMethod(payInfo).build();
-            approveContext.execute(paymentStrategyFactory.getPaymentStrategy(payInfo.getPaymentType()), orderPayment);
+        paymentRequest.getPaymentList().forEach(payment -> {
+            OrderPayment orderPayment = OrderPayment.builder().order(paymentRequest.getOrder()).payment(payment).build();
+            approveContext.execute(paymentStrategyFactory.getPaymentStrategy(payment.getPaymentType()), orderPayment);
         });
 
         return resultList;

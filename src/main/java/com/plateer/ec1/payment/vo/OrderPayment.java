@@ -8,6 +8,6 @@ import lombok.Setter;
 @Setter
 @Builder
 public class OrderPayment {
-    private PaymentMethod paymentMethod;
     private Order order;
+    private Payment payment;
 }

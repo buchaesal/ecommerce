@@ -1,7 +1,7 @@
 package com.plateer.ec1.payment.vo.req;
 
 import com.plateer.ec1.payment.vo.Order;
-import com.plateer.ec1.payment.vo.PaymentMethod;
+import com.plateer.ec1.payment.vo.Payment;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -17,6 +17,6 @@ public class PaymentRequest {
     @Valid
     Order order;
     @NotNull
-    List<@Valid @NotNull PaymentMethod> paymentMethodList;
+    List<@Valid @NotNull Payment> paymentList;
 
 }

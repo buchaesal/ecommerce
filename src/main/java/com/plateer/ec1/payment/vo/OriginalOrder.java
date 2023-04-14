@@ -59,8 +59,8 @@ public class OriginalOrder {
         return new Order(ordNo, goodsNm, ordNm, "");
     }
 
-    public PaymentMethod makePayInfo(Long payAmount){
-        return new PaymentMethod(payAmount, PaymentType.findPaymentType(payMnCd), vrBnkCd, vrAcctNm);
+    public Payment makePayInfo(Long payAmount){
+        return new Payment(payAmount, PaymentType.findPaymentType(payMnCd), vrBnkCd, vrAcctNm);
     }
 
 }

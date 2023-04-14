@@ -1,7 +1,7 @@
 package com.plateer.ec1.payment.service;
 
 import com.plateer.ec1.payment.vo.Order;
-import com.plateer.ec1.payment.vo.PaymentMethod;
+import com.plateer.ec1.payment.vo.Payment;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,7 +19,7 @@ class InicisValidationTest {
     PaymentService paymentService;
 
     Order order;
-    PaymentMethod paymentMethod;
+    Payment payment;
 
     @BeforeEach
     void init(){

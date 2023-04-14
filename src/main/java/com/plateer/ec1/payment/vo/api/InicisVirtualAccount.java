@@ -8,8 +8,9 @@ import com.plateer.ec1.common.model.payment.OpPayInfoModel;
 import com.plateer.ec1.payment.enums.PaymentType;
 import com.plateer.ec1.payment.utils.PaymentUtil;
 import com.plateer.ec1.payment.vo.Order;
+import com.plateer.ec1.payment.vo.OrderPayment;
 import com.plateer.ec1.payment.vo.OriginalOrder;
-import com.plateer.ec1.payment.vo.PaymentMethod;
+import com.plateer.ec1.payment.vo.Payment;
 import com.plateer.ec1.payment.vo.req.CancelRequest;
 import lombok.Getter;
 import lombok.Setter;
@@ -39,22 +40,24 @@ public class InicisVirtualAccount extends PaymentResultBase {
     }
 
   @Override
-  public OpPayInfoModel makeApproveInsertModel(Order order, PaymentMethod paymentMethod){
+  public OpPayInfoModel makeApproveInsertModel(OrderPayment orderPayment){
+        Order order = orderPayment.getOrder();
+        Payment payment = orderPayment.getPayment();
         return OpPayInfoModel.builder()
                 .payNo(PaymentUtil.getNewPayNo())
                 .ordNo(order.getOrdNo())
                 .payMnCd(OPT0009.VIRTUAL_ACCOUNT.code)
                 .payCcd(OPT0010.APPROVE.code)
                 .payPrgsScd(OPT0011.REQUEST_APPROVE.code)
-                .payAmt(paymentMethod.getPayAmount())
+                .payAmt(payment.getPayAmount())
                 .cnclAmt(0L)
                 .rfndAvlAmt(0L)
                 .trsnId(tid)
                 .vrValDt(validDate)
                 .vrValTt(validTime)
                 .vrAcct(vacct)
-                .vrAcctNm(paymentMethod.getDepositorName())
-                .vrBnkCd(paymentMethod.getBankCode())
+                .vrAcctNm(payment.getDepositorName())
+                .vrBnkCd(payment.getBankCode())
                 .build();
   }
 

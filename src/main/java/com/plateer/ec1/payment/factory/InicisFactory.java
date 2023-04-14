@@ -3,7 +3,7 @@ package com.plateer.ec1.payment.factory;
 import com.plateer.ec1.payment.utils.PaymentUtil;
 import com.plateer.ec1.payment.vo.Order;
 import com.plateer.ec1.payment.vo.OriginalOrder;
-import com.plateer.ec1.payment.vo.PaymentMethod;
+import com.plateer.ec1.payment.vo.Payment;
 import com.plateer.ec1.payment.vo.req.CancelRequest;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -29,7 +29,7 @@ public class InicisFactory {
     private static final String API_URL = "https://iniapi.inicis.com/api/v1/formpay";
     private static final String CANCEL_API_URL = "https://iniapi.inicis.com/api/v1/refund";
 
-    public static MultiValueMap<String, String> inicisVirtualAccountRequest(Order order, PaymentMethod paymentMethod) {
+    public static MultiValueMap<String, String> inicisVirtualAccountRequest(Order order, Payment payment) {
 
         LocalDateTime todayNow = LocalDateTime.now();
 
@@ -38,7 +38,7 @@ public class InicisFactory {
         String timestamp = getTimestamp();
         String clientIp = clientIp();
         String moid = order.getOrdNo();
-        String price = String.valueOf(paymentMethod.getPayAmount());
+        String price = String.valueOf(payment.getPayAmount());
 
         // INIAPIKey+type+paymethod+timestamp+clientIp+mid+moid+price
         String hashData = hashSha512(PaymentUtil.appendString(API_KEY, type, paymethod, timestamp, clientIp, MID, moid, price));
@@ -56,13 +56,13 @@ public class InicisFactory {
         result.add("buyerEmail", order.getOrdEmail());
         result.add("price", price);
         result.add("currency", "WON");
-        result.add("bankCode", paymentMethod.getBankCode());
+        result.add("bankCode", payment.getBankCode());
 
         LocalDateTime onedayAfter = todayNow.plusHours(24);
 
         result.add("dtInput", onedayAfter.format(DateTimeFormatter.ofPattern("yyyyMMdd")));
         result.add("tmInput", onedayAfter.format(DateTimeFormatter.ofPattern("hhmm")));
-        result.add("nmInput", paymentMethod.getDepositorName());
+        result.add("nmInput", payment.getDepositorName());
         result.add("hashData", hashData);
 
         return result;

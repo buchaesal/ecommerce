@@ -5,8 +5,9 @@ import com.plateer.ec1.common.code.order.OPT0010;
 import com.plateer.ec1.common.code.order.OPT0011;
 import com.plateer.ec1.common.model.payment.OpPayInfoModel;
 import com.plateer.ec1.payment.vo.Order;
+import com.plateer.ec1.payment.vo.OrderPayment;
 import com.plateer.ec1.payment.vo.OriginalOrder;
-import com.plateer.ec1.payment.vo.PaymentMethod;
+import com.plateer.ec1.payment.vo.Payment;
 import com.plateer.ec1.payment.vo.req.CancelRequest;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,14 +19,16 @@ import java.time.LocalDateTime;
 public class PointPayment extends PaymentResultBase {
 
     @Override
-    public OpPayInfoModel makeApproveInsertModel(Order order, PaymentMethod paymentMethod){
+    public OpPayInfoModel makeApproveInsertModel(OrderPayment orderPayment){
+        Order order = orderPayment.getOrder();
+        Payment payment = orderPayment.getPayment();
         return OpPayInfoModel.builder()
                 .ordNo(order.getOrdNo())
                 .payMnCd(OPT0009.POINT.code)
                 .payCcd(OPT0010.APPROVE.code)
                 .payPrgsScd(OPT0011.COMPLETE_APPROVE.code)
-                .payAmt(paymentMethod.getPayAmount())
-                .rfndAvlAmt(paymentMethod.getPayAmount())
+                .payAmt(payment.getPayAmount())
+                .rfndAvlAmt(payment.getPayAmount())
                 .payCmtDtime(LocalDateTime.now())
                 .build();
     }

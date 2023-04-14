@@ -3,7 +3,7 @@ package com.plateer.ec1.payment.service;
 import com.plateer.ec1.payment.enums.PaymentType;
 import com.plateer.ec1.payment.strategy.impl.Inicis;
 import com.plateer.ec1.payment.vo.Order;
-import com.plateer.ec1.payment.vo.PaymentMethod;
+import com.plateer.ec1.payment.vo.Payment;
 import com.plateer.ec1.payment.vo.req.PaymentRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,7 @@ public class InicisApproveTest {
     @Autowired
     PaymentDataService dataService;
     Order order;
-    PaymentMethod paymentMethod;
+    Payment payment;
     PaymentRequest paymentRequest;
     @Autowired
     PaymentService paymentService;
@@ -30,9 +30,9 @@ public class InicisApproveTest {
     void init(){
 
         order = Order.builder().ordNo("01").goodsNm("맥북").ordNm("최단비").ordEmail("eks4116@gmail.com").build();
-        List<PaymentMethod> list = new ArrayList<>();
-        list.add(PaymentMethod.builder().payAmount(100L).paymentType(PaymentType.INICIS).build());
-        paymentRequest = PaymentRequest.builder().order(order).paymentMethodList(list).build();
+        List<Payment> list = new ArrayList<>();
+        list.add(Payment.builder().payAmount(100L).paymentType(PaymentType.INICIS).build());
+        paymentRequest = PaymentRequest.builder().order(order).paymentList(list).build();
 
     }
 

@@ -2,9 +2,8 @@ package com.plateer.ec1.payment.strategy;
 
 import com.plateer.ec1.payment.enums.PaymentType;
 import com.plateer.ec1.payment.service.PaymentDataService;
-import com.plateer.ec1.payment.vo.Order;
+import com.plateer.ec1.payment.vo.OrderPayment;
 import com.plateer.ec1.payment.vo.OriginalOrder;
-import com.plateer.ec1.payment.vo.PaymentMethod;
 import com.plateer.ec1.payment.vo.api.PaymentResultBase;
 import com.plateer.ec1.payment.vo.req.NetCancelRequest;
 import com.plateer.ec1.payment.vo.req.CancelRequest;
@@ -19,9 +18,9 @@ public abstract class PaymentStrategy {
 
     abstract public PaymentType getType();
 
-    abstract public void validateAuth(PaymentMethod paymentMethod);
+    abstract public void validateAuth(OrderPayment orderPayment);
 
-    abstract public PaymentResultBase approve(Order order, PaymentMethod paymentMethod);
+    abstract public PaymentResultBase approve(OrderPayment orderPayment);
 
 
     abstract public PaymentResultBase cancel(CancelRequest request);

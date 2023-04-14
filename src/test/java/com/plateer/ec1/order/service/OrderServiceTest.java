@@ -6,7 +6,7 @@ import com.plateer.ec1.order.enums.OrderType;
 import com.plateer.ec1.order.vo.*;
 import com.plateer.ec1.payment.enums.PaymentType;
 import com.plateer.ec1.payment.vo.Order;
-import com.plateer.ec1.payment.vo.PaymentMethod;
+import com.plateer.ec1.payment.vo.Payment;
 import com.plateer.ec1.payment.vo.req.PaymentRequest;
 import com.plateer.ec1.promotion.vo.Product;
 import org.junit.jupiter.api.BeforeEach;
@@ -57,7 +57,7 @@ class OrderServiceTest {
                                                 Product.builder().productNo("P001").productItemNo("2").build())).build()
                         )).build()
         ));
-        orderRequest.setPaymentRequest(PaymentRequest.builder().order(Order.builder().ordNo(ordNo).build()).paymentMethodList(Arrays.asList(PaymentMethod.builder().payAmount(1000L).paymentType(PaymentType.POINT).build())).build());
+        orderRequest.setPaymentRequest(PaymentRequest.builder().order(Order.builder().ordNo(ordNo).build()).paymentList(Arrays.asList(Payment.builder().payAmount(1000L).paymentType(PaymentType.POINT).build())).build());
     }
 
     @Test

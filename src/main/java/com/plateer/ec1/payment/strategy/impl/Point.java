@@ -4,7 +4,7 @@ import com.plateer.ec1.payment.enums.PaymentType;
 import com.plateer.ec1.payment.service.PaymentDataService;
 import com.plateer.ec1.payment.strategy.PaymentStrategy;
 import com.plateer.ec1.payment.vo.Order;
-import com.plateer.ec1.payment.vo.PaymentMethod;
+import com.plateer.ec1.payment.vo.Payment;
 import com.plateer.ec1.payment.vo.api.PointPayment;
 import com.plateer.ec1.payment.vo.req.CancelRequest;
 import com.plateer.ec1.payment.vo.req.NetCancelRequest;
@@ -21,11 +21,11 @@ public class Point extends PaymentStrategy {
         return PaymentType.POINT;
     }
 
-    public void validateAuth(PaymentMethod paymentMethod) {
+    public void validateAuth(Payment payment) {
     }
 
     @Override
-    public PointPayment approve(Order order, PaymentMethod paymentMethod) {
+    public PointPayment approve(Order order, Payment payment) {
         // 프로모션에서 제공하는 포인트 승인 api 호출
         return new PointPayment();
     }

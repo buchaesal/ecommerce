@@ -7,9 +7,8 @@ import com.plateer.ec1.payment.factory.InicisFactory;
 import com.plateer.ec1.payment.service.PaymentDataService;
 import com.plateer.ec1.payment.strategy.PaymentStrategy;
 import com.plateer.ec1.payment.utils.InicisUtil;
-import com.plateer.ec1.payment.vo.Order;
+import com.plateer.ec1.payment.vo.OrderPayment;
 import com.plateer.ec1.payment.vo.OriginalOrder;
-import com.plateer.ec1.payment.vo.PaymentMethod;
 import com.plateer.ec1.payment.vo.api.InicisVirtualAccount;
 import com.plateer.ec1.payment.vo.req.CancelRequest;
 import com.plateer.ec1.payment.vo.req.NetCancelRequest;
@@ -35,12 +34,12 @@ public class Inicis extends PaymentStrategy {
     }
 
     @Override
-    public void validateAuth(PaymentMethod paymentMethod) {
+    public void validateAuth(OrderPayment orderPayment) {
     }
 
 
     @Override
-    public InicisVirtualAccount approve(Order order, PaymentMethod paymentMethod) {
+    public InicisVirtualAccount approve(OrderPayment orderPayment) {
 
 //        MultiValueMap<String, String> requestMap = InicisFactory.inicisVirtualAccountRequest(orderInfo, payInfo);
 //        Map<String, String> apiResult = InicisUtil.parseJsonToStringMap(apiComponent.exchangeFormRequest(requestMap, InicisFactory.getApiUrl()));
@@ -80,7 +79,10 @@ public class Inicis extends PaymentStrategy {
         // 입금전 부분취소 일때, 부분취소후 남은금액 재결제 가상계좌발급
         if(originalOrder.isBeforeDeposit() && isPartialCancel(request, originalOrder)){
             Long approveAmount = originalOrder.getPayAmt() - request.getCnclAmt();
-            approve(originalOrder.makeOrderInfo(), originalOrder.makePayInfo(approveAmount));
+            approve(OrderPayment.builder()
+                    .order(originalOrder.makeOrderInfo())
+                    .payment(originalOrder.makePayInfo(approveAmount))
+                    .build());
         }
 
     }
